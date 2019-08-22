@@ -1,0 +1,11 @@
+{% if post.image %}
+  {% capture image %}{{ post.image }}{% endcapture %}
+{% else %}
+  {% assign image = site.image %}
+{% endif %}
+
+{% if post.id %}
+  {% assign title = post.title | markdownify | remove: "<p>" | remove: "</p>" %}
+{% else %}
+  {% assign title = post.title %}
+{% endif %}
