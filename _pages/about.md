@@ -3,10 +3,26 @@
   permalink: /about/
   comments: false
 ---
+<style>
+.vsco-container {
+  position: relative;
+  padding-top: 80%;
+  overflow: hidden;
+}
+.vsco-container iframe{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
 <hr>
 Hi, my name is Tyler!
 
-<iframe src="https://vsco.co/tylerrouze/media/58718be07d4c960605a2fcd4" style="border:none;" height="500" width="610"></iframe>
+<div class="vsco-container">
+<iframe src="https://vsco.co/tylerrouze/media/58718be07d4c960605a2fcd4" style="border:none;" height="610" width="610"></iframe>
+</div>
 <br>
 If you're looking for some background information on the
 "Why" of this website, I'll refer you to my first [blog post](https://tylerrouze.com/journal/welcome).
@@ -23,7 +39,9 @@ The gift from my mom that keeps on giving, she chronicles a year of my, and my s
 Secondly, take a second look around my VSCO page. I like to use it as a creative outlet.
 They say a picture is worth a thousand words, so how about 100 pictures?
 <br>
+<div class="vsco-container">
 <iframe src="https://vsco.co/tylerrouze/images/1" style="border:none;" height="610" width="610"></iframe>
+</div>
 <br>
 Maybe photos didn't do me much justice, so, I'll give you the rundown.
 
