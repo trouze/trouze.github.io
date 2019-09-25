@@ -3,21 +3,29 @@ layout: home
 author_profile: true
 comments: true
 ---
+<style type="text/css">
+<!--
+ .tab { margin-left: -40px; }
+-->
+p {
+   margin: 0px;
+   padding: 0px;
+}
+</style>
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
 <div class="{{ include.type | default: "list" }}__item">
 <ul class="post-list">
-  <p>{% for post in site.posts %}
-    <span><a href="{{ post.url | preprend: site.baseurl }}"><img src="{{ site.baseurl }} {{ post.image }}" align="left"></a></span>
-    <span><a class="post-link" href="{{ post.url | preprend: site.baseurl }}"></a></span>
-    <span><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
-  {% if post.read_time %}
-    <span class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> {% include read-time.html %}</span>
-  {% endif %}
-  <br>
-  <span class="post-meta"></span>
-  <span class="post-meta">{{ post.author }}</span>
-  <span>{{ post.excerpt }}</span>
-  <span><a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}">Continue Reading</a></span><br>
-  <hr>
-  {% endfor %}
+{% for post in site.posts %}
+  <span><a class="tab" href="{{ post.url | preprend: site.baseurl }}"><img src="{{ site.baseurl }} {{ post.image }}"></a>
+  <a class="tab" class="post-link" href="{{ post.url | preprend: site.baseurl }}"</a><br>
+  <a class="tab" class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
+{% if post.read_time %}
+  <span class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> {% include read-time.html %}</span>
+{% endif %}
+<span class="post-meta">
+<span class="post-meta">{{ post.author }}
+<p class="tab" align="left">{{ post.excerpt }}
+<a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}" align="left">Continue Reading</a></span>
+{% endfor %}
 </ul>
+<hr>

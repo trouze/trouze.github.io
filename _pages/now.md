@@ -1,14 +1,17 @@
 ---
+  layout: splash
   title: "What's Tyler Up to Right Now?"
   permalink: /now/
   comments: false
+  header:
+    image: "/images/mplsskyline.jpg"
 ---
 <hr>
 ### This page lists the most up-to-date information regarding what I am doing *right now*.
 
 ### Life
 
-If you've looked to the left, you'll notice I currently live in Minneapolis, Minnesota.
+I currently live in Minneapolis, Minnesota.
 
 ### Work
 

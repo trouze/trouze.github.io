@@ -16,7 +16,7 @@ minimal_mistakes_skin    : "sunrise" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Tyler Rouze - Thoughts on Personal Development, School, and "
+title                    : "Tyler Rouze - Thoughts on Personal Development, School, and Professional Life"
 title_separator          : "-"
 subtitle                 : "" # site tagline that appears below site title in masthead
 name                     : "Tyler Rouze"
@@ -150,7 +150,7 @@ footer:
       icon: "fab fa-fw fa-bitbucket"
       # url:
     - label: "LinkedIn"
-      icon: "fab fa-fw fa-instagram"
+      icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/tylerrrouze/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
