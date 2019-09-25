@@ -16,16 +16,16 @@ minimal_mistakes_skin    : "sunrise" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Tyler Rouze - Thoughts on Tech, Success, and Philosophy"
+title                    : "Tyler Rouze - Thoughts on Personal Development, School, and "
 title_separator          : "-"
 subtitle                 : "" # site tagline that appears below site title in masthead
 name                     : "Tyler Rouze"
-description              : "Business Analyst @ SureSwift Capital, UMN CSE Student. Interested in finance, computers, and life philosophy."
+description              : "Business Analyst @ SureSwift Capital, UMN CSE Student. Aviation fanatic. Interested in finance, computers, and life philosophy. Come join my community of thinkers and doers, we'd love to have you."
 url                      : "https://tylerrouze.com" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "trouze/trouze.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : "15940374_1373164969373729_1797987871538647164_n.jpg"# path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : "tnobackgrd.png" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo                     : "fullnamelogo.png" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : " " # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -110,7 +110,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Tyler Rouze"
+  # name             : "Tyler Rouze"
   avatar           : 15940374_1373164969373729_1797987871538647164_n.jpg # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Business Analyst @ SureSwift Capital
   UMN CSE Student."
@@ -126,25 +126,20 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/trouze"
-    - label: "VSCO"
-      icon: "fas fa-fw fa-link"
-      url: "https://vsco.co/tylerrouze"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       url: "https://facebook.com/trouze17"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/tylerrouze"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      # url:
+      # url: "https://instagram.com/tylerrouze"
+
 
 # Site Footer
 footer:
   links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      # url:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:tyler@tylerrouze.com"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/trouze"
@@ -154,12 +149,12 @@ footer:
     - label: "Bitbucket"
       icon: "fab fa-fw fa-bitbucket"
       # url:
-    - label: "Instagram"
+    - label: "LinkedIn"
       icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/tylerrouze"
+      url: "https://www.linkedin.com/in/tylerrrouze/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
-      url: "https://facebook.com/trouze17"
+      # url: "https://facebook.com/trouze17"
     - label: "Terms & Privacy Policy"
       icon: "fas fa-fw fa-lock"
       url: "https://tylerrouze.com/terms"
