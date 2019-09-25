@@ -3,6 +3,7 @@
   permalink: /now/
   comments: false
 ---
+<hr>
 ### This page lists the most up-to-date information regarding what I am doing *right now*.
 
 ### Life
@@ -44,7 +45,7 @@ much of my new interests.
 
 ### How can I get in touch?
 
-Send me an email to tyler @ this domain. Or send me a connect with me and send a message over [LinkedIn](https://www.linkedin.com/in/tylerrrouze/).
+Send me an email to tyler @ this domain. Or connect with me and send a message over [LinkedIn](https://www.linkedin.com/in/tylerrrouze/).
 
 
-Thanks to inspiration from <a href="https://medium.com/@mikevardy/why-i-joined-the-now-page-movement-830b1b43fdf6" target="_blank">this article</a>.
+This page in thanks to inspiration from <a href="https://medium.com/@mikevardy/why-i-joined-the-now-page-movement-830b1b43fdf6" target="_blank">this article</a>.
