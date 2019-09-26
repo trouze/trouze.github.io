@@ -6,6 +6,7 @@
   header:
     image: "/images/mplsskyline.jpg"
 ---
+# /now
 <hr>
 ### This page lists the most up-to-date information regarding what I am doing *right now*.
 
