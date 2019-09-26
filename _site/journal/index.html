@@ -251,30 +251,26 @@
 <div align="right" class="page_footer-follow">
 <link href="//cdn-images.mailchimp.com/embedcode/slim-10_7.css" rel="stylesheet" type="text/css">
 <style type="text/css">
-  .sub-container {
-    position: relative;
-    padding-top: 80%;
-    overflow: hidden;
-  }
-  .sub-container div{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
+
+
+/* Smartphone Portrait and Landscape */
+@media only screen
+  and (min-device-width : 320px)
+  and (max-device-width : 480px){
+   .mobileHide { display: none;}
+}
 	#mc_embed_signup{background:#fff; clear:right; font:14px Helvetica,Arial,sans-serif;  width:500px; margin-top:-75px;}
 	/* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
 	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
 </style>
-<div id="mc_embed_signup" class="sub" align="left">
+<div id="mc_embed_signup" class="mobileHide" align="left">
 <form action="https://gmail.us20.list-manage.com/subscribe/post?u=2999b5cece1fa6ee3e6af9a37&amp;id=3addec2a8e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-    <div id="mc_embed_signup_scroll" class="sub">
+    <div id="mc_embed_signup_scroll" class="mobileHide">
 	<label for="mce-EMAIL">Subscribe to my Mailing List for Updates!</label>
 	<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-    <div class="sub" style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_2999b5cece1fa6ee3e6af9a37_3addec2a8e" tabindex="-1" value=""></div>
-    <div class="sub" class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+    <div class="mobileHide" style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_2999b5cece1fa6ee3e6af9a37_3addec2a8e" tabindex="-1" value=""></div>
+    <div class="mobileHide" class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
     </div>
 </form>
 </div>
