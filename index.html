@@ -7,15 +7,15 @@ comments: true
 <div class="{{ include.type | default: "list" }}__item">
 <ul class="post-list">
 {% for post in site.posts %}
-  <span><a class="tab" href="{{ post.url | preprend: site.baseurl }}"><img src="{{ site.baseurl }} {{ post.image }}"></a>
-  <a class="tab" class="post-link" href="{{ post.url | preprend: site.baseurl }}"</a><br>
-  <a class="tab" class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
+  <span><a href="{{ post.url | preprend: site.baseurl }}"><img src="{{ site.baseurl }} {{ post.image }}"></a>
+  <a class="post-link" href="{{ post.url | preprend: site.baseurl }}"</a><br>
+  <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
 {% if post.read_time %}
   <span class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> {% include read-time.html %}</span>
 {% endif %}
 <span class="post-meta">
 <span class="post-meta">{{ post.author }}<br>
-<span class="tab" align="left">{{ post.excerpt }}
+<span align="left">{{ post.excerpt }}
 <a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}" align="left">Continue Reading</a></span>
 <hr>
 {% endfor %}

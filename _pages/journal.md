@@ -4,9 +4,10 @@
   title: "Journal"
 ---
 <br>
-<div class="{{ include.type | default: "list" }}__item">
-<p>{% for post in site.posts %}
-  <span><a href="{{ post.url | preprend: site.baseurl }}"><img src=" {{ post.image }}" align="left"></a></span>
+<div class="{{ include.type | default: "list" }}">
+
+{% for post in site.posts %}
+  <span><a href="{{ post.url | preprend: site.baseurl }}"><img src="{{ post.image }}" align="left"></a></span>
   <span><a class="post-link" href="{{ post.url | prepend: site.baseurl }}"></a></span>
   <span><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
 {% if post.read_time %}

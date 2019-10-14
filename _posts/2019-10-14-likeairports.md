@@ -4,9 +4,9 @@
   date: 2019-10-14
   excerpt: "While not for everyone, there is an undeniable energy about airports that cannot be ignored."
   comments: true
-  image: "images/airport.jpg"
   header:
     image: "images/airport.jpg"
+  image: "images/airport.jpg"
 ---
 I love airports.
 
