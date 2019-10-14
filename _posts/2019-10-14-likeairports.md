@@ -2,7 +2,7 @@
   title: "Airport Love"
   permalink: /journal/airportlove
   date: 2019-10-14
-  excerpt: ""
+  excerpt: "While not for everyone, there is an undeniable energy about airports that cannot be ignored."
   comments: true
   image: "images/airport.jpg"
   header:

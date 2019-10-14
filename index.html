@@ -3,15 +3,6 @@ layout: home
 author_profile: true
 comments: true
 ---
-<style type="text/css">
-<!--
- .tab { margin-left: -40px; }
--->
-p {
-   margin: 0px;
-   padding: 0px;
-}
-</style>
 <h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>
 <div class="{{ include.type | default: "list" }}__item">
 <ul class="post-list">
@@ -23,9 +14,9 @@ p {
   <span class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> {% include read-time.html %}</span>
 {% endif %}
 <span class="post-meta">
-<span class="post-meta">{{ post.author }}
-<p class="tab" align="left">{{ post.excerpt }}
+<span class="post-meta">{{ post.author }}<br>
+<span class="tab" align="left">{{ post.excerpt }}
 <a class="btn btn-default" href="{{ post.url | prepend: site.baseurl }}" align="left">Continue Reading</a></span>
+<hr>
 {% endfor %}
 </ul>
-<hr>
