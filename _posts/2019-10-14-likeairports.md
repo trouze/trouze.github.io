@@ -1,6 +1,6 @@
 ---
-  title: "Airport Love"
-  permalink: /journal/airportlove
+  title: "For the Love of Airports"
+  permalink: /journal/loveairports
   date: 2019-10-14
   excerpt: "While not for everyone, there is an undeniable energy about airports that cannot be ignored."
   comments: true
