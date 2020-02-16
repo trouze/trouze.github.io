@@ -112,8 +112,7 @@ analytics:
 author:
   # name             : "Tyler Rouze"
   avatar           : 15940374_1373164969373729_1797987871538647164_n.jpg # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Business Analyst @ SureSwift Capital
-  UMN CSE Student."
+  bio              : "Business Analyst Intern @ SureSwift Capital | UMN CSE Student."
   location         : "Minneapolis, MN"
   email            :
   links:
