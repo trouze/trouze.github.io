@@ -7,21 +7,37 @@
 .vsco-container {
   position: relative;
   padding-top: 80%;
-  overflow: hidden;
+  overflow-y: auto;
+  width: 610px;
+  height: 610px;
+  max-height:75%;
+  max-width:100%;
 }
-.vsco-container iframe{
+.vsco-container img{
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+}
+.vsco-gallery-container {
+  position: relative;
+  padding-top: 80%;
+  overflow: auto;
+  width: 610px;
+  height: 610px;
+  max-height:75%;
+  max-width:100%;
+}
+.vsco-gallery-container img{
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>
 <hr>
 Hi, my name is Tyler!
 
 <div class="vsco-container">
-<iframe src="https://vsco.co/tylerrouze/media/58718be07d4c960605a2fcd4" style="border:none;" height="610" width="610"></iframe>
+<img src="/tylerrouzepic.png" style="border:none" alt="Tyler Profile Picture">
 </div>
 <br>
 If you're looking for some background information on the
@@ -31,7 +47,7 @@ Alternately, if you're looking for some background information on myself, let me
 to my [Mom's Book](https://www.amazon.com/Life-As-Mommy-Cathy-Spigarelli/dp/1598581244/ref=sr_1_1?keywords=life+as+a+mommy+cathy+spigarelli&qid=1569385541&sr=8-1).
 <br>
 
-<a href="https://www.amazon.com/Life-As-Mommy-Cathy-Spigarelli/dp/1598581244/ref=sr_1_1?keywords=life+as+a+mommy+cathy+spigarelli&qid=1569385541&sr=8-1"><img src="{{site.url }}{{site.baseurl }}/images/lifeasamommy.jpg" alt="lifeasamommy" target="_blank" align="middle"></a>.
+<a href="https://www.amazon.com/Life-As-Mommy-Cathy-Spigarelli/dp/1598581244/ref=sr_1_1?keywords=life+as+a+mommy+cathy+spigarelli&qid=1569385541&sr=8-1"><img src="{{site.url }}{{site.baseurl }}/images/lifeasamommy.jpg" alt="lifeasamommy" left="0"></a>.
 
 <br>
 The gift from my mom that keeps on giving, she chronicles a year of my, and my siblings, early lives. You'd be surprised how early personality traits and habits begin to form! Pick up a copy if you want (my mom doesn't make money from it anymore so this *isn't* a shameless plug).
@@ -40,7 +56,7 @@ Secondly, take a second look around my VSCO page. I like to use it as a creative
 They say a picture is worth a thousand words, so how about 100 pictures?
 <br>
 <div class="vsco-container">
-<iframe src="https://vsco.co/tylerrouze/images/1" style="border:none;" height="610" width="610"></iframe>
+<img src="/tylergallery.png" style="border:none" alt="Tyler Gallery">
 </div>
 <br>
 Maybe photos didn't do me much justice, so, I'll give you the rundown.
