@@ -13,20 +13,20 @@ Motorhead, flying, golfing, baseball, bread making, guitar, you name it. My pass
 but I wouldn't have it any other way. Here's some photos as to what I've been up to of late.
 
 <div class="gallery" data-columns="3">
-	<img src="/images/IMG_5469.jpg">
-	<img src="/images/IMG_5470.jpg">
-	<img src="/images/IMG_5471.jpg">
-	<img src="/images/IMG_5472.jpg">
-	<img src="/images/IMG_5473.jpg">
-	<img src="/images/IMG_5474.jpg">
-	<img src="/images/IMG_5475.jpg">
-	<img src="/images/IMG_5476.jpg">
-	<img src="/images/IMG_5477.jpg">
-	<img src="/images/IMG_5478.jpg">
-	<img src="/images/IMG_5479.jpg">
-	<img src="/images/IMG_5480.jpg">
-	<img src="/images/IMG_5481.jpg">
-	<img src="/images/IMG_5482.jpg">
+	<img src="/images/IMG_5469.JPG">
+	<img src="/images/IMG_5470.JPG">
+	<img src="/images/IMG_5471.JPG">
+	<img src="/images/IMG_5472.JPG">
+	<img src="/images/IMG_5473.JPG">
+	<img src="/images/IMG_5474.JPG">
+	<img src="/images/IMG_5475.JPG">
+	<img src="/images/IMG_5476.JPG">
+	<img src="/images/IMG_5477.JPG">
+	<img src="/images/IMG_5478.JPG">
+	<img src="/images/IMG_5479.JPG">
+	<img src="/images/IMG_5480.JPG">
+	<img src="/images/IMG_5481.JPG">
+	<img src="/images/IMG_5482.JPG">
 </div>
 
 ### Life
