@@ -9,7 +9,7 @@ featured_image: /images/mplsskyline.jpg
 ### This page lists the most up-to-date information regarding what I am doing *right now*.
 
 ### A little bit about me.
-Motorhead, flying, golfing, baseball, bread making, guitar, you name it. My passions carry me in many different and odd directions,
+Motorhead, flying, golfing, baseball, hiking, bread making, guitar, you name it. My passions carry me in many different and odd directions,
 but I wouldn't have it any other way. Here's some photos as to what I've been up to of late.
 
 <div class="gallery" data-columns="3">
@@ -23,7 +23,6 @@ but I wouldn't have it any other way. Here's some photos as to what I've been up
 	<img src="/images/IMG_5476.JPG">
 	<img src="/images/IMG_5477.JPG">
 	<img src="/images/IMG_5478.JPG">
-	<img src="/images/IMG_5479.JPG">
 	<img src="/images/IMG_5480.JPG">
 	<img src="/images/IMG_5481.JPG">
 	<img src="/images/IMG_5482.JPG">
