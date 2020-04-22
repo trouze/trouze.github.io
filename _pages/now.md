@@ -67,7 +67,7 @@ much of my new interests.
 
 ### How can I get in touch?
 
-Send me an email to [tyler @ this domain](mailto:tyler@tylerrouze.com). Or connect with me and send a message over [LinkedIn](https://www.linkedin.com/in/tylerrrouze/).
+Send me an email to [tyler @ this domain](mailto:tyler@tylerrouze.com). If you simply want to keep up with what's going on with me, you can subscribe to the [mailing list](https://tylerrouze.com/subscribe) for updates delivered straight to your inbox.
 
 <hr>
-This page in inspiration from <a href="https://medium.com/@mikevardy/why-i-joined-the-now-page-movement-830b1b43fdf6">this article</a>.
+This page in inspiration from [this article](https://medium.com/@mikevardy/why-i-joined-the-now-page-movement-830b1b43fdf6).

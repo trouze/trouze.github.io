@@ -17,17 +17,17 @@ menu_settings:
       url: '/projects/'
     - title: '/now'
       url: '/now'
-    - title: 'Contact'
-      url: '/contact'
+    - title: 'Subscribe'
+      url: '/subscribe'
 
 grid_settings:
   grid_spacing: 10
 
 contact_settings:
-  form_action: 'https://formspree.io/mjveqyrl'
+  form_action: 'https://tylerrouze.us20.list-manage.com/subscribe/post?u=2999b5cece1fa6ee3e6af9a37&amp;id=3addec2a8e'
   confirmation_url: '/thanks'
-  email_subject: 'Contact form submission'
-  send_button_text: 'Send Message'
+  email_subject: 'Subscribe form submission'
+  send_button_text: 'Subscribe'
 
 social_settings:
   facebook_url: ''
