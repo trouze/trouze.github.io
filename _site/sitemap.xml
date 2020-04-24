@@ -2,15 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://localhost:4000/now</loc>
-<lastmod>2020-04-22T14:54:55-05:00</lastmod>
+<lastmod>2020-04-24T13:57:53-05:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/subscribe</loc>
-<lastmod>2020-04-22T14:54:55-05:00</lastmod>
+<lastmod>2020-04-24T13:57:53-05:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/thanks</loc>
-<lastmod>2020-04-22T14:54:55-05:00</lastmod>
+<lastmod>2020-04-24T13:57:53-05:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/blog/thewhy</loc>
@@ -25,8 +25,12 @@
 <lastmod>2020-04-21T19:00:00-05:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/blog/thank-you-isye</loc>
+<lastmod>2020-04-23T19:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/project/neuralnetwork</loc>
-<lastmod>2020-04-17T19:00:00-05:00</lastmod>
+<lastmod>2020-04-23T19:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/2018-06-30-demo-post.html</loc>
@@ -39,5 +43,8 @@
 </url>
 <url>
 <loc>http://localhost:4000/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/page2/</loc>
 </url>
 </urlset>

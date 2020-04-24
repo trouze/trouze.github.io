@@ -55,15 +55,16 @@ It truly is a catch all major, which is a driving factor as to why IEs work in a
 
 ### Current Interests
 
-It's no secret that our interests change. Not super often, but outside school and work I'm always looking for my next good read. This drives
-much of my new interests.
+It's no secret that our interests change. Some of my current interests are listed below
 
-* Aviation (this one doesn't change)
+* Aviation
 * The Principles of <a href="https://thegogiver.com">The Go Giver</a>
-* R Studio
+* R programming language
 * Investing
-* Storytelling
-* I/O Psychology
+* Learning Guitar
+* Life Hacking
+
+If you share some of these same interests, drop a line below!
 
 ### How can I get in touch?
 

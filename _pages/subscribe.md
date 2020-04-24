@@ -1,6 +1,6 @@
 ---
 title: Subscribe
-subtitle: Want to stay in touch? Drop a line below.
+subtitle: Want to stay in touch? Subscribe for future updates below.
 description: Stay in touch
 featured_image: /images/demo/demo-landscape.jpg
 ---
