@@ -1,9 +1,8 @@
 ---
 title: 'Neural Networks in R'
-subtitle: 'Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language'
 date: 2020-05-11 00:00:00
 featured_image: '/images/nn.jpg'
-excerpt: The purpose of this project is two-fold: 1) a tl;dr version of what a Neural Network is and how it works in laymen's terms; 2) an implementation in R for those who may want to learn how to do it in this language.
+excerpt: 'Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language'
 ---
 
 ![](/images/nn.jpg)
