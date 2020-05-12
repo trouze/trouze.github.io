@@ -1,6 +1,6 @@
 ---
   title: 'An Open Letter to the ISyE Department'
-  date: 2020-04-24 00:00:00
+  date: 2020-04-21 00:00:00
   featured_image: '/images/books.jpg'
   excerpt: Much of the growth in my past three years I owe to the Industrial and Systems Engineering Department at the University of Minnesota, this open letter is a reflection for the next class of students .
 ---
