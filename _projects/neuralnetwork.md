@@ -10,9 +10,9 @@ excerpt: The purpose of this project is two-fold | 1. a tldr version of what a N
 
 ### Overview
 
-This project aims to implement and build a deeper level of understanding in Neural Networks. This article will profile how they learn, just like the human brain does. Much of what you will see in this project is based on the first two chapters of the text by Michael Nielsen titled [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/). While Nielsen builds neural network that is capable of classifying handwritten digits in Python (2.7), I'll show you how we can do it in R for a special sort of challenge.
+This project aims to implement and build a deeper level of understanding in Neural Networks. This article will profile how they learn just like the human brain does. Much of what you will see in this project is based on the first two chapters of the text by Michael Nielsen titled [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/). While Nielsen builds neural network that is capable of classifying handwritten digits in Python (2.7), I'll show you how we can do it in R for a special sort of challenge.
 
-To follow along or see the data, you can download from [my repository](https://github.com/trouze/UMNStuffs/blob/master/HW4NN.zip) on Github, which also includes the R script to load the data and build the Neural Network. What will follow will be two-fold: 1) a tl;dr version of what a Neural Network is and how it works; 2) an implementation in R for those who may want to learn how to do it in this language. For those unfamiliar with statistics, calculus, and data science, the first part of this article will be valuable to you understanding what Neural Networks are and how they work. That being said, the second part of this article should be valuable to those who are ready to dip their feet into the world of data science. With that out of the way, let's get started.
+To follow along or see the data, you can download from [my repository](https://github.com/trouze/UMNStuffs/blob/master/HW4NN.zip) on Github, which also includes the R script to load the data and build the Neural Network. What will follow will be two-fold: 1) a tl;dr version of what a Neural Network is and how it works; 2) an implementation in R for those who may want to learn how to do it in this language. For those unfamiliar with statistics, calculus, and data science, the first part of this article will be valuable to your understanding what Neural Networks are and how they work. That being said, the second part of this article should be valuable to those who are ready to dip their feet into the world of data science. With that out of the way, let's get started.
 
 ### How do Neural Networks, work?
 
@@ -28,7 +28,7 @@ So, we input 784 values. These values are weighted (weights are learned through 
 
 ![](/images/network.jpg)
 
-Each of the 784 input values is sent to each of the nodes in the middle (hidden) layer. What I mean by this is that one pixel value is sent to each of the 30 nodes in the hidden layer. In our case this represents a 784 by 30 matrix as you'll see we use 30 nodes in the hidden layer. You'll also notice 10 nodes in what is called the output layer. Each of these nodes represents a final determination of the handwritten digit being 0 through 9.
+Each of the 784 input values is sent to each of the nodes in the middle (hidden) layer. What I mean by this is that one pixel value is sent to each of the 30 nodes in the hidden layer. In our case, this represents a 784 by 30 matrix as you'll see we use 30 nodes in the hidden layer. You'll also notice 10 nodes in what is called the output layer. Each of these nodes represents a final determination of the handwritten digit being 0 through 9.
 
 Let's talk through how one pixel (input) would pass through the entire network after having been weighted and passed to the middle (hidden) layer. From here, the new, weighted value is input into the middle layer. The node in the middle layer takes the value and runs it through what is called an activation function. In our case, we'll use a Sigmoid function which looks like this:
 
@@ -144,7 +144,7 @@ To implement in R, we initialize our weights and biases (remember: these are on 
   }
 ```
 
-To help understand where we are: we've just taken one observation, ran it through our network, calculated the weight on each edge, and calculated the activation at each node. Now is where we backpropagate. This means we determine the weights in which we will classify the digit correctly. We estimate this through the gradient of our cost function, meaning we attempt to minimize the chance our network missclassifies the digit.
+To help you understand where we are- we've just taken one observation; ran it through our network; calculated the weight on each edge; and calculated the activation at each node. Now is where we backpropagate. This means we determine the weights in which we will classify the digit correctly. We estimate this through the gradient of our cost function, meaning we attempt to minimize the chance our network missclassifies the digit.
 
 ```R
 ## backpropagate where we update the gradient using delta errors
@@ -201,9 +201,9 @@ To finish training the network, we simply have to set up a `for` loop to do ever
 
 #### Epochs
 
-You read that right, 50% accuracy. That's because I forgot to mention, once we've tuned the weights and biases over each mini batch we've only completed one epoch. Remember the learning rate I talked about earlier? Instead of loosening things up and running the risk of our network getting *worse* over time, we have to do an epoch a number of times so our network can incrementally improve towards optimality. This means we keep the weights and biases of the network, randomly split our data into mini batches, backpropagate over each mini batch, and update weights all over again.
+You read that right! 50% accuracy. That's because I forgot to mention, once we've tuned the weights and biases over each mini batch we've only completed one epoch. Remember the learning rate I talked about earlier? Instead of loosening things up and running the risk of our network getting *worse* over time, we have to do an epoch a number of times so our network can incrementally improve towards optimality. This means we keep the weights and biases of the network, randomly split our data into mini batches, backpropagate over each mini batch, and update weights all over again.
 
-Ideally, once we've tuned our network over a number of epochs, we could begin using our network to classify digits in real time. Think along the lines of banks automating the processing of checks. Kind of cool, right?
+Ideally, once we've tuned our network's weights over a number of epochs, we could begin using our network to classify digits in real time. Think along the lines of banks automating the processing of checks. Kind of cool, right?
 
 #### In Closing
 
