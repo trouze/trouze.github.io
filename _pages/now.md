@@ -1,6 +1,6 @@
 ---
 title: /now
-description: Simples is a super simple blogging theme for Jekyll.
+description: What Tyler is doing right now
 subtitle: A place to keep up with what I'm doing right now!
 featured_image: /images/mplsskyline.jpg
 ---
@@ -34,13 +34,11 @@ I currently live in Minneapolis, Minnesota.
 
 ### Work
 
-I work for a Private Equity firm, <a href="https://sureswiftcapital.com">SureSwift Capital</a>. My work here consists
-of a title Business Analyst Intern, but I really wear a lot of hats because I'm happy to learn just about anything. Most of my time
-is spent on reporting for our Software portfolio, as well as vetting inbound businesses for Mergers & Acquisitions.
+I currently work for [Kambr](https://www.kambr.com/) as an analyst for their Advisory Services Group. Kambr also has a software platform and media group, which are based in Amsterdam. Much of my work for Kambr involves formulating data driven solutions for airline clients across the globe, working through on-site Kambr consultants from my home base in Minneapolis to build solutions for the ever-changing airline industry.
 
 ### School
 
-I currently attend the University of Minnesota studying Industrial and Systems Engineering. Most people don't know or have
+I graduated from the University of Minnesota with a degree in Industrial and Systems Engineering. Most people don't know or have
 a good idea of what ISyE is, so allow me to explain it quickly. There are many ways to put it, but one of the best ways I've come
 up with that's resonated with the most people, is that it's the science of decision making. Of course, most majors teach you to make decisions,
 but ISyE focuses on doing so via:
@@ -51,16 +49,13 @@ but ISyE focuses on doing so via:
 * Simulation
 * Financial Modeling
 
-It truly is a catch all major, which is a driving factor as to why IEs work in a multitude of industries.
-
 ### Current Interests
 
-It's no secret that our interests change. Some of my current interests are listed below
+It's no secret that our interests change. Some of my current interests are listed below.
 
 * Aviation
-* The Principles of <a href="https://thegogiver.com">The Go Giver</a>
-* R programming language
-* Investing
+* The Principles of [The Go Giver](https://thegogiver.com)
+* [R](https://www.r-project.org/about.html) and [Julia programming](https://julialang.org/) language
 * Learning Guitar
 * Life Hacking
 
