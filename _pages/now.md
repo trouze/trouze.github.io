@@ -9,7 +9,7 @@ featured_image: /images/mplsskyline.jpg
 ### This page lists the most up-to-date information regarding what I am doing *right now*.
 
 ### A little bit about me.
-Motorhead, flying, golfing, baseball, hiking, bread making, guitar, you name it. My passions carry me in many different and odd directions,
+Motorhead, flying, golfing, baseball, hiking, skiing, bread making, guitar, you name it. My passions carry me in many different and odd directions,
 but I wouldn't have it any other way. Here's some photos as to what I've been up to of late.
 
 <div class="gallery" data-columns="3">
@@ -34,14 +34,11 @@ I currently live in Minneapolis, Minnesota.
 
 ### Work
 
-I currently work for [Kambr](https://www.kambr.com/) as an analyst for their Advisory Services Group. Kambr also has a software platform and media group, which are based in Amsterdam. Much of my work for Kambr involves formulating data driven solutions for airline clients across the globe, working through on-site Kambr consultants from my home base in Minneapolis to build solutions for the ever-changing airline industry.
+I currently work for [Kambr](https://www.kambr.com/) as an analyst for their Advisory Services Group. Kambr is an airline consultancy that also has a software platform for revenue management, as well as a media group which are both based in Amsterdam. Much of my work for Kambr involves formulating data driven solutions for airline clients across the globe, working through on-site Kambr consultants from my home base in Minneapolis to build solutions for the ever-changing airline industry.
 
-### School
+### Education
 
-I graduated from the University of Minnesota with a degree in Industrial and Systems Engineering. Most people don't know or have
-a good idea of what ISyE is, so allow me to explain it quickly. There are many ways to put it, but one of the best ways I've come
-up with that's resonated with the most people, is that it's the science of decision making. Of course, most majors teach you to make decisions,
-but ISyE focuses on doing so via:
+I have quite a passion for lifelong learning. So while much of education is in the *past*, I am definitely continuing to learn new topics right */now*. It's this passion that motivated me to learn web development by making this website on my [own](https://tylerrouze.com/blog/thewhy). More formally, I graduated from the University of Minnesota with a degree in [Industrial and Systems Engineering](https://cse.umn.edu/isye). Most people don't know or have a good idea of what ISyE is, so allow me to explain it quickly. One of the best ways I've found that resonates with the most people is that ISyE is the science of decision making. Of course, most majors teach you to make decisions, but ISyE focuses on doing so via:
 
 * Data
 * Statistics
@@ -49,13 +46,15 @@ but ISyE focuses on doing so via:
 * Simulation
 * Financial Modeling
 
+Thanks to my time in college, I have strong passions for data-driven solutions and using technology to eliminate repetitive tasks and free up time for more creative tasks.
+
 ### Current Interests
 
 It's no secret that our interests change. Some of my current interests are listed below.
 
 * Aviation
 * The Principles of [The Go Giver](https://thegogiver.com)
-* [R](https://www.r-project.org/about.html) and [Julia programming](https://julialang.org/) language
+* [R](https://www.r-project.org/about.html) and [Julia](https://julialang.org/) programming language
 * Learning Guitar
 * Life Hacking
 
