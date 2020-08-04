@@ -52,3 +52,50 @@
 		color: $background-color;
 	}
 }
+
+// socials css for socials.md page
+
+.socialspage {
+	list-style: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.socials__itempage {
+	display: inline-block;
+	margin-left: 2px;
+
+	&:first-child {
+		margin-left: 0;
+	}
+}
+
+.socials__item__linkpage {
+	position: relative;
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	border-radius: 100%;
+	background: $text-light-color;
+	font-size: 17px;
+	line-height: 1;
+	color: $background-color;
+
+	@include mq(tabletp) {
+		width: 125px;
+		height: 125px;
+		font-size: 60px;
+	}
+
+	svg {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include translate(-50%,-52%);
+	}
+
+	&:hover {
+		background: $accent-color;
+		color: $background-color;
+	}
+}

@@ -3,6 +3,7 @@ title: /now
 description: What Tyler is doing right now
 subtitle: A place to keep up with what I'm doing right now!
 featured_image: /images/mplsskyline.jpg
+layout: page
 ---
 ![](/images/mplsskyline.jpg)
 <hr>

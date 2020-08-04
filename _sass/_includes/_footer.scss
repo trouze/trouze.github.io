@@ -21,6 +21,19 @@
 		padding: 80px 0;
 	}
 }
+.footersocials {
+	@include transition(all 0.6s cubic-bezier(.87,-.41,.19,1.44));
+	padding: 0px 0;
+	text-align: center;
+
+	@include mq(tabletp) {
+		padding: 0px 0;
+	}
+
+	@include mq(laptop) {
+		padding: 0px 0;
+	}
+}
 
 .footer__copyright {
 	display: block;

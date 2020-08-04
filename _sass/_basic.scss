@@ -207,6 +207,53 @@ a {
 	}
 }
 
+summary {
+	margin-top: 15px;
+	font-size: $h3-small;
+	font-weight: $h3-weight;
+	line-height: $h3-lineheight;
+	letter-spacing: $h3-spacing;
+
+	@include mq(tabletp) {
+		font-size: $h3-medium;
+	}
+
+	@include mq(laptop) {
+		font-size: $h3-large;
+	}
+
+	strong {
+		font-weight: $bold-weight;
+	}
+
+	&:first-child {
+		margin-top: 0;
+	}
+}
+details {
+	margin-top: 15px;
+	font-size: $p-small;
+	font-weight: $p-weight;
+	line-height: $p-lineheight;
+	letter-spacing: $p-spacing;
+
+	@include mq(tabletp) {
+		font-size: $p-medium;
+	}
+
+	@include mq(laptop) {
+		font-size: $p-large;
+	}
+
+	strong {
+		font-weight: $bold-weight;
+	}
+
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
 .button {
 	display: inline-block;
 	padding: 9px 10px 10px;
