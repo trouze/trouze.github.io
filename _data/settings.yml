@@ -32,6 +32,7 @@ contact_settings:
   send_button_text: 'Subscribe'
 
 social_settings:
+  linkedin_url: 'https://www.linkedin.com/in/tylerrouze/'
   facebook_url: ''
   twitter_url: 'https://twitter.com/tylerrouze'
   instagram_url: ''
@@ -55,9 +56,10 @@ social_settings:
   etsy_url: ''
   kickstarter_url: ''
   soundcloud_url: ''
-  spotify_url: ''
+  spotify_url: 'https://open.spotify.com/user/tyrouze10'
   bandcamp_url: ''
-  linkedin_url: 'https://www.linkedin.com/in/tylerrouze'
+  codepen_url: 'https://www.notion.so/tylerrouze/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a'
+  untappd_url: 'http://untpd.it/u/tylerrouze'
 
 color_settings:
   background_color: '#ffffff'
