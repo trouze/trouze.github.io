@@ -37,7 +37,9 @@ I currently live in Minneapolis, Minnesota.
 
 I currently work for [Kambr](https://www.kambr.com/) as an analyst for their Advisory Services Group. Kambr is an airline consultancy that also has a software solution for revenue management, as well as a media group. We are remote by trade, but we have bases in Minneapolis and Amsterdam.
 
-Much of my work for Kambr involves leveraging Data Science, Analysis, and Visualization in order to drive solutions for airline clients across the globe. We are bringing the Data Science revolution to the broader airline industry, and that is my ultimate goal. Reach out if you have any interesting ideas to share!
+Much of my work for Kambr involves leveraging Data Science, Analysis, and Visualization in order to drive solutions for airline clients across the globe. We are bringing the Data Science revolution to the broader airline industry, and that is my ultimate goal.
+
+I also write a [weekly column](https://www.kambr.media/category/prose-and-contrails) profiling the commercial side of the aviation industry's recovery from the COVID-19 pandemic.
 
 ### Education
 
