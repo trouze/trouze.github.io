@@ -35,11 +35,11 @@ I currently live in Minneapolis, Minnesota.
 
 ### Work
 
-I currently work for [Kambr](https://www.kambr.com/) as an analyst for their Advisory Services Group. Kambr is an airline consultancy that also has a software solution for revenue management, as well as a media group. We are remote by trade, but we have bases in Minneapolis and Amsterdam.
+I currently work for [Kambr](https://www.kambr.com/) as an analyst. Kambr is an airline consultancy that also has a software solution for revenue management. We are remote by trade, but we have bases in Minneapolis and Amsterdam.
 
-Much of my work for Kambr involves leveraging Data Science, Analysis, and Visualization in order to drive solutions for airline clients across the globe. We are bringing the Data Science revolution to the broader airline industry, and that is my ultimate goal.
+Our mission is to build software and processes that emphasize the human component of technology. We believe that building workflow in which humans and computers work together, as opposed to replacing human interaction altogether, leads to a surprising gain in productivity and effectuality, more so than a computer alone.
 
-I also write a [weekly column](https://www.kambr.media/category/prose-and-contrails) profiling the commercial side of the aviation industry's recovery from the COVID-19 pandemic.
+My job is to support commercial strategy and analyst workflow building. I also do [some writing](https://www.kambr.media/category/prose-and-contrails) which profiles the commercial side of the aviation industry.
 
 ### Education
 
@@ -55,15 +55,15 @@ Thanks to my time in college, I have strong passions for data-driven solutions a
 
 ### Current Interests
 
-It's no secret that our interests change. Some of my current interests are listed below.
+Some of my current interests are:
 
-* Aviation (Alpha test [Flight Simulator](https://www.flightsimulator.com/) anyone?)
-* Any book on Human Nature, especially those with data driven research findings.
-* [R](https://www.r-project.org/about.html) and [Julia](https://julialang.org/) programming language
-* Learning Guitar
-* [FI](https://www.reddit.com/r/financialindependence/)
+* Aviation ([Microsoft Flight Simulator](https://www.flightsimulator.com/) anyone?)
+* Any book on our Human Nature, especially those with data driven research findings.
+* Software Architecture, APIs, and [Google Cloud Platform](https://cloud.google.com/)
+* Anything cutting edge involving [Python](https://www.python.org/), [R](https://www.r-project.org/), or [Julia](https://julialang.org/) languages
+* Playing Acoustic Guitar
 
-If you share some of these same interests, drop a line below!
+If you share some of the same interests, drop a line below!
 
 ### How can I get in touch?
 
