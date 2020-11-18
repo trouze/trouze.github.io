@@ -11,7 +11,6 @@
 
 // - - - - - - - - - - Variables
 
-
 // Colors
 
 $background-color: {{ site.data.settings.color_settings.background_color }};
@@ -144,5 +143,3 @@ $grid-spacing: {{ site.data.settings.grid_settings.grid_spacing }}px;
 // - - - - - - - - - - Section styles
 
 @import "_includes/_listing";
-
-
