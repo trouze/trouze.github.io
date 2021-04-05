@@ -21,11 +21,11 @@ but I wouldn't have it any other way. Here's some photos as to what I've been up
 	<img src="/images/IMG_5473.JPG">
 	<img src="/images/IMG_5474.JPG">
 	<img src="/images/IMG_5475.JPG">
-	<img src="/images/IMG_5476.JPG">
+	<img src="/images/IMG_6023.JPG">
 	<img src="/images/IMG_5477.JPG">
 	<img src="/images/IMG_5478.JPG">
 	<img src="/images/IMG_5480.JPG">
-	<img src="/images/IMG_5481.JPG">
+	<img src="/images/IMG_6009.JPG">
 	<img src="/images/IMG_5482.JPG">
 </div>
 

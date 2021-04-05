@@ -27,19 +27,19 @@
 
 	<!-- Page Info -->
 	<link rel="shortcut icon" href="/images/favicon.png">
-	<title>Page Not Found – Tyler Rouze</title>
-	<meta name="description" content="Sorry – the page you're looking for doesn't exist.">
+	<title>Algorithmic Trading Series: Setting up Cloud Ops – Tyler Rouze</title>
+	<meta name="description" content="The beginning of a series on connecting to TD Ameritrade's API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us.">
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="Page Not Found – Tyler Rouze">
-	<meta name="twitter:description" content="Sorry – the page you're looking for doesn't exist.">
-	<meta name="twitter:image:src" content="http://localhost:4000/images/demo/home.jpg">
+	<meta name="twitter:title" content="Algorithmic Trading Series: Setting up Cloud Ops – Tyler Rouze">
+	<meta name="twitter:description" content="The beginning of a series on connecting to TD Ameritrade's API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us.">
+	<meta name="twitter:image:src" content="http://localhost:4000/images/stock_trade.jpg">
 
 	<!-- Facebook OpenGraph -->
-	<meta property="og:title" content="Page Not Found – Tyler Rouze" />
-	<meta property="og:description" content="Sorry – the page you're looking for doesn't exist." />
-	<meta property="og:image" content="http://localhost:4000/images/demo/home.jpg" />
+	<meta property="og:title" content="Algorithmic Trading Series: Setting up Cloud Ops – Tyler Rouze" />
+	<meta property="og:description" content="The beginning of a series on connecting to TD Ameritrade's API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us." />
+	<meta property="og:image" content="http://localhost:4000/images/stock_trade.jpg" />
 
 	
 	<!-- Font Embed Code -->
@@ -73,7 +73,7 @@
 </head>
 
 
-<body class="loading ajax-loading" data-site-url="http://localhost:4000" data-page-url="/404.html">
+<body class="loading ajax-loading" data-site-url="http://localhost:4000" data-page-url="/2021-01-07-cloud-scheduling-trading-bot.html">
 
 
 	<header class="header">
@@ -132,16 +132,39 @@
 
 	<div class="page">
 
-		<div class="page__content" data-page-title="Page Not Found – Tyler Rouze">
+		<div class="page__content" data-page-title="Algorithmic Trading Series: Setting up Cloud Ops – Tyler Rouze">
 
 			<section class="single">
 
 	<div class="wrap">
 
-		<h1>Page not found.</h1>
-		<p>Sorry – the page you're looking for doesn't exist.</p>
-		<p>Perhaps you typed the URL incorrectly, or it may have moved.</p>
-		<p><a href="/" class="button button--large">Back To Home</a></p>
+		<h1>Algorithmic Trading Series: Setting up Cloud Ops</h1>
+		<p class="subtitle"></p>
+
+		Outline:
+- Setup w/ Google cloud ($300 in credits), you won't reach that limit for a very long time- we'll use free tiers
+- Create VM instance, install python (sudo apt-get install python3), upload files
+- Create start/stop fn's, show diagram of how fns and scheduler work together
+- Create start/stop schedulers via pub/sub
+- Set crontab in VM instance
+
+![](/images/stock_trade.jpg)
+
+Welcome back to the next step in our journey to developing an automated trading bot! If you followed along in my [last post](https://tylerrouze.com/blog/td-ameritrade-api-setup), you should have set up authorization to programmatically access TD Ameritrade's API. At this point, you should have the following information:
+
+- Your API key
+- A file named `token` that contains your refresh token
+- Python script `td_bot.py` which generated the token file
+
+If you didn't save your API key, go to [TDA Developer](https://developer.tdameritrade.com), login and go to "My Apps". Your API key is also known as your Consumer key, and will be listed when you click on the app you created in from the last post. Be sure to add `@AMER.OAUTHAP` to the end of it and put it in the `td_bot.py` script as a string.
+
+```python
+api_key = 'XXXXX@AMER.OAUTHAP'
+```
+
+
+## Setting up an account with TD Ameritrade
+
 
 	</div>
 
