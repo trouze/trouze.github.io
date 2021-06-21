@@ -109,4 +109,4 @@ And again, I can't stress enough, do not share any of the tokens/keys or put the
 
 If you've made it this far, you now are set up to programmatically access your TD Ameritrade account via API request. Boom!
 
-Check back soon, as I'll be walking through how we can take this to the [cloud](cloud.google.com) where we'll be able to schedule scripts to be ran during trading hours. To get updated automatically, [subscribe](https://tylerrouze.com/subscribe) and I'll fire it out to you when it's ready.
+Check back soon, as I'll be walking through how we can take this to the [cloud](https://cloud.google.com) where we'll be able to schedule scripts to be ran during trading hours. To get updated automatically, [subscribe](https://tylerrouze.com/subscribe) and I'll fire it out to you when it's ready.

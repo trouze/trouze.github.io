@@ -43,7 +43,7 @@ My job is to support commercial strategy and analyst workflow building. I also d
 
 ### Education
 
-I have quite a passion for lifelong learning. So while much of education is in the *past*, I am definitely continuing to learn new topics right */now*. It's this passion that motivated me to learn web development by making this website on my [own](https://tylerrouze.com/blog/thewhy). More formally, I graduated from the University of Minnesota with a degree in [Industrial and Systems Engineering](https://cse.umn.edu/isye). If you don't know what the IE curriculum entails, it is the science of Decision making, done so via:
+I have quite a passion for lifelong learning. So while much of education is in the *past*, I am definitely continuing to learn new topics right */now*. It's this passion that motivated me to learn web development by making this website on my [own](https://tylerrouze.com/blog/thewhy). More formally, I graduated from the University of Minnesota with a degree in [Industrial and Systems Engineering](https://cse.umn.edu/isye) (yes that's me on the front page!). If you don't know what the IE curriculum entails, it is the science of Decision making, done so via:
 
 * Data
 * Statistics

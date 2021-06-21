@@ -4,9 +4,9 @@ description: Tyler Rouze - Analyst @ Kambr | UMN Engineer | Data Science. Tyler'
 layout: page
 ---
 <hr>
-I consider myself a passionate, lifelong learner, and books are certainly a part of that identity. As part of this engagement, I'll take notes while reading to heighten retention. You'll notice that these notes aren't written in a very organized manner (a byproduct of writing in the margin of books). While I never really planned to publicly post these, I realized that it is possible this will be of value to someone as opposed to just having these notes collect dust.
+I consider myself a passionate, lifelong learner, and books are certainly a part of that identity. As part of this engagement, I'll take notes while reading to heighten retention. You'll notice that these notes aren't written in a very organized manner (a byproduct of writing in the margin of books). While I never planned to publicly post these, I realized that it's possible this will be of value to someone. Beats letting these notes collect dust!
 
-As a repayment, if you have any book recommendations that have been particularly impactful to you I'd love to hear about it. Either reach out on [social media](https://tylerrouze.com/socials) or send me an email via [tyler @ this domain](mailto:tyler@tylerrouze.com).
+As a repayment, if you have any book recommendations that have been particularly impactful to you, I'd love to hear about it. Either reach out on [social media](https://tylerrouze.com/socials) or send me an email via [tyler @ this domain](mailto:tyler@tylerrouze.com).
 <br>
 <br>
 <br>
