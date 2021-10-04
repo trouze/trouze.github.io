@@ -92,7 +92,7 @@
 		</a>
 		
 
-		<p class="header__tagline">Analyst @ Kambr | UMN Engineer | Data Science.</p>
+		<p class="header__tagline">Analyst @ Ecolab | UMN Engineer | Data Science</p>
 
 		<div class="menu">
 			<ul class="menu__list">
@@ -149,7 +149,7 @@
 
 <p>To preface the subject, kidney exchanges aren’t necessarily a new idea, we’ve just never found a way to do them at scale. This project is in inspiration of <a href="https://www.pnas.org/content/112/3/663">this</a> PNAS research article</p>
 
-<p>Full disclosure, I do not have a biology degree, that being said I can at least offer some information on the process of organ donation. For kidneys specifically, humans can live with only one, thus many healthy family members will step up and offer one of their’s to a related family member in need of one. The issue is, there must be a match or some compatibility in blood type from donor to patient. Without it, we run the risk of the kidney being rejected by the patient. This presents a special sort of challenge. What if a patient doesn’t have a family member with a compatible kidney? It turns out this is quite likely (25% of siblings are “exact matches”<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>). Usually what happens when there isn’t a family member willing to give a kidney is that patients are put into a pool along with everyone else who doesn’t have a matching family donor. Think of this as a sort of waiting list. From here, they wait for an unrelated organ donor (generally upon death) to give them a kidney, which may or may not ever happen. Thus we introduce the kidney exchange.</p>
+<p>Full disclosure, I do not have a biology degree, that being said I can at least offer some information on the process of organ donation. For kidneys specifically, humans can live with only one, thus many healthy family members will step up and offer one of their’s to a related family member in need of one. The issue is, there must be a match or some compatibility in blood type from donor to patient. Without it, we run the risk of the kidney being rejected by the patient. This presents a special sort of challenge. What if a patient doesn’t have a family member with a compatible kidney? It turns out this is quite likely (25% of siblings are “exact matches”<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>). Usually what happens when there isn’t a family member willing to give a kidney is that patients are put into a pool along with everyone else who doesn’t have a matching family donor. Think of this as a sort of waiting list. From here, they wait for an unrelated organ donor (generally upon death) to give them a kidney, which may or may not ever happen. Thus we introduce the kidney exchange.</p>
 
 <h3 id="kidney-exchanges">Kidney Exchanges</h3>
 
@@ -222,7 +222,7 @@
 
 <p>To explain the “from” and “to” columns, take the first row for example. Pairing 0’s donor can give their kidney to pairing 721’s patient in need of a kidney. This relationship may <em>not</em> be reciprocal, however. Meaning, 721’s donor may not be able to give their kidney to pairing 0’s patient. If 721’s donor did have a compatible kidney, there would be a row in which 721 is in the “from” column and 0 is in the “to” column, but for the sake of keeping the table simple I won’t show all the data. Rest assured, there are pairings in which pairing 0’s patient can receive a compatible kidney.</p>
 
-<p>Finally, <code class="highlighter-rouge">w</code> is subscripted at <sub>ij</sub>. For example, w<sub>0,721</sub> is equal to 38.</p>
+<p>Finally, <code class="language-plaintext highlighter-rouge">w</code> is subscripted at <sub>ij</sub>. For example, w<sub>0,721</sub> is equal to 38.</p>
 
 <p>We load the data into <a href="https://julialang.org/">Julia</a> like this:</p>
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dat</span> <span class="o">=</span> <span class="n">readdlm</span><span class="x">(</span><span class="s">"donor-pool2.csv"</span><span class="x">,</span> <span class="sc">','</span><span class="x">,</span> <span class="sc">'\n'</span><span class="x">,</span> <span class="n">comments</span><span class="o">=</span><span class="nb">true</span><span class="x">)</span>
@@ -248,11 +248,11 @@
 
 <p>In the kidney exchange problem, we want to maximize the compatibility between <em>all</em> patients and their newly matched donors. We achieve this through mathematical optimization which seeks to maximize our objective (patients treated and the corresponding compatibility) while remaining within constraints which we shall outline below. To do this, our optimizer will determine the pairs that should match with each other, which we will define as a decision variable.</p>
 
-<p>If you’ve ever done an optimization problem, this may seem somewhat familiar. As with any optimization problem, we define our decision variables first. In terms of our problem, decision variables are the rows in which a pair in the “from” column should give its kidney to the patient in the “to” column. We can define this variable as <code class="highlighter-rouge">y</code>.</p>
+<p>If you’ve ever done an optimization problem, this may seem somewhat familiar. As with any optimization problem, we define our decision variables first. In terms of our problem, decision variables are the rows in which a pair in the “from” column should give its kidney to the patient in the “to” column. We can define this variable as <code class="language-plaintext highlighter-rouge">y</code>.</p>
 
 <ul>
-  <li><code class="highlighter-rouge">y</code><sub>ij</sub> is a binary variable. If a donor in the “from” pairing gives their kidney to a patient in the “to” pairing, this variable is set to 1. For example, if pair 0’s donor gives their kidney to pair 721’s patient, y<sub>0, 721</sub> will be 1. The <code class="highlighter-rouge">i</code> and <code class="highlighter-rouge">j</code> represent the “from” and “to” pairs that are involved in the transplant.</li>
-  <li>We also define a couple additional variables to set <em>flow in</em> and <em>flow out</em>. We will use these variables to limit the number of kidneys leaving a pair (donor gives their kidney) and the number of kidneys entering a pair (patient receives a kidney). We will set some constraints such that neither of these variables are greater than 1, but also such that if a donor gives their kidney, the incompatible patient whom they are giving the kidney for will eventually receive a compatible kidney from someone else. We can call these variables <code class="highlighter-rouge">f</code><sup>o</sup> and <code class="highlighter-rouge">f</code><sup>i</sup>. Each of these variables are subscripted with <code class="highlighter-rouge">v</code>. <code class="highlighter-rouge">v</code> is the set of our pairings, essentially a list from 0 to 1000 (including our NDDs). This way we can limit the flow in and out of each pairing in our dataset.</li>
+  <li><code class="language-plaintext highlighter-rouge">y</code><sub>ij</sub> is a binary variable. If a donor in the “from” pairing gives their kidney to a patient in the “to” pairing, this variable is set to 1. For example, if pair 0’s donor gives their kidney to pair 721’s patient, y<sub>0, 721</sub> will be 1. The <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> represent the “from” and “to” pairs that are involved in the transplant.</li>
+  <li>We also define a couple additional variables to set <em>flow in</em> and <em>flow out</em>. We will use these variables to limit the number of kidneys leaving a pair (donor gives their kidney) and the number of kidneys entering a pair (patient receives a kidney). We will set some constraints such that neither of these variables are greater than 1, but also such that if a donor gives their kidney, the incompatible patient whom they are giving the kidney for will eventually receive a compatible kidney from someone else. We can call these variables <code class="language-plaintext highlighter-rouge">f</code><sup>o</sup> and <code class="language-plaintext highlighter-rouge">f</code><sup>i</sup>. Each of these variables are subscripted with <code class="language-plaintext highlighter-rouge">v</code>. <code class="language-plaintext highlighter-rouge">v</code> is the set of our pairings, essentially a list from 0 to 1000 (including our NDDs). This way we can limit the flow in and out of each pairing in our dataset.</li>
 </ul>
 
 <p>In Julia’s <a href="https://www.juliaopt.org/">JuMP</a>, we can create a model and add constraints like this:</p>
@@ -279,7 +279,7 @@
 <p>We have six sets of constraints. In words, these constraints are:</p>
 
 <ul>
-  <li>We must first create two set-constraints that connect the value of our <code class="highlighter-rouge">y</code><sub>ij</sub> decision variable to our <em>flow in</em> and <em>flow out</em> decision variables (<code class="highlighter-rouge">f</code><sup>o</sup> and <code class="highlighter-rouge">f</code><sup>i</sup>).</li>
+  <li>We must first create two set-constraints that connect the value of our <code class="language-plaintext highlighter-rouge">y</code><sub>ij</sub> decision variable to our <em>flow in</em> and <em>flow out</em> decision variables (<code class="language-plaintext highlighter-rouge">f</code><sup>o</sup> and <code class="language-plaintext highlighter-rouge">f</code><sup>i</sup>).</li>
   <li>We need to constrain our <em>flow in</em> and <em>flow out</em> variables such that if a donor from a pairing gives a kidney, then their pairing (patient) will also receive a kidney. We should make both of these less than or equal to one. This constraint should be over the set of non-compatible pairs.</li>
   <li><em>Flow out</em> of our NDDs should be less than or equal to one, as each NDD only has one kidney to give.</li>
 </ul>
@@ -295,7 +295,7 @@
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@constraint</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sum</span><span class="x">(</span><span class="n">y</span><span class="x">[(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">Cycle</span><span class="x">[</span><span class="n">z</span><span class="x">],</span> <span class="n">j</span> <span class="k">in</span> <span class="n">Cycle</span><span class="x">[</span><span class="n">z</span><span class="x">]</span> <span class="k">if</span> <span class="k">in</span><span class="x">((</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">),</span><span class="n">E</span><span class="x">))</span> <span class="o">&lt;=</span> <span class="n">length</span><span class="x">(</span><span class="n">Cycle</span><span class="x">[</span><span class="n">z</span><span class="x">])</span> <span class="o">-</span> <span class="mi">1</span><span class="x">)</span>
 </code></pre></div></div>
 
-<p>In the algorithm, we capture all cycles greater than 5 in an array called <code class="highlighter-rouge">Cycle</code>, and we create a constraint for each cycle over 5. Step-by-step, our algorithm works like this:</p>
+<p>In the algorithm, we capture all cycles greater than 5 in an array called <code class="language-plaintext highlighter-rouge">Cycle</code>, and we create a constraint for each cycle over 5. Step-by-step, our algorithm works like this:</p>
 
 <ol>
   <li>Solve optimization problem</li>
@@ -308,10 +308,10 @@
 
 <h2 id="kep-in-julia">KEP in Julia</h2>
 
-<p>To solve initially, we call JuMP’s <code class="highlighter-rouge">optimize!()</code> function like this:</p>
+<p>To solve initially, we call JuMP’s <code class="language-plaintext highlighter-rouge">optimize!()</code> function like this:</p>
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">JuMP</span><span class="o">.</span><span class="n">optimize!</span><span class="x">(</span><span class="n">m</span><span class="x">)</span>
 </code></pre></div></div>
-<p>We’ll put this and everything that follows in a <code class="highlighter-rouge">while</code> loop- while all cycles aren’t under 5.</p>
+<p>We’ll put this and everything that follows in a <code class="language-plaintext highlighter-rouge">while</code> loop- while all cycles aren’t under 5.</p>
 
 <h3 id="identifying-cycles">Identifying Cycles</h3>
 
@@ -331,16 +331,16 @@
 <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">set</span><span class="x">[</span><span class="n">rand</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="x">)]</span> <span class="c"># choose a node at random to start at</span>
 </code></pre></div></div>
 
-<p>We use searched to reduce the amount of pairs we search through each time, making our algorithm faster. Additionally, we use <code class="highlighter-rouge">U</code> to capture a single cycle at a time. With <code class="highlighter-rouge">ExtendU</code> we search for and assign the next matching pair to <code class="highlighter-rouge">ExtendU</code>, and then we add <code class="highlighter-rouge">ExtendU</code> to <code class="highlighter-rouge">U</code>. Once we’ve reached the end of the cycle (when <code class="highlighter-rouge">ExtendU</code> is equal to the beginning of <code class="highlighter-rouge">U</code>) and the length of the cycle is over 5, we add it to an array called <code class="highlighter-rouge">Cycle</code>.</p>
+<p>We use searched to reduce the amount of pairs we search through each time, making our algorithm faster. Additionally, we use <code class="language-plaintext highlighter-rouge">U</code> to capture a single cycle at a time. With <code class="language-plaintext highlighter-rouge">ExtendU</code> we search for and assign the next matching pair to <code class="language-plaintext highlighter-rouge">ExtendU</code>, and then we add <code class="language-plaintext highlighter-rouge">ExtendU</code> to <code class="language-plaintext highlighter-rouge">U</code>. Once we’ve reached the end of the cycle (when <code class="language-plaintext highlighter-rouge">ExtendU</code> is equal to the beginning of <code class="language-plaintext highlighter-rouge">U</code>) and the length of the cycle is over 5, we add it to an array called <code class="language-plaintext highlighter-rouge">Cycle</code>.</p>
 
-<p>To begin our search of mapping each cycle, which we do through another <code class="highlighter-rouge">while</code> loop- while all pairs in our solution haven’t been matched, we randomly start somewhere within our solution set. Then, we add <code class="highlighter-rouge">ExtendU</code> to <code class="highlighter-rouge">U</code>, and reassign <code class="highlighter-rouge">ExtendU</code> to <code class="highlighter-rouge">nothing</code>.</p>
+<p>To begin our search of mapping each cycle, which we do through another <code class="language-plaintext highlighter-rouge">while</code> loop- while all pairs in our solution haven’t been matched, we randomly start somewhere within our solution set. Then, we add <code class="language-plaintext highlighter-rouge">ExtendU</code> to <code class="language-plaintext highlighter-rouge">U</code>, and reassign <code class="language-plaintext highlighter-rouge">ExtendU</code> to <code class="language-plaintext highlighter-rouge">nothing</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="n">length</span><span class="x">(</span><span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">))</span><span class="o">!=</span><span class="mi">0</span>
     <span class="n">push!</span><span class="x">(</span><span class="n">U</span><span class="x">,</span><span class="n">ExtendU</span><span class="x">)</span>
     <span class="n">ExtendU</span> <span class="o">=</span> <span class="nb">nothing</span>
 </code></pre></div></div>
 
-<p>To perform our search of the next matching pair, we must introduce a for-loop to search through our solution set for the next pair. With an if statement, if we find the next pair we assign the pair to <code class="highlighter-rouge">ExtendU</code>.</p>
+<p>To perform our search of the next matching pair, we must introduce a for-loop to search through our solution set for the next pair. With an if statement, if we find the next pair we assign the pair to <code class="language-plaintext highlighter-rouge">ExtendU</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="n">union</span><span class="x">(</span><span class="n">U</span><span class="x">[</span><span class="mi">1</span><span class="x">],</span><span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">))</span>
         <span class="k">if</span> <span class="x">(</span><span class="k">in</span><span class="x">((</span><span class="n">U</span><span class="x">[</span><span class="k">end</span><span class="x">],</span><span class="n">j</span><span class="x">),</span><span class="n">E</span><span class="x">)</span> <span class="o">&amp;&amp;</span> <span class="n">JuMP</span><span class="o">.</span><span class="n">value</span><span class="x">(</span><span class="n">y</span><span class="x">[(</span><span class="n">U</span><span class="x">[</span><span class="k">end</span><span class="x">],</span><span class="n">j</span><span class="x">)])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="x">)</span>
@@ -354,7 +354,7 @@
 <p>There are three things that can happen after this search:</p>
 <ol>
   <li>We find the next pair and search for the next matching pair (while we haven’t matched the entire solution set).</li>
-  <li>We don’t find the next matching pair. This means we’ve come to the end of a <em>chain</em>, because chains end with the final pair not matching with anyone (meaning their donor doesn’t give a kidney to anyone). If this happens, <code class="highlighter-rouge">ExtendU</code> will stay as <code class="highlighter-rouge">nothing</code>, so we’ll reset everything to search for cycle. There are other ways to do this, as we could start from our NDDs and find the chains and remove them from our search. This is another way in which we find many sub-chains through the way we shorten our searchable set.
+  <li>We don’t find the next matching pair. This means we’ve come to the end of a <em>chain</em>, because chains end with the final pair not matching with anyone (meaning their donor doesn’t give a kidney to anyone). If this happens, <code class="language-plaintext highlighter-rouge">ExtendU</code> will stay as <code class="language-plaintext highlighter-rouge">nothing</code>, so we’ll reset everything to search for cycle. There are other ways to do this, as we could start from our NDDs and find the chains and remove them from our search. This is another way in which we find many sub-chains through the way we shorten our searchable set.
     <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if we've found the end of a chain</span>
 <span class="k">if</span> <span class="n">isnothing</span><span class="x">(</span><span class="n">ExtendU</span><span class="x">)</span>
  <span class="n">print</span><span class="x">(</span><span class="s">"Chain Found"</span><span class="x">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
@@ -366,7 +366,7 @@
 <span class="k">end</span>
 </code></pre></div>    </div>
   </li>
-  <li>We find the next matching pair, but it’s the same as the pair for which our cycle began, meaning we’ve found a complete cycle.  If this occurs, we check if the cycle is over 5. If it is, we add it to our <code class="highlighter-rouge">Cycle</code> array to add a constraint later on to prevent it from being in our next solution. If it’s under 5, we just reset and search for the next cycle.
+  <li>We find the next matching pair, but it’s the same as the pair for which our cycle began, meaning we’ve found a complete cycle.  If this occurs, we check if the cycle is over 5. If it is, we add it to our <code class="language-plaintext highlighter-rouge">Cycle</code> array to add a constraint later on to prevent it from being in our next solution. If it’s under 5, we just reset and search for the next cycle.
     <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if we've found the end of a cycle</span>
 <span class="k">if</span> <span class="n">U</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span><span class="o">==</span><span class="n">ExtendU</span>
  <span class="n">print</span><span class="x">(</span><span class="s">"Cycle Found"</span><span class="x">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
@@ -386,12 +386,12 @@
   </li>
 </ol>
 
-<p>Notice we introduce a variable <code class="highlighter-rouge">cycles_over_five</code>. This variable will allow us to determine if our current solution has no cycles over 5.
+<p>Notice we introduce a variable <code class="language-plaintext highlighter-rouge">cycles_over_five</code>. This variable will allow us to determine if our current solution has no cycles over 5.
 If that is the case, we’ll end the algorithm.</p>
 
 <h3 id="add-constraints-for-cycles-over-5">Add Constraints for Cycles over 5</h3>
 
-<p>We introduce a for-loop to add constraints for each of the cycles we identify in our <em>solutions</em> (remember we solve iteratively). The number of constraints will accumulate as we solve each time as <code class="highlighter-rouge">Cycle</code> is a global variable.</p>
+<p>We introduce a for-loop to add constraints for each of the cycles we identify in our <em>solutions</em> (remember we solve iteratively). The number of constraints will accumulate as we solve each time as <code class="language-plaintext highlighter-rouge">Cycle</code> is a global variable.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">z</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">Cycle</span><span class="x">)</span>
     <span class="n">print</span><span class="x">(</span><span class="s">"constraint added"</span><span class="x">)</span>
@@ -401,7 +401,7 @@ If that is the case, we’ll end the algorithm.</p>
 
 <h3 id="ending-the-recursive-algorithm">Ending the Recursive Algorithm</h3>
 
-<p>To end the algorithm, we check if the aforementioned <code class="highlighter-rouge">cycles_over_five</code> is 0, meaning we have a solution with no cycles over 5.</p>
+<p>To end the algorithm, we check if the aforementioned <code class="language-plaintext highlighter-rouge">cycles_over_five</code> is 0, meaning we have a solution with no cycles over 5.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">cycles_over_five</span><span class="o">==</span><span class="mi">0</span>
     <span class="n">JuMP</span><span class="o">.</span><span class="n">optimize!</span><span class="x">(</span><span class="n">m</span><span class="x">)</span>
@@ -414,7 +414,7 @@ If that is the case, we’ll end the algorithm.</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>To finish, we print our final solution and we <code class="highlighter-rouge">break</code> the <code class="highlighter-rouge">while</code> loop so that we stop iterating.</p>
+<p>To finish, we print our final solution and we <code class="language-plaintext highlighter-rouge">break</code> the <code class="language-plaintext highlighter-rouge">while</code> loop so that we stop iterating.</p>
 
 <h2 id="solution-in-a-readable-format">Solution in a Readable Format</h2>
 
@@ -422,7 +422,7 @@ If that is the case, we’ll end the algorithm.</p>
 
 <h3 id="chains-1">Chains</h3>
 
-<p>To find each chain, we capture our NDDs in a set, and we run a for-loop through each to match each pair that is in the chain having begun at an NDD. We supply the function with our solution from the recursive algorithm (<code class="highlighter-rouge">y</code>), our set of edges <code class="highlighter-rouge">E</code>, a list of pairs in our solution <code class="highlighter-rouge">soln</code>, and a list of our NDDs for this problem.</p>
+<p>To find each chain, we capture our NDDs in a set, and we run a for-loop through each to match each pair that is in the chain having begun at an NDD. We supply the function with our solution from the recursive algorithm (<code class="language-plaintext highlighter-rouge">y</code>), our set of edges <code class="language-plaintext highlighter-rouge">E</code>, a list of pairs in our solution <code class="language-plaintext highlighter-rouge">soln</code>, and a list of our NDDs for this problem.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> find_chains</span><span class="x">(</span><span class="n">y</span><span class="x">,</span><span class="n">E</span><span class="x">,</span><span class="n">soln</span><span class="x">,</span><span class="n">ndd</span><span class="x">)</span>
     <span class="n">Chain</span> <span class="o">=</span> <span class="x">[]</span>
@@ -460,10 +460,10 @@ If that is the case, we’ll end the algorithm.</p>
     <span class="k">return</span><span class="x">(</span><span class="n">Chain</span><span class="x">)</span>
 <span class="k">end</span>
 </code></pre></div></div>
-<p>We only stop searching when <code class="highlighter-rouge">ExtendU</code> is <code class="highlighter-rouge">nothing</code> because we know chains can only begin from an NDD and end with a pair who doesn’t give up a kidney (i.e. nothing). We return an array of our chains.</p>
+<p>We only stop searching when <code class="language-plaintext highlighter-rouge">ExtendU</code> is <code class="language-plaintext highlighter-rouge">nothing</code> because we know chains can only begin from an NDD and end with a pair who doesn’t give up a kidney (i.e. nothing). We return an array of our chains.</p>
 
 <h3 id="cycles-1">Cycles</h3>
-<p>Similarly, we introduce a function to capture all of our cycles. This has many similarities to how we find cycles within our Recursive algorithm, with one noticeable difference being that we don’t search through pairs that were a part of a chain. We supply this function with an array of the chains we found in the above function, our solution from the recursive algorithm (<code class="highlighter-rouge">y</code>), our set of edges <code class="highlighter-rouge">E</code>, and a list of pairs in our solution <code class="highlighter-rouge">soln</code>.</p>
+<p>Similarly, we introduce a function to capture all of our cycles. This has many similarities to how we find cycles within our Recursive algorithm, with one noticeable difference being that we don’t search through pairs that were a part of a chain. We supply this function with an array of the chains we found in the above function, our solution from the recursive algorithm (<code class="language-plaintext highlighter-rouge">y</code>), our set of edges <code class="language-plaintext highlighter-rouge">E</code>, and a list of pairs in our solution <code class="language-plaintext highlighter-rouge">soln</code>.</p>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> find_cycles</span><span class="x">(</span><span class="n">foundchains</span><span class="x">,</span><span class="n">y</span><span class="x">,</span><span class="n">E</span><span class="x">,</span><span class="n">soln</span><span class="x">)</span>
     <span class="n">fcarray</span> <span class="o">=</span> <span class="x">[]</span> <span class="c"># find pairs that are a part of a chain</span>
@@ -504,12 +504,12 @@ If that is the case, we’ll end the algorithm.</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>That’s about it! To finish, we call each of these functions and write the returned arrays into a <code class="highlighter-rouge">.csv</code> file. If you’d like to see the entire file and run a dataset on it for yourself, head over to my repository for the <a href="https://github.com/trouze/UMNStuffs/blob/master/kidneyexchange.jl">Julia file</a> and the <a href="https://github.com/trouze/UMNStuffs/blob/master/donor-pool1.csv">dataset</a>. Happy programming!</p>
+<p>That’s about it! To finish, we call each of these functions and write the returned arrays into a <code class="language-plaintext highlighter-rouge">.csv</code> file. If you’d like to see the entire file and run a dataset on it for yourself, head over to my repository for the <a href="https://github.com/trouze/UMNStuffs/blob/master/kidneyexchange.jl">Julia file</a> and the <a href="https://github.com/trouze/UMNStuffs/blob/master/donor-pool1.csv">dataset</a>. Happy programming!</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p><a href="https://columbiasurgery.org/conditions-and-treatments/living-donor-kidney-transplants">Columbia Surgery source on kidney transplants</a> <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://columbiasurgery.org/conditions-and-treatments/living-donor-kidney-transplants">Columbia Surgery source on kidney transplants</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

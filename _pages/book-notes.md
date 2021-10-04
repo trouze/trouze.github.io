@@ -10,4 +10,4 @@ As a repayment, if you have any book recommendations that have been particularly
 <br>
 <br>
 <br>
-<a href="https://www.notion.so/tylerrouze/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a" class="button-comment button--large" align="center">Access my Book Notes on Notion</a>
+<a href="https://tylerrouze.notion.site/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a" class="button-comment button--large" align="center">Access my Book Notes on Notion</a>

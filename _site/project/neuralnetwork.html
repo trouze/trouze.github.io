@@ -92,7 +92,7 @@
 		</a>
 		
 
-		<p class="header__tagline">Analyst @ Kambr | UMN Engineer | Data Science.</p>
+		<p class="header__tagline">Analyst @ Ecolab | UMN Engineer | Data Science</p>
 
 		<div class="menu">
 			<ul class="menu__list">
@@ -169,7 +169,7 @@
 
 <p><img src="/images/sigmoid.jpg" alt="" /></p>
 
-<p>In R, our now weighted input is passed into the below function as <code class="highlighter-rouge">z</code>:</p>
+<p>In R, our now weighted input is passed into the below function as <code class="language-plaintext highlighter-rouge">z</code>:</p>
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sigmoid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="m">1</span><span class="o">/</span><span class="p">(</span><span class="m">1</span><span class="o">+</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
 <p>So what does the Activation (Sigmoid) function do? In laymen’s terms, it determines if the input is of value. You’ll see what this means in the next paragraph.</p>
@@ -225,13 +225,13 @@
     </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
 
-<p>We create a nested list of 6000 mini batches, each of size <code class="highlighter-rouge">mini.batch.size = 10</code>.</p>
+<p>We create a nested list of 6000 mini batches, each of size <code class="language-plaintext highlighter-rouge">mini.batch.size = 10</code>.</p>
 
-<p>Now, we feed each mini batch through our neural network and calculate weights and biases such that it will classify the mini batch correctly. So, we build a for loop to iterate through each mini batch, and call a new function <code class="highlighter-rouge">update.mini.batch</code>.</p>
+<p>Now, we feed each mini batch through our neural network and calculate weights and biases such that it will classify the mini batch correctly. So, we build a for loop to iterate through each mini batch, and call a new function <code class="language-plaintext highlighter-rouge">update.mini.batch</code>.</p>
 
 <h4 id="update-mini-batch">Update Mini Batch</h4>
 
-<p>Within this function, we instantiate an empty list for the weights and biases. We iterate through each observation in the mini batch, feeding the gradient values (how dark a pixel is) as <code class="highlighter-rouge">x</code> and the actual handwritten digit (0 thru 9) as <code class="highlighter-rouge">y</code>.</p>
+<p>Within this function, we instantiate an empty list for the weights and biases. We iterate through each observation in the mini batch, feeding the gradient values (how dark a pixel is) as <code class="language-plaintext highlighter-rouge">x</code> and the actual handwritten digit (0 thru 9) as <code class="language-plaintext highlighter-rouge">y</code>.</p>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create empty lists of weights and biases</span><span class="w">
 </span><span class="n">nabla.b</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes</span><span class="p">[</span><span class="m">2</span><span class="p">]),</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes</span><span class="p">[</span><span class="m">3</span><span class="p">]))</span><span class="w">
@@ -282,7 +282,7 @@
 </span><span class="n">nabla_w_backprop</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">nabla_w_backprop</span><span class="p">)]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">delta</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">activations</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span><span class="m">-1</span><span class="p">]])</span><span class="w">
 </span></code></pre></div></div>
 
-<p>This calls our <code class="highlighter-rouge">cost.derivative</code> function. This function takes our vector of output activations (the list of 10 values between 0 and 1 from earlier), and subtracts 1 from the activation in which our digit actually is. This is important, as this is how our network learns. We take this vector of activations and calculate our output error (by multiplying by the derivative of our activation function).</p>
+<p>This calls our <code class="language-plaintext highlighter-rouge">cost.derivative</code> function. This function takes our vector of output activations (the list of 10 values between 0 and 1 from earlier), and subtracts 1 from the activation in which our digit actually is. This is important, as this is how our network learns. We take this vector of activations and calculate our output error (by multiplying by the derivative of our activation function).</p>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">delta</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cost.derivative</span><span class="p">(</span><span class="n">activations</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">activations</span><span class="p">)]],</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sigmoid_prime</span><span class="p">(</span><span class="n">zs</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">zs</span><span class="p">)]])</span><span class="w">
 
@@ -326,7 +326,7 @@
   <li>Updated the weights and biases of our network to best classify based on the mini batch it has just been trained on</li>
 </ul>
 
-<p>To finish training the network, we simply have to set up a <code class="highlighter-rouge">for</code> loop to do everything we’ve talked about up to this point. For each mini batch, we update the weights and biases of the network to better classify digits. Remember, we had a dataset of 60,000 digits, with batch sizes of only 10 digits, so we’ll iterate many times. Once we’ve done that, we can evaluate our network on our testing data. If we’ve done everything right, we should have well tuned weights and biases that should classify images of handwritten digits at 50% accuracy.</p>
+<p>To finish training the network, we simply have to set up a <code class="language-plaintext highlighter-rouge">for</code> loop to do everything we’ve talked about up to this point. For each mini batch, we update the weights and biases of the network to better classify digits. Remember, we had a dataset of 60,000 digits, with batch sizes of only 10 digits, so we’ll iterate many times. Once we’ve done that, we can evaluate our network on our testing data. If we’ve done everything right, we should have well tuned weights and biases that should classify images of handwritten digits at 50% accuracy.</p>
 
 <h4 id="epochs">Epochs</h4>
 
