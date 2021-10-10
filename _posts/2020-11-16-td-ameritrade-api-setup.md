@@ -30,6 +30,7 @@ Once your app gets approved, you can go to My Apps and click on the app to view 
 ## tda-api
 There is a beautiful package of wrappers built by [Alex Golec](https://twitter.com/alex_golec) that will allow us to do much of what we're going to want to in the near future ([documentation here](https://tda-api.readthedocs.io) and [source code here](https://github.com/alexgolec/tda-api)). As opposed to making a large number of HTTP requests to TD's API, we can simply use this wrapper to make things a little bit easier and less ugly. This package will make OAuth a breeze as opposed to having to handle a set of auth keys and tokens. We'll need to install the `tda-api` package, and we'll also want to have `ijson` on hand to parse the JSON responses we'll get from our requests, as well as `selenium` to perform the OAuth workflow. To download the necessary packages, I'll use `pip` in Z shell:
 
+{% include clipboard.html %}
 ```zsh
 % pip3 install tda-api
 
@@ -45,6 +46,7 @@ To get the keys to the car so we can access our account and place trades, we nee
 
 To get this thing cooking, we'll go ahead and authenticate and then get some price history for $AAPL. To do this, we write up the following in a .py script.
 
+{% include clipboard.html %}
 ```python
 # 1.
 from tda import auth, client
@@ -92,6 +94,7 @@ To break it down, we are doing the following:
 
 Copy the above code block and put it in a Python script and run it.
 
+{% include clipboard.html %}
 ```zsh
 % python3 td_bot.py
 ```
@@ -101,6 +104,7 @@ This will run the flow, print the price history, and save the auth token in a fi
 
 TDA's auth tokens last for 90 days, and the `tda-api` package will automatically update when the 90 days is up through the same workflow. It should also be noted that the auth token is used to generate a session token, which only lasts for 30 minutes. So if you're running this line by line and too much time passes, you'll have to re-authenticate:
 
+{% include clipboard.html %}
 ```python
 c = auth.client_from_token_file(token_path, api_key)
 ```

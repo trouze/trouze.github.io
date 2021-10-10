@@ -14,6 +14,7 @@
 	</script>
 
 
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	Tyler Rouze
@@ -170,11 +171,18 @@
 <p><img src="/images/sigmoid.jpg" alt="" /></p>
 
 <p>In R, our now weighted input is passed into the below function as <code class="language-plaintext highlighter-rouge">z</code>:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sigmoid</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="m">1</span><span class="o">/</span><span class="p">(</span><span class="m">1</span><span class="o">+</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
 <p>So what does the Activation (Sigmoid) function do? In laymen’s terms, it determines if the input is of value. You’ll see what this means in the next paragraph.</p>
 
 <p>From here, the output of the Sigmoid function is weighted and passed as input into the final layer of 10 nodes (remember: representing each of the 10 digits 0 through 9). That input is ran through the Activation function again, and the neural network outputs a vector of ten values, like this:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">a</span><span class="w">
               </span><span class="p">[,</span><span class="m">1</span><span class="p">]</span><span class="w">
@@ -209,6 +217,9 @@
 <p>We estimate the gradient descent because in order to train our neural network, we will utilize a process called mini batching. We use mini batching for a number of reasons; the main reasons being that we can train our network using a much smaller amount of computing power (this is by far not a complete <a href="https://stats.stackexchange.com/questions/49528/batch-gradient-descent-versus-stochastic-gradient-descent/68326#68326">answer</a>).</p>
 
 <p>To begin building this learning part of our network, we must split the training data out into mini-batches of size 10 (meaning each mini batch has 10 handwritten images in it). In R, this is how we’ll do it.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># appends the result to the 785th column, with 60000</span><span class="w">
 </span><span class="c1"># rows - one row per observation</span><span class="w">
@@ -232,6 +243,9 @@
 <h4 id="update-mini-batch">Update Mini Batch</h4>
 
 <p>Within this function, we instantiate an empty list for the weights and biases. We iterate through each observation in the mini batch, feeding the gradient values (how dark a pixel is) as <code class="language-plaintext highlighter-rouge">x</code> and the actual handwritten digit (0 thru 9) as <code class="language-plaintext highlighter-rouge">y</code>.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create empty lists of weights and biases</span><span class="w">
 </span><span class="n">nabla.b</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes</span><span class="p">[</span><span class="m">2</span><span class="p">]),</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes</span><span class="p">[</span><span class="m">3</span><span class="p">]))</span><span class="w">
@@ -252,6 +266,9 @@
 <p>In laymens terms, backpropagation takes the observations of a mini batch and determines the weights and biases for each observation that will correctly classify the digits in the mini batch. That’s a mouth full, but this is how our network improves its classification ability. We will adjust our weights and biases for each observation in the mini batch. The reason it is called backpropagation is because through mathematical proofs, we can show how to efficiently calculate the gradient (or cost function) through each layer going backwards from the output layer. I will try to save the mathematical speak for Michael Nielsen, who explains it in detail <a href="http://neuralnetworksanddeeplearning.com/chap2.html">here</a>.</p>
 
 <p>To implement in R, we initialize our weights and biases (remember: these are on the edges in the network) and a list of the activations at each node. To start, these activations are just our inputs (784 grey scale pixel values). We feed these values <em>forward</em> first, calculating what our current network would classify this digit as. All of this is done in the following code:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## initialize updates</span><span class="w">
   </span><span class="n">nabla_b_backprop</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes</span><span class="p">[</span><span class="m">2</span><span class="p">]),</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes</span><span class="p">[</span><span class="m">3</span><span class="p">]))</span><span class="w">
@@ -275,6 +292,9 @@
 </span></code></pre></div></div>
 
 <p>To help you understand where we are- we’ve just taken one observation; ran it through our network; calculated the weight on each edge; and calculated the activation at each node. Now is where we backpropagate. This means we determine the weights in which we will classify the digit correctly. We estimate this through the gradient of our cost function, meaning we attempt to minimize the chance our network missclassifies the digit.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## backpropagate where we update the gradient using delta errors</span><span class="w">
 </span><span class="n">delta</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cost.derivative</span><span class="p">(</span><span class="n">activations</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">activations</span><span class="p">)]],</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sigmoid_prime</span><span class="p">(</span><span class="n">zs</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">zs</span><span class="p">)]])</span><span class="w">
@@ -283,6 +303,9 @@
 </span></code></pre></div></div>
 
 <p>This calls our <code class="language-plaintext highlighter-rouge">cost.derivative</code> function. This function takes our vector of output activations (the list of 10 values between 0 and 1 from earlier), and subtracts 1 from the activation in which our digit actually is. This is important, as this is how our network learns. We take this vector of activations and calculate our output error (by multiplying by the derivative of our activation function).</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">delta</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cost.derivative</span><span class="p">(</span><span class="n">activations</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">activations</span><span class="p">)]],</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sigmoid_prime</span><span class="p">(</span><span class="n">zs</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">zs</span><span class="p">)]])</span><span class="w">
 
@@ -292,6 +315,9 @@
 </span></code></pre></div></div>
 
 <p>To close, we calculate our weights and biases that feed into our output layer, such that we get the digit classification right (or as close as we can get it). Based on these weights and biases, we can calculate the changes necessary to the weights and biases in the layer behind too. This, in essence, is backpropagation. We return a list of the weights and biases that, given the inputs we just gave the network, would classify the digit correctly. This is done in the code below:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># take output from cost.derivative call and store it</span><span class="w">
 </span><span class="n">nabla_b_backprop</span><span class="p">[[</span><span class="nf">length</span><span class="p">(</span><span class="n">nabla_b_backprop</span><span class="p">)]]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">delta</span><span class="w">
@@ -341,8 +367,7 @@
 
 		<div class="page-footer">
 			<div class="page-share">
-				<a href="https://twitter.com/intent/tweet?text=Neural Networks in R&url=http://localhost:4000/project/neuralnetwork" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
-				<a href="https://facebook.com/sharer.php?u=http://localhost:4000/project/neuralnetwork" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+				<a href="https://twitter.com/intent/tweet?text=Neural Networks in R&url=http://localhost:4000/project/neuralnetwork" title="Share on Twitter" rel="nofollow" target="_blank">Tweet</a>
 				<a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/project/neuralnetwork" title="Share on LinkedIn" rel="nofollow" target="_blank">LinkedIn</a>
 			</div>
 		</div>
@@ -352,6 +377,7 @@
   <button class="button-comment" id="disqus_trigger" onclick="load_disqus('tylerrouze')">Post/View Comments</button>
 		</div>
 		</section>
+
 
 
 		</div>

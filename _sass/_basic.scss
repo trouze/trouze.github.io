@@ -33,6 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
+
 h1, .h1 {
 	font-size: $h1-small;
 	font-weight: $h1-weight;
@@ -668,3 +669,69 @@ section {
 		@include translate(0,30px);
 	}
 }
+
+.code-header {
+    position: absolute;
+    display: block;
+	height: 0;
+    z-index: 2;
+    right: 24.25%;
+    @include mq(tabletp) {
+        //potentially change font size via here
+		right: 10%;
+		margin-block-start: 35px;
+      }
+    @include mq(tabletl) {right: 21%;margin-block-start: 35px;}
+    @include mq(laptop) {right: 23%;margin-block-start: 45px;}
+    @include mq(desktop) {right: 25%;margin-block-start: 45px;}
+  }
+  
+  .copy-code-button {
+    display: none;
+    position: relative;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-column-gap: 4px;
+    border: solid;
+    border-color: $accent-color;
+    border-radius: 10px;
+    border-width: 1px;
+
+    cursor: pointer;
+    font-size: 18.7;
+    color: $text-medium-color;
+    padding: 4px 8px;
+    background: #f0f0f0;
+  
+    &::before {
+      content: "Copy";
+    }
+  
+    &::after {
+      content: "📋";
+      display: block;
+    }
+  
+    // This class will be toggled via JavaScript
+    &.copied {
+      &::before {
+        content: "Copied!";
+      }
+  
+      &::after {
+        content: "✔️";
+      }
+    }
+    :hover > & {
+      //background-color: #f0f0f0;
+      background: adjust-hue($accent-color,5%);
+      color: $text-dark-color;
+      border-color: adjust-hue($accent-color,5%)
+      }
+  }
+  @media screen and (min-width: 768px) {
+    .copy-code-button {
+      display: grid;
+    }
+  }
+  

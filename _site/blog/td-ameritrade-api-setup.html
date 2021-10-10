@@ -14,6 +14,7 @@
 	</script>
 
 
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	Tyler Rouze
@@ -166,6 +167,10 @@
 <h2 id="tda-api">tda-api</h2>
 <p>There is a beautiful package of wrappers built by <a href="https://twitter.com/alex_golec">Alex Golec</a> that will allow us to do much of what we’re going to want to in the near future (<a href="https://tda-api.readthedocs.io">documentation here</a> and <a href="https://github.com/alexgolec/tda-api">source code here</a>). As opposed to making a large number of HTTP requests to TD’s API, we can simply use this wrapper to make things a little bit easier and less ugly. This package will make OAuth a breeze as opposed to having to handle a set of auth keys and tokens. We’ll need to install the <code class="language-plaintext highlighter-rouge">tda-api</code> package, and we’ll also want to have <code class="language-plaintext highlighter-rouge">ijson</code> on hand to parse the JSON responses we’ll get from our requests, as well as <code class="language-plaintext highlighter-rouge">selenium</code> to perform the OAuth workflow. To download the necessary packages, I’ll use <code class="language-plaintext highlighter-rouge">pip</code> in Z shell:</p>
 
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% pip3 <span class="nb">install </span>tda-api
 
 % pip3 <span class="nb">install </span>ijson
@@ -179,6 +184,10 @@
 <p>To get the keys to the car so we can access our account and place trades, we need to get a token that will allow us to verify who we are. For 99% of people, using the process that the tda-api package has in place is exactly what we need. If you are wanting to go serverless with your trading, then this process will not be for you as we’ll be generating a token file that will not work in a serverless architecture. To make my life easier, I’m planning to instead use a VM instance. If your head is spinning at the last couple sentences, this process will work for you.</p>
 
 <p>To get this thing cooking, we’ll go ahead and authenticate and then get some price history for $AAPL. To do this, we write up the following in a .py script.</p>
+
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 1.
 </span><span class="kn">from</span> <span class="nn">tda</span> <span class="kn">import</span> <span class="n">auth</span><span class="p">,</span> <span class="n">client</span>
@@ -230,6 +239,10 @@
 
 <p>Copy the above code block and put it in a Python script and run it.</p>
 
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% python3 td_bot.py
 </code></pre></div></div>
 <p>This will run the flow, print the price history, and save the auth token in a file <code class="language-plaintext highlighter-rouge">token</code> in the same directory.</p>
@@ -237,6 +250,10 @@
 <h2 id="auth-token">Auth Token</h2>
 
 <p>TDA’s auth tokens last for 90 days, and the <code class="language-plaintext highlighter-rouge">tda-api</code> package will automatically update when the 90 days is up through the same workflow. It should also be noted that the auth token is used to generate a session token, which only lasts for 30 minutes. So if you’re running this line by line and too much time passes, you’ll have to re-authenticate:</p>
+
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="n">client_from_token_file</span><span class="p">(</span><span class="n">token_path</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
 </code></pre></div></div>
@@ -249,8 +266,7 @@
 
 		<div class="page-footer">
 			<div class="page-share">
-				<a href="https://twitter.com/intent/tweet?text=Algorithmic Trading Series: Hooking up to TD Ameritrade's API&url=http://localhost:4000/blog/td-ameritrade-api-setup" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
-				<a href="https://facebook.com/sharer.php?u=http://localhost:4000/blog/td-ameritrade-api-setup" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+				<a href="https://twitter.com/intent/tweet?text=Algorithmic Trading Series: Hooking up to TD Ameritrade's API&url=http://localhost:4000/blog/td-ameritrade-api-setup" title="Share on Twitter" rel="nofollow" target="_blank">Tweet</a>
 				<a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/blog/td-ameritrade-api-setup" title="Share on LinkedIn" rel="nofollow" target="_blank">LinkedIn</a>
 			</div>
 		</div>

@@ -55,6 +55,7 @@ To explain the "from" and "to" columns, take the first row for example. Pairing 
 Finally, `w` is subscripted at <sub>ij</sub>. For example, w<sub>0,721</sub> is equal to 38.
 
 We load the data into [Julia](https://julialang.org/) like this:
+{% include clipboard.html %}
 ```julia
 dat = readdlm("donor-pool2.csv", ',', '\n', comments=true)
 
@@ -68,7 +69,6 @@ V = union(fr,to)       # set of all nodes
 E = collect(zip(fr,to)) # set of all edges
 
 W = Dict( (i,j) => k for (i,j,k) in zip(fr,to,w) )  # weights on edges
-
 ```
 
 ## The Formulation
@@ -85,6 +85,7 @@ If you've ever done an optimization problem, this may seem somewhat familiar. As
 * We also define a couple additional variables to set *flow in* and *flow out*. We will use these variables to limit the number of kidneys leaving a pair (donor gives their kidney) and the number of kidneys entering a pair (patient receives a kidney). We will set some constraints such that neither of these variables are greater than 1, but also such that if a donor gives their kidney, the incompatible patient whom they are giving the kidney for will eventually receive a compatible kidney from someone else. We can call these variables `f`<sup>o</sup> and `f`<sup>i</sup>. Each of these variables are subscripted with `v`. `v` is the set of our pairings, essentially a list from 0 to 1000 (including our NDDs). This way we can limit the flow in and out of each pairing in our dataset.
 
 In Julia's [JuMP](https://www.juliaopt.org/), we can create a model and add constraints like this:
+{% include clipboard.html %}
 ```julia
 m = Model()
 set_optimizer(m, Cbc.Optimizer)
@@ -100,7 +101,7 @@ We'll use the Cbc optimizer for this problem, of course there are [others](https
 ### Objective Function
 
 To solve, we want to maximize the number of pairings that receive a kidney and the corresponding compatibility (we'd much rather match a donor to a patient with higher compatibility). In words, we maximize the sum of our weights for which a "from" pair's donor gives a kidney to a "to" pair's patient. To do this, we multiply the weight by the corresponding y<sub>i,j</sub> decision variable.
-
+{% include clipboard.html %}
 ```julia
 @objective(m, Max, sum( W[(i,j)]*y[(i,j)] for (i,j) in E ))
 ```
@@ -120,7 +121,7 @@ The final constraint, or more accurately set of constraints, is to keep cycles f
 If we were to merely want a solution of chains and cycles to match donors and patients with kidneys, then we've completed the setup. However, we want a more realistic solution and to do that we have to constrain the length of cycles. In short, we can achieve this by solving the initial optimization problem, determining what cycles are longer than 5, and adding constraints to prevent each of those cycles when we resolve.
 
 In words, the constraint to prevent a cycle of length greater than 5 can be modeled through a sum of the y<sub>ij</sub>'s, for which y<sub>ij</sub> is in the cycle that is longer than 5. We make this sum less than or equal to the length of the cycle, minus 1. In Julia, we can model it like so:
-
+{% include clipboard.html %}
 ```julia
 @constraint(m, sum(y[(i,j)] for i in Cycle[z], j in Cycle[z] if in((i,j),E)) <= length(Cycle[z]) - 1)
 ```
@@ -137,6 +138,7 @@ We repeat 2-4 until we have an optimal solution with cycles all under 5. We've a
 ## KEP in Julia
 
 To solve initially, we call JuMP's `optimize!()` function like this:
+{% include clipboard.html %}
 ```julia
 JuMP.optimize!(m)
 ```
@@ -145,7 +147,7 @@ We'll put this and everything that follows in a `while` loop- while all cycles a
 ### Identifying Cycles
 
 For speed in our algorithm, we should capture the y<sub>ij</sub> values that are equal to 1, meaning that a donor and patient have been matched. This represents our solution set.
-
+{% include clipboard.html %}
 ```julia
 set = []
 for (i,j) in E
@@ -156,6 +158,7 @@ end
 ```
 
 Then we instantiate a few arrays for use in our cycle identification:
+{% include clipboard.html %}
 ```julia
 searched = [] # set of pairs we've searched
 U = [] # capture current cycle being identified
@@ -165,7 +168,7 @@ ExtendU = set[rand(1:end)] # choose a node at random to start at
 We use searched to reduce the amount of pairs we search through each time, making our algorithm faster. Additionally, we use `U` to capture a single cycle at a time. With `ExtendU` we search for and assign the next matching pair to `ExtendU`, and then we add `ExtendU` to `U`. Once we've reached the end of the cycle (when `ExtendU` is equal to the beginning of `U`) and the length of the cycle is over 5, we add it to an array called `Cycle`.
 
 To begin our search of mapping each cycle, which we do through another `while` loop- while all pairs in our solution haven't been matched, we randomly start somewhere within our solution set. Then, we add `ExtendU` to `U`, and reassign `ExtendU` to `nothing`.
-
+{% include clipboard.html %}
 ```julia
 while length(setdiff(set,searched))!=0
     push!(U,ExtendU)
@@ -173,7 +176,7 @@ while length(setdiff(set,searched))!=0
 ```
 
 To perform our search of the next matching pair, we must introduce a for-loop to search through our solution set for the next pair. With an if statement, if we find the next pair we assign the pair to `ExtendU`.
-
+{% include clipboard.html %}
 ```julia
     for j in union(U[1],setdiff(set,searched))
         if (in((U[end],j),E) && JuMP.value(y[(U[end],j)]) > 0)
@@ -187,6 +190,7 @@ To perform our search of the next matching pair, we must introduce a for-loop to
 There are three things that can happen after this search:
 1. We find the next pair and search for the next matching pair (while we haven't matched the entire solution set).
 2. We don't find the next matching pair. This means we've come to the end of a *chain*, because chains end with the final pair not matching with anyone (meaning their donor doesn't give a kidney to anyone). If this happens, `ExtendU` will stay as `nothing`, so we'll reset everything to search for cycle. There are other ways to do this, as we could start from our NDDs and find the chains and remove them from our search. This is another way in which we find many sub-chains through the way we shorten our searchable set.
+{% include clipboard.html %}
 ```julia
 # if we've found the end of a chain
 if isnothing(ExtendU)
@@ -199,6 +203,7 @@ if isnothing(ExtendU)
 end
 ```
 3. We find the next matching pair, but it's the same as the pair for which our cycle began, meaning we've found a complete cycle.  If this occurs, we check if the cycle is over 5. If it is, we add it to our `Cycle` array to add a constraint later on to prevent it from being in our next solution. If it's under 5, we just reset and search for the next cycle.
+{% include clipboard.html %}
 ```julia
 # if we've found the end of a cycle
 if U[1]==ExtendU
@@ -223,7 +228,7 @@ If that is the case, we'll end the algorithm.
 ### Add Constraints for Cycles over 5
 
 We introduce a for-loop to add constraints for each of the cycles we identify in our *solutions* (remember we solve iteratively). The number of constraints will accumulate as we solve each time as `Cycle` is a global variable.
-
+{% include clipboard.html %}
 ```julia
 for z in 1:length(Cycle)
     print("constraint added")
@@ -234,7 +239,7 @@ end
 ### Ending the Recursive Algorithm
 
 To end the algorithm, we check if the aforementioned `cycles_over_five` is 0, meaning we have a solution with no cycles over 5.
-
+{% include clipboard.html %}
 ```julia
 if cycles_over_five==0
     JuMP.optimize!(m)
@@ -256,7 +261,7 @@ To finish this project, we should put the final solution in a readable format fo
 ### Chains
 
 To find each chain, we capture our NDDs in a set, and we run a for-loop through each to match each pair that is in the chain having begun at an NDD. We supply the function with our solution from the recursive algorithm (`y`), our set of edges `E`, a list of pairs in our solution `soln`, and a list of our NDDs for this problem.
-
+{% include clipboard.html %}
 ```julia
 function find_chains(y,E,soln,ndd)
     Chain = []
@@ -298,7 +303,7 @@ We only stop searching when `ExtendU` is `nothing` because we know chains can on
 
 ### Cycles
 Similarly, we introduce a function to capture all of our cycles. This has many similarities to how we find cycles within our Recursive algorithm, with one noticeable difference being that we don't search through pairs that were a part of a chain. We supply this function with an array of the chains we found in the above function, our solution from the recursive algorithm (`y`), our set of edges `E`, and a list of pairs in our solution `soln`.
-
+{% include clipboard.html %}
 ```julia
 function find_cycles(foundchains,y,E,soln)
     fcarray = [] # find pairs that are a part of a chain

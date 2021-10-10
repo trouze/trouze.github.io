@@ -35,13 +35,14 @@ Let's talk through how one pixel (input) would pass through the entire network a
 ![](/images/sigmoid.jpg)
 
 In R, our now weighted input is passed into the below function as `z`:
+{% include clipboard.html %}
 ```R
 sigmoid <- function(z) 1/(1+exp(-z))
 ```
 So what does the Activation (Sigmoid) function do? In laymen's terms, it determines if the input is of value. You'll see what this means in the next paragraph.
 
 From here, the output of the Sigmoid function is weighted and passed as input into the final layer of 10 nodes (remember: representing each of the 10 digits 0 through 9). That input is ran through the Activation function again, and the neural network outputs a vector of ten values, like this:
-
+{% include clipboard.html %}
 ```R
 > a
               [,1]
@@ -76,7 +77,7 @@ The stochastic portion of Stochastic Gradient Descent references the fact that w
 We estimate the gradient descent because in order to train our neural network, we will utilize a process called mini batching. We use mini batching for a number of reasons; the main reasons being that we can train our network using a much smaller amount of computing power (this is by far not a complete [answer](https://stats.stackexchange.com/questions/49528/batch-gradient-descent-versus-stochastic-gradient-descent/68326#68326)).
 
 To begin building this learning part of our network, we must split the training data out into mini-batches of size 10 (meaning each mini batch has 10 handwritten images in it). In R, this is how we'll do it.
-
+{% include clipboard.html %}
 ```R
 # appends the result to the 785th column, with 60000
 # rows - one row per observation
@@ -100,7 +101,7 @@ Now, we feed each mini batch through our neural network and calculate weights an
 #### Update Mini Batch
 
 Within this function, we instantiate an empty list for the weights and biases. We iterate through each observation in the mini batch, feeding the gradient values (how dark a pixel is) as `x` and the actual handwritten digit (0 thru 9) as `y`.
-
+{% include clipboard.html %}
 ```R
 # create empty lists of weights and biases
 nabla.b <- list(rep(0,sizes[2]),rep(0,sizes[3]))
@@ -121,7 +122,7 @@ You'll notice above we call our backpropagation function. Read on to see what th
 In laymens terms, backpropagation takes the observations of a mini batch and determines the weights and biases for each observation that will correctly classify the digits in the mini batch. That's a mouth full, but this is how our network improves its classification ability. We will adjust our weights and biases for each observation in the mini batch. The reason it is called backpropagation is because through mathematical proofs, we can show how to efficiently calculate the gradient (or cost function) through each layer going backwards from the output layer. I will try to save the mathematical speak for Michael Nielsen, who explains it in detail [here](http://neuralnetworksanddeeplearning.com/chap2.html).
 
 To implement in R, we initialize our weights and biases (remember: these are on the edges in the network) and a list of the activations at each node. To start, these activations are just our inputs (784 grey scale pixel values). We feed these values *forward* first, calculating what our current network would classify this digit as. All of this is done in the following code:
-
+{% include clipboard.html %}
 ```R
 ## initialize updates
   nabla_b_backprop <- list(rep(0,sizes[2]),rep(0,sizes[3]))
@@ -145,7 +146,7 @@ To implement in R, we initialize our weights and biases (remember: these are on 
 ```
 
 To help you understand where we are- we've just taken one observation; ran it through our network; calculated the weight on each edge; and calculated the activation at each node. Now is where we backpropagate. This means we determine the weights in which we will classify the digit correctly. We estimate this through the gradient of our cost function, meaning we attempt to minimize the chance our network missclassifies the digit.
-
+{% include clipboard.html %}
 ```R
 ## backpropagate where we update the gradient using delta errors
 delta <- cost.derivative(activations[[length(activations)]], y) * sigmoid_prime(zs[[length(zs)]])
@@ -154,7 +155,7 @@ nabla_w_backprop[[length(nabla_w_backprop)]] <- delta %*% t(activations[[length(
 ```
 
 This calls our `cost.derivative` function. This function takes our vector of output activations (the list of 10 values between 0 and 1 from earlier), and subtracts 1 from the activation in which our digit actually is. This is important, as this is how our network learns. We take this vector of activations and calculate our output error (by multiplying by the derivative of our activation function).
-
+{% include clipboard.html %}
 ```R
 delta <- cost.derivative(activations[[length(activations)]], y) * sigmoid_prime(zs[[length(zs)]])
 
@@ -164,7 +165,7 @@ cost.derivative <- function(output.activations, y){
 ```
 
 To close, we calculate our weights and biases that feed into our output layer, such that we get the digit classification right (or as close as we can get it). Based on these weights and biases, we can calculate the changes necessary to the weights and biases in the layer behind too. This, in essence, is backpropagation. We return a list of the weights and biases that, given the inputs we just gave the network, would classify the digit correctly. This is done in the code below:
-
+{% include clipboard.html %}
 ```R
 # take output from cost.derivative call and store it
 nabla_b_backprop[[length(nabla_b_backprop)]] <- delta

@@ -7,8 +7,6 @@
 @import "_mixins";
 @import "_plugins";
 
-
-
 // - - - - - - - - - - Variables
 
 // Colors
@@ -131,7 +129,6 @@ $grid-spacing: {{ site.data.settings.grid_settings.grid_spacing }}px;
 
 @import "_includes/_header";
 @import "_includes/_footer";
-
 @import "_includes/_content";
 @import "_includes/_socials";
 @import "_includes/_gallery";

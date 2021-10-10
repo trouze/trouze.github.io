@@ -14,6 +14,7 @@
 	</script>
 
 
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	Tyler Rouze
@@ -225,6 +226,10 @@
 <p>Finally, <code class="language-plaintext highlighter-rouge">w</code> is subscripted at <sub>ij</sub>. For example, w<sub>0,721</sub> is equal to 38.</p>
 
 <p>We load the data into <a href="https://julialang.org/">Julia</a> like this:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dat</span> <span class="o">=</span> <span class="n">readdlm</span><span class="x">(</span><span class="s">"donor-pool2.csv"</span><span class="x">,</span> <span class="sc">','</span><span class="x">,</span> <span class="sc">'\n'</span><span class="x">,</span> <span class="n">comments</span><span class="o">=</span><span class="nb">true</span><span class="x">)</span>
 
 <span class="n">fr</span> <span class="o">=</span> <span class="n">dat</span><span class="x">[</span><span class="o">:</span><span class="x">,</span><span class="mi">1</span><span class="x">]</span>
@@ -237,7 +242,6 @@
 <span class="n">E</span> <span class="o">=</span> <span class="n">collect</span><span class="x">(</span><span class="n">zip</span><span class="x">(</span><span class="n">fr</span><span class="x">,</span><span class="n">to</span><span class="x">))</span> <span class="c"># set of all edges</span>
 
 <span class="n">W</span> <span class="o">=</span> <span class="kt">Dict</span><span class="x">(</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)</span> <span class="o">=&gt;</span> <span class="n">k</span> <span class="k">for</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">,</span><span class="n">k</span><span class="x">)</span> <span class="k">in</span> <span class="n">zip</span><span class="x">(</span><span class="n">fr</span><span class="x">,</span><span class="n">to</span><span class="x">,</span><span class="n">w</span><span class="x">)</span> <span class="x">)</span>  <span class="c"># weights on edges</span>
-
 </code></pre></div></div>
 
 <h2 id="the-formulation">The Formulation</h2>
@@ -256,6 +260,10 @@
 </ul>
 
 <p>In Julia’s <a href="https://www.juliaopt.org/">JuMP</a>, we can create a model and add constraints like this:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">Model</span><span class="x">()</span>
 <span class="n">set_optimizer</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">Cbc</span><span class="o">.</span><span class="n">Optimizer</span><span class="x">)</span>
 
@@ -270,6 +278,9 @@
 <h3 id="objective-function">Objective Function</h3>
 
 <p>To solve, we want to maximize the number of pairings that receive a kidney and the corresponding compatibility (we’d much rather match a donor to a patient with higher compatibility). In words, we maximize the sum of our weights for which a “from” pair’s donor gives a kidney to a “to” pair’s patient. To do this, we multiply the weight by the corresponding y<sub>i,j</sub> decision variable.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@objective</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">Max</span><span class="x">,</span> <span class="n">sum</span><span class="x">(</span> <span class="n">W</span><span class="x">[(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)]</span><span class="o">*</span><span class="n">y</span><span class="x">[(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)]</span> <span class="k">for</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)</span> <span class="k">in</span> <span class="n">E</span> <span class="x">))</span>
 </code></pre></div></div>
@@ -291,6 +302,9 @@
 <p>If we were to merely want a solution of chains and cycles to match donors and patients with kidneys, then we’ve completed the setup. However, we want a more realistic solution and to do that we have to constrain the length of cycles. In short, we can achieve this by solving the initial optimization problem, determining what cycles are longer than 5, and adding constraints to prevent each of those cycles when we resolve.</p>
 
 <p>In words, the constraint to prevent a cycle of length greater than 5 can be modeled through a sum of the y<sub>ij</sub>’s, for which y<sub>ij</sub> is in the cycle that is longer than 5. We make this sum less than or equal to the length of the cycle, minus 1. In Julia, we can model it like so:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@constraint</span><span class="x">(</span><span class="n">m</span><span class="x">,</span> <span class="n">sum</span><span class="x">(</span><span class="n">y</span><span class="x">[(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">Cycle</span><span class="x">[</span><span class="n">z</span><span class="x">],</span> <span class="n">j</span> <span class="k">in</span> <span class="n">Cycle</span><span class="x">[</span><span class="n">z</span><span class="x">]</span> <span class="k">if</span> <span class="k">in</span><span class="x">((</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">),</span><span class="n">E</span><span class="x">))</span> <span class="o">&lt;=</span> <span class="n">length</span><span class="x">(</span><span class="n">Cycle</span><span class="x">[</span><span class="n">z</span><span class="x">])</span> <span class="o">-</span> <span class="mi">1</span><span class="x">)</span>
 </code></pre></div></div>
@@ -309,6 +323,10 @@
 <h2 id="kep-in-julia">KEP in Julia</h2>
 
 <p>To solve initially, we call JuMP’s <code class="language-plaintext highlighter-rouge">optimize!()</code> function like this:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">JuMP</span><span class="o">.</span><span class="n">optimize!</span><span class="x">(</span><span class="n">m</span><span class="x">)</span>
 </code></pre></div></div>
 <p>We’ll put this and everything that follows in a <code class="language-plaintext highlighter-rouge">while</code> loop- while all cycles aren’t under 5.</p>
@@ -316,6 +334,9 @@
 <h3 id="identifying-cycles">Identifying Cycles</h3>
 
 <p>For speed in our algorithm, we should capture the y<sub>ij</sub> values that are equal to 1, meaning that a donor and patient have been matched. This represents our solution set.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set</span> <span class="o">=</span> <span class="x">[]</span>
 <span class="k">for</span> <span class="x">(</span><span class="n">i</span><span class="x">,</span><span class="n">j</span><span class="x">)</span> <span class="k">in</span> <span class="n">E</span>
@@ -326,6 +347,10 @@
 </code></pre></div></div>
 
 <p>Then we instantiate a few arrays for use in our cycle identification:</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">searched</span> <span class="o">=</span> <span class="x">[]</span> <span class="c"># set of pairs we've searched</span>
 <span class="n">U</span> <span class="o">=</span> <span class="x">[]</span> <span class="c"># capture current cycle being identified</span>
 <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">set</span><span class="x">[</span><span class="n">rand</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="x">)]</span> <span class="c"># choose a node at random to start at</span>
@@ -334,6 +359,9 @@
 <p>We use searched to reduce the amount of pairs we search through each time, making our algorithm faster. Additionally, we use <code class="language-plaintext highlighter-rouge">U</code> to capture a single cycle at a time. With <code class="language-plaintext highlighter-rouge">ExtendU</code> we search for and assign the next matching pair to <code class="language-plaintext highlighter-rouge">ExtendU</code>, and then we add <code class="language-plaintext highlighter-rouge">ExtendU</code> to <code class="language-plaintext highlighter-rouge">U</code>. Once we’ve reached the end of the cycle (when <code class="language-plaintext highlighter-rouge">ExtendU</code> is equal to the beginning of <code class="language-plaintext highlighter-rouge">U</code>) and the length of the cycle is over 5, we add it to an array called <code class="language-plaintext highlighter-rouge">Cycle</code>.</p>
 
 <p>To begin our search of mapping each cycle, which we do through another <code class="language-plaintext highlighter-rouge">while</code> loop- while all pairs in our solution haven’t been matched, we randomly start somewhere within our solution set. Then, we add <code class="language-plaintext highlighter-rouge">ExtendU</code> to <code class="language-plaintext highlighter-rouge">U</code>, and reassign <code class="language-plaintext highlighter-rouge">ExtendU</code> to <code class="language-plaintext highlighter-rouge">nothing</code>.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="n">length</span><span class="x">(</span><span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">))</span><span class="o">!=</span><span class="mi">0</span>
     <span class="n">push!</span><span class="x">(</span><span class="n">U</span><span class="x">,</span><span class="n">ExtendU</span><span class="x">)</span>
@@ -341,6 +369,9 @@
 </code></pre></div></div>
 
 <p>To perform our search of the next matching pair, we must introduce a for-loop to search through our solution set for the next pair. With an if statement, if we find the next pair we assign the pair to <code class="language-plaintext highlighter-rouge">ExtendU</code>.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="n">union</span><span class="x">(</span><span class="n">U</span><span class="x">[</span><span class="mi">1</span><span class="x">],</span><span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">))</span>
         <span class="k">if</span> <span class="x">(</span><span class="k">in</span><span class="x">((</span><span class="n">U</span><span class="x">[</span><span class="k">end</span><span class="x">],</span><span class="n">j</span><span class="x">),</span><span class="n">E</span><span class="x">)</span> <span class="o">&amp;&amp;</span> <span class="n">JuMP</span><span class="o">.</span><span class="n">value</span><span class="x">(</span><span class="n">y</span><span class="x">[(</span><span class="n">U</span><span class="x">[</span><span class="k">end</span><span class="x">],</span><span class="n">j</span><span class="x">)])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="x">)</span>
@@ -354,37 +385,45 @@
 <p>There are three things that can happen after this search:</p>
 <ol>
   <li>We find the next pair and search for the next matching pair (while we haven’t matched the entire solution set).</li>
-  <li>We don’t find the next matching pair. This means we’ve come to the end of a <em>chain</em>, because chains end with the final pair not matching with anyone (meaning their donor doesn’t give a kidney to anyone). If this happens, <code class="language-plaintext highlighter-rouge">ExtendU</code> will stay as <code class="language-plaintext highlighter-rouge">nothing</code>, so we’ll reset everything to search for cycle. There are other ways to do this, as we could start from our NDDs and find the chains and remove them from our search. This is another way in which we find many sub-chains through the way we shorten our searchable set.
-    <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if we've found the end of a chain</span>
-<span class="k">if</span> <span class="n">isnothing</span><span class="x">(</span><span class="n">ExtendU</span><span class="x">)</span>
- <span class="n">print</span><span class="x">(</span><span class="s">"Chain Found"</span><span class="x">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
- <span class="n">U</span> <span class="o">=</span> <span class="x">[]</span>
- <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">)</span>
- <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="x">[</span><span class="n">rand</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="x">)]</span> <span class="c"># don't pick the same one twice..</span>
- <span class="n">push!</span><span class="x">(</span><span class="n">searched</span><span class="x">,</span><span class="n">ExtendU</span><span class="x">)</span>
- <span class="c"># we've found a chain!</span>
-<span class="k">end</span>
-</code></pre></div>    </div>
-  </li>
-  <li>We find the next matching pair, but it’s the same as the pair for which our cycle began, meaning we’ve found a complete cycle.  If this occurs, we check if the cycle is over 5. If it is, we add it to our <code class="language-plaintext highlighter-rouge">Cycle</code> array to add a constraint later on to prevent it from being in our next solution. If it’s under 5, we just reset and search for the next cycle.
-    <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if we've found the end of a cycle</span>
-<span class="k">if</span> <span class="n">U</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span><span class="o">==</span><span class="n">ExtendU</span>
- <span class="n">print</span><span class="x">(</span><span class="s">"Cycle Found"</span><span class="x">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
- <span class="c"># we've found a cycle, lets add it to our cycle list and create</span>
- <span class="c"># a constraint, if necessary</span>
- <span class="k">if</span> <span class="n">length</span><span class="x">(</span><span class="n">U</span><span class="x">)</span> <span class="o">&gt;</span> <span class="mi">5</span>
-     <span class="n">push!</span><span class="x">(</span><span class="n">Cycle</span><span class="x">,</span><span class="n">U</span><span class="x">)</span>
-     <span class="n">cycles_over_five</span> <span class="o">=</span> <span class="n">cycles_over_five</span> <span class="o">+</span> <span class="mi">1</span>
- <span class="k">end</span>
- <span class="n">U</span> <span class="o">=</span> <span class="x">[]</span>
- <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">)</span>
- <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="x">[</span><span class="n">rand</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="x">)]</span>
- <span class="n">push!</span><span class="x">(</span><span class="n">searched</span><span class="x">,</span><span class="n">ExtendU</span><span class="x">)</span>
-<span class="k">end</span>
-</code></pre></div>    </div>
-    <p>This will repeat until every pair in our solution has been matched, whether as a part of a chain or cycle.</p>
-  </li>
+  <li>We don’t find the next matching pair. This means we’ve come to the end of a <em>chain</em>, because chains end with the final pair not matching with anyone (meaning their donor doesn’t give a kidney to anyone). If this happens, <code class="language-plaintext highlighter-rouge">ExtendU</code> will stay as <code class="language-plaintext highlighter-rouge">nothing</code>, so we’ll reset everything to search for cycle. There are other ways to do this, as we could start from our NDDs and find the chains and remove them from our search. This is another way in which we find many sub-chains through the way we shorten our searchable set.</li>
 </ol>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if we've found the end of a chain</span>
+<span class="k">if</span> <span class="n">isnothing</span><span class="x">(</span><span class="n">ExtendU</span><span class="x">)</span>
+    <span class="n">print</span><span class="x">(</span><span class="s">"Chain Found"</span><span class="x">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="x">[]</span>
+    <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">)</span>
+    <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="x">[</span><span class="n">rand</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="x">)]</span> <span class="c"># don't pick the same one twice..</span>
+    <span class="n">push!</span><span class="x">(</span><span class="n">searched</span><span class="x">,</span><span class="n">ExtendU</span><span class="x">)</span>
+    <span class="c"># we've found a chain!</span>
+<span class="k">end</span>
+</code></pre></div></div>
+<ol>
+  <li>We find the next matching pair, but it’s the same as the pair for which our cycle began, meaning we’ve found a complete cycle.  If this occurs, we check if the cycle is over 5. If it is, we add it to our <code class="language-plaintext highlighter-rouge">Cycle</code> array to add a constraint later on to prevent it from being in our next solution. If it’s under 5, we just reset and search for the next cycle.</li>
+</ol>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if we've found the end of a cycle</span>
+<span class="k">if</span> <span class="n">U</span><span class="x">[</span><span class="mi">1</span><span class="x">]</span><span class="o">==</span><span class="n">ExtendU</span>
+    <span class="n">print</span><span class="x">(</span><span class="s">"Cycle Found"</span><span class="x">,</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="x">)</span>
+    <span class="c"># we've found a cycle, lets add it to our cycle list and create</span>
+    <span class="c"># a constraint, if necessary</span>
+    <span class="k">if</span> <span class="n">length</span><span class="x">(</span><span class="n">U</span><span class="x">)</span> <span class="o">&gt;</span> <span class="mi">5</span>
+        <span class="n">push!</span><span class="x">(</span><span class="n">Cycle</span><span class="x">,</span><span class="n">U</span><span class="x">)</span>
+        <span class="n">cycles_over_five</span> <span class="o">=</span> <span class="n">cycles_over_five</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">end</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="x">[]</span>
+    <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="x">(</span><span class="n">set</span><span class="x">,</span><span class="n">searched</span><span class="x">)</span>
+    <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="x">[</span><span class="n">rand</span><span class="x">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="x">)]</span>
+    <span class="n">push!</span><span class="x">(</span><span class="n">searched</span><span class="x">,</span><span class="n">ExtendU</span><span class="x">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+<p>This will repeat until every pair in our solution has been matched, whether as a part of a chain or cycle.</p>
 
 <p>Notice we introduce a variable <code class="language-plaintext highlighter-rouge">cycles_over_five</code>. This variable will allow us to determine if our current solution has no cycles over 5.
 If that is the case, we’ll end the algorithm.</p>
@@ -392,6 +431,9 @@ If that is the case, we’ll end the algorithm.</p>
 <h3 id="add-constraints-for-cycles-over-5">Add Constraints for Cycles over 5</h3>
 
 <p>We introduce a for-loop to add constraints for each of the cycles we identify in our <em>solutions</em> (remember we solve iteratively). The number of constraints will accumulate as we solve each time as <code class="language-plaintext highlighter-rouge">Cycle</code> is a global variable.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">z</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="x">(</span><span class="n">Cycle</span><span class="x">)</span>
     <span class="n">print</span><span class="x">(</span><span class="s">"constraint added"</span><span class="x">)</span>
@@ -402,6 +444,9 @@ If that is the case, we’ll end the algorithm.</p>
 <h3 id="ending-the-recursive-algorithm">Ending the Recursive Algorithm</h3>
 
 <p>To end the algorithm, we check if the aforementioned <code class="language-plaintext highlighter-rouge">cycles_over_five</code> is 0, meaning we have a solution with no cycles over 5.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">cycles_over_five</span><span class="o">==</span><span class="mi">0</span>
     <span class="n">JuMP</span><span class="o">.</span><span class="n">optimize!</span><span class="x">(</span><span class="n">m</span><span class="x">)</span>
@@ -423,6 +468,9 @@ If that is the case, we’ll end the algorithm.</p>
 <h3 id="chains-1">Chains</h3>
 
 <p>To find each chain, we capture our NDDs in a set, and we run a for-loop through each to match each pair that is in the chain having begun at an NDD. We supply the function with our solution from the recursive algorithm (<code class="language-plaintext highlighter-rouge">y</code>), our set of edges <code class="language-plaintext highlighter-rouge">E</code>, a list of pairs in our solution <code class="language-plaintext highlighter-rouge">soln</code>, and a list of our NDDs for this problem.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> find_chains</span><span class="x">(</span><span class="n">y</span><span class="x">,</span><span class="n">E</span><span class="x">,</span><span class="n">soln</span><span class="x">,</span><span class="n">ndd</span><span class="x">)</span>
     <span class="n">Chain</span> <span class="o">=</span> <span class="x">[]</span>
@@ -464,6 +512,9 @@ If that is the case, we’ll end the algorithm.</p>
 
 <h3 id="cycles-1">Cycles</h3>
 <p>Similarly, we introduce a function to capture all of our cycles. This has many similarities to how we find cycles within our Recursive algorithm, with one noticeable difference being that we don’t search through pairs that were a part of a chain. We supply this function with an array of the chains we found in the above function, our solution from the recursive algorithm (<code class="language-plaintext highlighter-rouge">y</code>), our set of edges <code class="language-plaintext highlighter-rouge">E</code>, and a list of pairs in our solution <code class="language-plaintext highlighter-rouge">soln</code>.</p>
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
 
 <div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span><span class="nf"> find_cycles</span><span class="x">(</span><span class="n">foundchains</span><span class="x">,</span><span class="n">y</span><span class="x">,</span><span class="n">E</span><span class="x">,</span><span class="n">soln</span><span class="x">)</span>
     <span class="n">fcarray</span> <span class="o">=</span> <span class="x">[]</span> <span class="c"># find pairs that are a part of a chain</span>
@@ -517,8 +568,7 @@ If that is the case, we’ll end the algorithm.</p>
 
 		<div class="page-footer">
 			<div class="page-share">
-				<a href="https://twitter.com/intent/tweet?text=Kidney Exchange in Julia&url=http://localhost:4000/project/kidney-exchange" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
-				<a href="https://facebook.com/sharer.php?u=http://localhost:4000/project/kidney-exchange" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+				<a href="https://twitter.com/intent/tweet?text=Kidney Exchange in Julia&url=http://localhost:4000/project/kidney-exchange" title="Share on Twitter" rel="nofollow" target="_blank">Tweet</a>
 				<a href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/project/kidney-exchange" title="Share on LinkedIn" rel="nofollow" target="_blank">LinkedIn</a>
 			</div>
 		</div>
@@ -528,6 +578,7 @@ If that is the case, we’ll end the algorithm.</p>
   <button class="button-comment" id="disqus_trigger" onclick="load_disqus('tylerrouze')">Post/View Comments</button>
 		</div>
 		</section>
+
 
 
 		</div>
