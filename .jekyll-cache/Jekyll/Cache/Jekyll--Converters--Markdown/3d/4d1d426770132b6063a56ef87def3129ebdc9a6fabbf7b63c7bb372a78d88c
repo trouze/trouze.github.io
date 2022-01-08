@@ -1,0 +1,122 @@
+I"!8<p><img src="/images/stock_trade.jpg" alt="" /></p>
+
+<p>Welcome to the first installment of what will likely be a series of tutorials on building algorithmic trading bots to do a multitude of things for us automatically! Along the way, we’ll touch on APIs, cloud computing, stock and option trading strategies, and a little bit of data science to search for opportunities. It should go without saying that none of what is written about here constitutes as financial advice, it’s quite likely you’ll lose money listening to me ;)</p>
+
+<p>Let’s get started.</p>
+
+<h2 id="setting-up-an-account-with-td-ameritrade">Setting up an account with TD Ameritrade</h2>
+<p>For the purpose of this series, I’m going to be using TD Ameritrade as our broker for everything we cover. This is largely a personal preference (it’s who I use for retirement, etc.), but what you choose is up to you- with the notable exception that your broker should have an API that you can get data from and access your account to make trades from. I believe Robinhood has an API as well, but I haven’t explored its capabilities much at all.</p>
+
+<p>To get started, <a href="https://start.tdameritrade.com/select?entity=103">open an account</a> with TDA if you haven’t already. The account type doesn’t really matter, but Individual is probably your best bet if you want to follow along. You don’t have to fund your account right away if you simply want to give this whole thing a shot first. Once you’ve got a brokerage account, you’ll need to <a href="https://developer.tdameritrade.com">register for a developer account</a>. This is a separate account, so you can use the same username for continuity.</p>
+
+<h2 id="building-your-first-app">Building your first app</h2>
+<p>In order to place orders on your account, you need to create an developer application that will allow you to do so. Think of this as vehicle in which you can access your account. We need to create a module that will let us programmatically interact with our account via API and this is how we’ll do it.</p>
+
+<p><img src="/images/build_app.png" alt="" /></p>
+
+<p>At the top left of the screen after you register, you’ll see “My Apps”, click on this and add an app. From here it’s pretty simple, give the app a name, a description, and then specify a callback URL. The callback URL is how you’ll receive authentication to access your account, for the purpose of this tutorial we can simply use localhost to do this. It’s best to use HTTPS protocol to do this so I’m using <strong>https://127.0.0.1</strong>.</p>
+
+<p><img src="/images/build_app_page.png" alt="" /></p>
+
+<p>Once your app gets approved, you can go to My Apps and click on the app to view your Consumer/API Key. This key is important to keep personal (do not share it!), but we will need it to perform OAuth.</p>
+
+<h2 id="tda-api">tda-api</h2>
+<p>There is a beautiful package of wrappers built by <a href="https://twitter.com/alex_golec">Alex Golec</a> that will allow us to do much of what we’re going to want to in the near future (<a href="https://tda-api.readthedocs.io">documentation here</a> and <a href="https://github.com/alexgolec/tda-api">source code here</a>). As opposed to making a large number of HTTP requests to TD’s API, we can simply use this wrapper to make things a little bit easier and less ugly. This package will make OAuth a breeze as opposed to having to handle a set of auth keys and tokens. We’ll need to install the <code class="language-plaintext highlighter-rouge">tda-api</code> package, and we’ll also want to have <code class="language-plaintext highlighter-rouge">ijson</code> on hand to parse the JSON responses we’ll get from our requests, as well as <code class="language-plaintext highlighter-rouge">selenium</code> to perform the OAuth workflow. To download the necessary packages, I’ll use <code class="language-plaintext highlighter-rouge">pip</code> in Z shell:</p>
+
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% pip3 <span class="nb">install </span>tda-api
+
+% pip3 <span class="nb">install </span>ijson
+
+% pip3 <span class="nb">install </span>selenium
+</code></pre></div></div>
+<h2 id="chromedriver">Chromedriver</h2>
+<p>Once we have the packages, we’ll also need to have <a href="http://chromedriver.chromium.org/downloads">Chromedriver</a> downloaded. This will allow Python to programmatically open Google Chrome (tda-api is browser agnostic, so Chrome isn’t necessary but you need a driver of some sort). Take care in where you place the executable, we’ll need to put the path in our script.</p>
+
+<h2 id="oauth">OAuth</h2>
+<p>To get the keys to the car so we can access our account and place trades, we need to get a token that will allow us to verify who we are. For 99% of people, using the process that the tda-api package has in place is exactly what we need. If you are wanting to go serverless with your trading, then this process will not be for you as we’ll be generating a token file that will not work in a serverless architecture. To make my life easier, I’m planning to instead use a VM instance. If your head is spinning at the last couple sentences, this process will work for you.</p>
+
+<p>To get this thing cooking, we’ll go ahead and authenticate and then get some price history for $AAPL. To do this, we write up the following in a .py script.</p>
+
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 1.
+</span><span class="kn">from</span> <span class="nn">tda</span> <span class="kn">import</span> <span class="n">auth</span><span class="p">,</span> <span class="n">client</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># 2.
+</span><span class="n">token_path</span> <span class="o">=</span> <span class="s">'token'</span>
+<span class="c1"># 3.
+</span><span class="n">api_key</span> <span class="o">=</span> <span class="s">'YOUR_API_KEY@AMER.OAUTHAP'</span>
+<span class="c1"># 4.
+</span><span class="n">redirect_uri</span> <span class="o">=</span> <span class="s">'https://127.0.0.1'</span>
+
+<span class="c1">#5.
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="n">client_from_token_file</span><span class="p">(</span><span class="n">token_path</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">FileNotFoundError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+    <span class="c1"># 6.
+</span>    <span class="k">with</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="s">'/Users/trouze/Documents/td_bot/chromedriver'</span><span class="p">)</span> <span class="k">as</span> <span class="n">driver</span><span class="p">:</span>
+        <span class="c1"># 7.
+</span>        <span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="n">client_from_login_flow</span><span class="p">(</span>
+            <span class="n">driver</span><span class="p">,</span> <span class="n">api_key</span><span class="p">,</span> <span class="n">redirect_uri</span><span class="p">,</span> <span class="n">token_path</span><span class="p">)</span>
+<span class="c1"># 8.
+</span><span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">get_price_history</span><span class="p">(</span><span class="s">'AAPL'</span><span class="p">,</span>
+        <span class="n">period_type</span><span class="o">=</span><span class="n">client</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">PriceHistory</span><span class="p">.</span><span class="n">PeriodType</span><span class="p">.</span><span class="n">YEAR</span><span class="p">,</span>
+        <span class="n">period</span><span class="o">=</span><span class="n">client</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">PriceHistory</span><span class="p">.</span><span class="n">Period</span><span class="p">.</span><span class="n">TWENTY_YEARS</span><span class="p">,</span>
+        <span class="n">frequency_type</span><span class="o">=</span><span class="n">client</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">PriceHistory</span><span class="p">.</span><span class="n">FrequencyType</span><span class="p">.</span><span class="n">DAILY</span><span class="p">,</span>
+        <span class="n">frequency</span><span class="o">=</span><span class="n">client</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">PriceHistory</span><span class="p">.</span><span class="n">Frequency</span><span class="p">.</span><span class="n">DAILY</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">r</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>To break it down, we are doing the following:</p>
+<ol>
+  <li>Importing tda and json packages</li>
+  <li>Specifying the token path, it’s likely you’ll want to keep it in the same directory that you’re working in, so calling it <code class="language-plaintext highlighter-rouge">'token'</code> will suffice</li>
+  <li><code class="language-plaintext highlighter-rouge">api_key</code> is the Consumer Key that is listed on your <a href="https://developer.tdameritrade.com/user/me/apps">app</a>. Leave the suffix <code class="language-plaintext highlighter-rouge">@AMER.OAUTHAP</code></li>
+  <li><code class="language-plaintext highlighter-rouge">redirect_uri</code> is the callback URL we specified when making our developer app, if you’re following along it should be <strong>https://127.0.0.1</strong></li>
+  <li>What happens next is the script will try to authenticate, because we don’t have a token yet, we will drop down to the <code class="language-plaintext highlighter-rouge">except</code> call, which will bring up a web browser.</li>
+  <li>We need to tell <code class="language-plaintext highlighter-rouge">selenium</code> where to find the Chromedriver that we downloaded earlier, so enter the path after <code class="language-plaintext highlighter-rouge">executable_path=</code> and make sure you put <code class="language-plaintext highlighter-rouge">chromedriver</code> at the end of it so it can execute.</li>
+  <li>This is where the login flow wrapper will open Chrome and bring us to the TD Ameritrade authentication page, enter your Brokerage account username and password (not developer account!). Under the hood, this makes a request with your Consumer key that sends back an authorization token to our Callback URL, in which we capture through <code class="language-plaintext highlighter-rouge">selenium</code>. The auth token gets written to our <code class="language-plaintext highlighter-rouge">token</code> file.</li>
+</ol>
+
+<p><img src="/images/auth_page.png" alt="" /></p>
+
+<ol>
+  <li>This part of the code uses our current authorized session to request price history on $AAPL</li>
+</ol>
+
+<p>Copy the above code block and put it in a Python script and run it.</p>
+
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% python3 td_bot.py
+</code></pre></div></div>
+<p>This will run the flow, print the price history, and save the auth token in a file <code class="language-plaintext highlighter-rouge">token</code> in the same directory.</p>
+
+<h2 id="auth-token">Auth Token</h2>
+
+<p>TDA’s auth tokens last for 90 days, and the <code class="language-plaintext highlighter-rouge">tda-api</code> package will automatically update when the 90 days is up through the same workflow. It should also be noted that the auth token is used to generate a session token, which only lasts for 30 minutes. So if you’re running this line by line and too much time passes, you’ll have to re-authenticate:</p>
+
+<div class="code-header">
+    <button class="copy-code-button" aria-label="Copy code to clipboard"></button>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="n">client_from_token_file</span><span class="p">(</span><span class="n">token_path</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>And again, I can’t stress enough, do not share any of the tokens/keys or put them online anywhere.</p>
+
+<p>If you’ve made it this far, you now are set up to programmatically access your TD Ameritrade account via API request. Boom!</p>
+
+<p>Check back soon, as I’ll be walking through how we can take this to the <a href="https://cloud.google.com">cloud</a> where we’ll be able to schedule scripts to be ran during trading hours. To get updated automatically, <a href="https://tylerrouze.com/subscribe">subscribe</a> and I’ll fire it out to you when it’s ready.</p>
+:ET
