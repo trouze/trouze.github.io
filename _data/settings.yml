@@ -1,6 +1,6 @@
 basic_settings:
   site_title: Tyler Rouze
-  site_tagline: Analyst @ Ecolab | Industrial Engineer | Data Analytics
+  site_tagline: Data Engineering Consultant @ Analytics8 | Data Analytics | ISyE Grad
   site_footer: Tyler Rouze.
   favicon_image: /images/favicon.png
 
@@ -62,7 +62,7 @@ social_settings:
     codepen_url: 'https://www.notion.so/tylerrouze/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a'
     untappd_url: 'http://untpd.it/u/tylerrouze'
   fas:
-    calendar_url: 'https://calendly.com/tylerrouze'
+    calendar_url: 'https://calendly.com/tyler-rouze'
 
 color_settings:
   background_color: '#ffffff'

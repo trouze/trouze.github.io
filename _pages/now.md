@@ -35,11 +35,7 @@ I currently live in Minneapolis, Minnesota.
 
 ### Work
 
-I currently work for [Ecolab](https://www.ecolab.com/) as a data analyst. I work on our Analytics and Digital Solutions team within our Supply Chain and Procurement group. Ecolab is a chemical company that engages in water engineering, hygeine, and sanitization solutions.
-
-Our team focuses on extending the digital capabilities of our Supply Chain & Procurement functions, leveraging cloud technology, Power BI, and our own decision support systems to help Ecolab purchase and move materials throughout the globe.
-
-My job is to support and carry out the groundwork of how we move data, derive insights from data, and visualize data (whether aggregated or the result of a DSS) to help our logistics and procurement teams make better decisions. 
+I currently work for [Analytics8](https://www.analytics8.com) as a data engineering consultant. This is a recently new role for me, so there'll be more to update here going forward. That said, my focuses are within the Modern Data Stack, mainly doing technology and cloud enablement using Google Cloud Platform as well as data warehousing tools like Snowflake and Databricks.
 
 ### Education
 
@@ -57,8 +53,8 @@ Some of my current interests are:
 
 * Aviation ([Microsoft Flight Simulator](https://www.flightsimulator.com/) anyone?)
 * Formula 1
-* Any book on our Human Nature, especially those with data driven research findings.
-* Software Architecture, APIs, and Cloud Tech
+* Any book on our Human Nature (psychology/sociology), especially those with data driven research findings.
+* Modern Data Stack
 * Anything cutting edge involving [Python](https://www.python.org/), [R](https://www.r-project.org/), or [Julia](https://julialang.org/) languages
 
 If you share some of the same interests, drop a line below!
