@@ -17,8 +17,6 @@ menu_settings:
       url: '/projects/'
     - title: '/now'
       url: '/now'
-    - title: 'Book Notes'
-      url: '/book-notes'
     - title: 'Subscribe'
       url: '/subscribe'
 
@@ -60,7 +58,7 @@ social_settings:
     spotify_url: 'https://open.spotify.com/user/tyrouze10'
     bandcamp_url: ''
     codepen_url: 'https://www.notion.so/tylerrouze/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a'
-    untappd_url: 'http://untpd.it/u/tylerrouze'
+    untappd_url: 'https://untappd.com/user/tylerrouze'
   fas:
     calendar_url: 'https://calendly.com/tyler-rouze'
 

@@ -1,0 +1,361 @@
+<!doctype html>
+
+<html class="no-js" lang="en">
+
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144245894-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-144245894-1');
+	</script>
+
+
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	Tyler Rouze
+
+
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<!-- Page Info -->
+	<link rel="shortcut icon" href="/images/favicon.png">
+	<title>Orchestrating a Data Pipeline Using Prefect on GCP – Tyler Rouze</title>
+	<meta name="description" content="Automating a data pipeline carrying Apple Health data: in this tutorial I'll show you the programming and DevOps tasks necessary to setup and run a Data Pipeline on Google Cloud Platform, orchestrated using Prefect and developed using their design principles.">
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Orchestrating a Data Pipeline Using Prefect on GCP – Tyler Rouze">
+	<meta name="twitter:description" content="Automating a data pipeline carrying Apple Health data: in this tutorial I'll show you the programming and DevOps tasks necessary to setup and run a Data Pipeline on Google Cloud Platform, orchestrated using Prefect and developed using their design principles.">
+	<meta name="twitter:image:src" content="http://localhost:4000/images/prefect.jpeg">
+
+	<!-- Facebook OpenGraph -->
+	<meta property="og:title" content="Orchestrating a Data Pipeline Using Prefect on GCP – Tyler Rouze" />
+	<meta property="og:description" content="Automating a data pipeline carrying Apple Health data: in this tutorial I'll show you the programming and DevOps tasks necessary to setup and run a Data Pipeline on Google Cloud Platform, orchestrated using Prefect and developed using their design principles." />
+	<meta property="og:image" content="http://localhost:4000/images/prefect.jpeg" />
+
+	
+	<!-- Font Embed Code -->
+	<link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600" rel="stylesheet">
+	
+
+	<!-- Styles -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/style.css">
+
+	<!-- Icons -->
+	<script defer src="https://use.fontawesome.com/releases/v5.1.1/js/solid.js" integrity="sha384-GXi56ipjsBwAe6v5X4xSrVNXGOmpdJYZEEh/0/GqJ3JTHsfDsF8v0YQvZCJYAiGu" crossorigin="anonymous"></script>
+	<script defer src="https://use.fontawesome.com/releases/v5.1.1/js/brands.js" integrity="sha384-0inRy4HkP0hJ038ZyfQ4vLl+F4POKbqnaUB6ewmU4dWP0ki8Q27A0VFiVRIpscvL" crossorigin="anonymous"></script>
+	<script defer src="https://use.fontawesome.com/releases/v5.1.1/js/fontawesome.js" integrity="sha384-NY6PHjYLP2f+gL3uaVfqUZImmw71ArL9+Roi9o+I4+RBqArA2CfW1sJ1wkABFfPe" crossorigin="anonymous"></script>
+
+	
+	<!-- Custom Styles -->
+	<style></style>
+	
+
+	
+	<!-- Analytics Code -->
+	
+	
+
+	
+	<!-- Extra Header JS Code -->
+	
+	
+
+</head>
+
+
+<body class="loading ajax-loading" data-site-url="http://localhost:4000" data-page-url="/2021-11-01-building-first-prefect-pipeline.html">
+
+
+	<header class="header">
+
+	<div class="wrap">
+
+		
+		<a href="/" class="header__avatar">
+			<img src="/images/avatar.jpg" class="header__avatar__img">
+		</a>
+		
+
+		
+		<a href="/" class="header__title">
+			Tyler Rouze
+		</a>
+		
+
+		<p class="header__tagline">Data Engineering Consultant @ Analytics8 | Data Analytics | ISyE Grad</p>
+
+		<div class="menu">
+			<ul class="menu__list">
+				
+				<li class="menu__list__item">
+					<a href="/" class="menu__list__item__link">Latest</a>
+				</li>
+				
+				<li class="menu__list__item">
+					<a href="/projects/" class="menu__list__item__link">Projects</a>
+				</li>
+				
+				<li class="menu__list__item">
+					<a href="/now" class="menu__list__item__link">/now</a>
+				</li>
+				
+				<li class="menu__list__item">
+					<a href="/subscribe" class="menu__list__item__link">Subscribe</a>
+				</li>
+				
+			</ul>
+		</div>
+
+	</div>
+
+</header>
+
+
+	<div class="loader"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" /></circle></svg></div>
+
+	<div class="page-loader"></div>
+
+
+	<div class="page">
+
+		<div class="page__content" data-page-title="Orchestrating a Data Pipeline Using Prefect on GCP – Tyler Rouze">
+
+			<section class="single">
+
+	<div class="wrap">
+
+		<h1>Orchestrating a Data Pipeline Using Prefect on GCP</h1>
+		<p class="subtitle"></p>
+
+		![](/images/prefect.jpeg)
+
+---
+
+So, I've been getting more interested in Data Engineering lately (who [hasn't](https://www.datanami.com/2020/02/12/demand-for-data-engineers-up-50/)?). What began with helping a client get data from their revenue management system to the cloud via a clunky Python script has now become a bit of a more vested interest in the happenings of this field. I happened to run across a post about [Prefect](https://prefect.io) on Reddit (where else?) discussing the differences between it and Apache Airflow. (Full disclaimer, I've never used or worked with Airflow, so this article will not be about that.) Letting my intrigue get the best of me, I decided to think up a little side project for myself to test this out for myself.
+
+I've been wearing an Apple Watch for quite a while now, and while I've used it to track workouts, pace, and sleep, I haven't taken the time to look at much of the data in aggregate. Some of the most interesting data visualizations as well as problems involve a sense of time (**Announcement**: I have a post on K-means adapted for time series data in the works, so check back soon). Needing a reason to build a data pipeline, I figured now was the time I'd run a full export of my data and see what I could learn from it.
+
+## Prefect
+Prefect is made up of a couple components, the UI and Agent.
+
+### UI
+Prefect UI is where you'll view your flows, schedule runs, and see older versions and data on past runs. The power of Prefect is that this comes setup with a GraphQL API that executes runs, handles errors, restarts runs, and can send notifications to messaging services like Slack or Twilio. For my database nerds, it stores cache and results data on a Postgres Database. All of this comes neatly in a Docker container that you can run on your own server. That said, their full featured UI lives at [cloud.prefect.io](https://cloud.prefect.io). To focus on the pipeline building, you can create an account to access their full-featured UI and you'll have the same tools and more at your fingertips.
+
+### Agent
+The Prefect Agent will run on your own private Virtual Machines, Kubernetes cluster, or even Dask cluster. This is where we install Python dependencies, register our flows, and run them. 
+
+An important distinction: **This is the only place your codebase will exist.**
+
+The reason this is so important is because it completely changes the risk landscape from the perspective of IT in your organization. When you register a flow, Prefect generates the metadata on the flow and that is all it needs to be able to make API calls via their cloud UI and GraphQL. Keeping your private codebase on your network or cloud account, always.
+
+## Building the Pipeline
+
+To keep this short and somewhat OS agnostic, I won't go over the specifics of writing the iPhone automation in the Shortcuts app to schedule the export of my Health data. I've been told it's possible to do this on Android as well, but I'll leave it to you to map out how you'll schedule or push your health data periodically from your device. However you do it, you'll want to push the export to somewhere that has an API so you can pick the data up via Python.
+
+### Spinning up your local Env
+To start, we need a computer! This could be your local machine, but if you've got some free credits for a cloud platform like I do, you can spin up a VM. I'm using Google Cloud Platform, to create an instance you can follow [this](https://cloud.google.com/compute/docs/instances/create-start-instance) documentation. Depending on you workload, you may be able to use a free tier VM anyways, but for the amount of processing power I need I'm not able to.
+
+### Package Dependencies
+Once you've created your VM, SSH into it. Assuming you've got Python installed on your VM (GCP VMs come with it), you can pull the packages you'll need for this from my public Github repo for this project by running (it's a good idea to create a [venv](https://docs.python.org/3/library/venv.html) first to install into):
+
+{% include clipboard.html %}
+```bash
+$ pip install -r https://raw.githubusercontent.com/trouze/Apple-Health-App/main/requirements.txt
+```
+
+This file doesn't include `Pyicloud`, which I use for accessing data on my iCloud. Use whatever you need to access your saved data. Additionally, there are some Prefect optional dependencies we need to specify via this call:
+
+{% include clipboard.html %}
+```bash
+$ pip install "prefect[gcp,google]"
+```
+
+If you were to run your pipeline on Kubernetes, the above call is where you'd specify that additional dependency. You can see all options [here](https://docs.prefect.io/core/getting_started/install.html#installing-optional-dependencies). For this tutorial, I'll just run the agent on a single virtual machine.
+
+### Register your Agent
+To facilitate the "handshake" between Prefect's Cloud UI and our Server Agent, we must generate an API key in the UI and make a call via our virtual machine's command line to register the agent. If you've already created an account with [Prefect Cloud UI](cloud.prefect.io), then follow the beautiful diagram below to create an API key.
+
+![](/images/prefect-api-key.png)
+
+Copy the API key that is generated and SSH into your virtual machine. We're going to use a Local Agent, but there are other [agent types](https://docs.prefect.io/orchestration/agents/overview.html#agent-types) that are better for modularity. We'll use local for the simplicity and needs at this point. With the API key copied to the clipboard run the following in the virtual machine bash:
+
+{% include clipboard.html %}
+```bash
+$ prefect agent local start --key "API_KEY"
+```
+
+Great! Now our machine is registered and able to connect to Prefect Cloud UI. You can ctrl+c to shut down the agent, as we'll begin developing an example pipeline and mount it on our machine.
+
+## Building The Pipeline in Python
+
+
+### Tasks, Secrets, Flows
+
+#### Pushing Pipeline Files to the VM
+do this via gcloud command line
+
+### Registering the Flow
+
+### Starting the Agent
+nohup prefect agent local start &
+
+### Using the UI to Schedule and Run Flows
+
+
+
+## What's Next?
+I love this orchestration platform, and the true power of it just might be in ML model training. Using this service, we can schedule runs to retrain our models based on new data, always keeping parameters up to date when data changes. I may work to integrate this into the trading bot project I started a while back, so stay tuned.
+
+	</div>
+
+</section>
+
+		</div>
+
+	</div>
+
+
+	<footer class="footer">
+
+	<ul class="socials">
+	
+		
+		
+		<li class="socials__item">
+			<a href="https://www.linkedin.com/in/tylerrouze/" class="socials__item__link" title="Linkedin">
+				<i class="fab fa-linkedin" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<li class="socials__item">
+			<a href="https://tylerrouze.medium.com/" class="socials__item__link" title="Medium">
+				<i class="fab fa-medium" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<li class="socials__item">
+			<a href="https://github.com/trouze" class="socials__item__link" title="Github">
+				<i class="fab fa-github" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<li class="socials__item">
+			<a href="https://open.spotify.com/user/tyrouze10" class="socials__item__link" title="Spotify">
+				<i class="fab fa-spotify" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		<li class="socials__item">
+			<a href="https://www.notion.so/tylerrouze/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a" class="socials__item__link" title="Codepen">
+				<i class="fab fa-codepen" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+		
+		<li class="socials__item">
+			<a href="https://untappd.com/user/tylerrouze" class="socials__item__link" title="Untappd">
+				<i class="fab fa-untappd" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+	
+		
+		
+		<li class="socials__item">
+			<a href="https://calendly.com/tyler-rouze" class="socials__item__link" title="Calendar">
+				<i class="fas fa-calendar" aria-hidden="true"></i>
+			</a>
+		</li>
+		
+		
+	
+</ul>
+
+
+	<div class="footer__copyright">
+		<span>© 2022 Tyler Rouze. Powered by <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://pages.github.com">Github Pages.</span>
+	</div>
+
+</footer>
+
+
+
+	<!-- Javascript Assets -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/js/simples-min.js"></script>
+	<script src="/js/plugins/clipboard.js"></script>
+
+	
+	<!-- Extra Footer JS Code -->
+	
+	
+
+
+</body>
+
+</html>
