@@ -57,10 +57,11 @@ social_settings:
     soundcloud_url: ''
     spotify_url: 'https://open.spotify.com/user/tyrouze10'
     bandcamp_url: ''
-    codepen_url: 'https://www.notion.so/tylerrouze/dac9501e044c4009bcb158edbbd032f1?v=796540bb02d34f97aa7c2b5ee3bf626a'
     untappd_url: 'https://untappd.com/user/tylerrouze'
   fas:
     calendar_url: 'https://calendly.com/tyler-rouze'
+  fa:
+    camera_url: 'https://vsco.co/tylerrouze'
 
 color_settings:
   background_color: '#ffffff'
