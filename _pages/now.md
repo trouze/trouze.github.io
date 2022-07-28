@@ -2,10 +2,10 @@
 title: /now
 description: What Tyler is doing right now
 subtitle: A place to keep up with what I'm doing right now!
-featured_image: /images/mplsskyline.jpg
+featured_image: /images/austin.jpg
 layout: page
 ---
-![](/images/mplsskyline.jpg)
+![](/images/austin.jpg)
 <hr>
 ### This page lists the most up-to-date information regarding what I am doing *right now*.
 
@@ -31,7 +31,7 @@ but I wouldn't have it any other way.
 
 ### Life
 
-I currently live in Minneapolis, Minnesota.
+I currently live in Austin, TX.
 
 ### Work
 
