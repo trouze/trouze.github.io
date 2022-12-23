@@ -1,0 +1,66 @@
+{{ define "main" }}
+<div class="container">
+    <article>
+        <header class="article-header">
+            <div class="thumb">
+                <div>
+                    <h1>{{ .Title }}</h1>
+                    <div class="post-meta">
+                        <div>
+                            {{ $author := .Params.author }}
+                            {{ if eq $author nil }}
+                              {{ $author = .Site.Params.author }}
+                            {{ end }}
+                            By {{ $author  }} | <time>{{ .Date.Format "January 02, 2006" }}</time>
+                            | {{ .ReadingTime }} minutes
+                        </div>
+                        <div class="tags">
+                            {{ range (.GetTerms "tags") }}
+                            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </article>
+
+    <div class="article-post">
+    {{ .Content }}
+    </div>
+</div>
+
+<div class="container">
+    {{ if .Section }}
+    <nav class="flex container suggested">
+        {{ with .PrevInSection }}
+        <a rel="prev" href="{{ .RelPermalink }}" title="Previous post (older)">
+            <span>Previous</span>
+            {{ .Title }}
+            </a>
+        {{ end }}
+        
+        {{ with .NextInSection }}
+        <a rel="next" href="{{ .RelPermalink }}" title="Next post (newer)">
+            <span>Next</span>
+            {{ .Title }}
+            </a> 
+        {{ end }}
+    </nav>
+    {{ end }}
+</div>
+{{ if or (not (isset .Params "comments")) (eq .Params.comments "true")}} 
+<div class="container">
+    {{ partial "comments/include" . }}
+</div>
+{{ end }}
+<!-- Load PhotoSwipe js if the load-photoswipe shortcode has been used -->
+{{ if ($.Scratch.Get "photoswipeloaded") }}
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="/js/load-photoswipe.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.js" integrity="sha256-UplRCs9v4KXVJvVY+p+RSo5Q4ilAUXh7kpjyIP5odyc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.min.js" integrity="sha256-PWHOlUzc96pMc8ThwRIXPn8yH4NOLu42RQ0b9SpnpFk=" crossorigin="anonymous"></script>
+{{ end }}
+</main>
+
+{{ end }}

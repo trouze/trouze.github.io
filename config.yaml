@@ -1,7 +1,6 @@
 baseurl: "https://example.com"
 languageCode: "en-us"
 title: "Tyler Rouze"
-theme: "hugo-tania"
 paginate: 5
 
 params:
