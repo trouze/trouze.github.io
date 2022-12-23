@@ -32,7 +32,7 @@ The idea behind chains is that with one Non-directed Donor (someone who gives th
 
 Cycles are similar to chains in their structure, the only difference is that cycles aren't started by NDDs but rather a donor from a patient-donor pairing. Ultimately, cycles end with a donor giving up their kidney to the patient whose donor began the cycle. This looks something like this:
 
-<img src="/images/cycle.jpg">
+<img src="/images/cycle.png">
 
 As we'll see later, we will want to limit cycles to a maximum length of five. There are a few reasons we do this, but it is mainly because the longer a cycle is, the longer the time in which something could happen such that the patient-donor pair who began the cycle doesn't get a kidney at the end of the cycle. Restated from above, a cycle begins when a donor from an incompatible pairing gives their kidney to someone whom they do not know, but are compatible with. The cycle completes when a donor gives their kidney to the patient who's donor began the cycle.
 
@@ -59,7 +59,7 @@ Finally, `w` is subscripted at <sub>ij</sub>. For example, w<sub>0,721</sub> is 
 We load the data into [Julia](https://julialang.org/) like this:
 
 ```julia
-dat = readdlm("donor-pool2.csv", ',', '\n', comments=true)
+dat = readdlm("donor-pool1.csv", ',', '\n', comments=true)
 
 fr = dat[:,1]
 to = dat[:,2]
@@ -346,6 +346,6 @@ function find_cycles(foundchains,y,E,soln)
 end
 ```
 
-That's about it! To finish, we call each of these functions and write the returned arrays into a `.csv` file. If you'd like to see the entire file and run a dataset on it for yourself, head over to my repository for the [Julia file](https://github.com/trouze/UMNStuffs/blob/master/kidneyexchange.jl) and the [dataset](https://github.com/trouze/UMNStuffs/blob/master/donor-pool1.csv). Happy programming!
+That's about it! To finish, we call each of these functions and write the returned arrays into a `.csv` file. If you'd like to see the entire file and run a dataset on it for yourself, head over to my repository for the [Julia file](https://github.com/trouze/kidney-donor-pairing/blob/main/kidneyexchange.jl) and the [dataset](https://github.com/trouze/kidney-donor-pairing/blob/main/donor-pool1.csv). Happy programming!
 
 [^1]: [Columbia Surgery source on kidney transplants](https://columbiasurgery.org/conditions-and-treatments/living-donor-kidney-transplants)
