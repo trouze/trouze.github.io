@@ -1,0 +1,1 @@
+Data Engineering Consultant @ Analytics8 | Data Analytics | ISyE Grad

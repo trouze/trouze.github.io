@@ -1,0 +1,90 @@
+baseurl: "https://example.com"
+languageCode: "en-us"
+title: "Tyler Rouze"
+theme: "hugo-tania"
+paginate: 5
+
+params:
+  # Emoji will show before the blog title on site navbar.
+  titleEmoji:
+
+  # Logo will show before the blog title on site navbar.
+  titleLogo: favicon.ico
+  
+  # Enable float footnotes.
+  # Default to true
+  enableFootnotes: true
+  
+  siteName: "Tyler Rouze - Data Engineering Consultant @ Analytics8"
+  siteDesc: "Hi, I'm Tyler and this is where I write, think, and share. Join the conversation around Data engineering, the modern data stack, and lifelong learning."
+  author: "Tyler Rouze"
+
+  colorScheme:
+    # Enable toggle colorScheme
+    # Default to true
+    toggle: true
+    # Default colorScheme
+    # Default to auto
+    default: auto
+
+  # Limit how many categories filter show above search input.
+  # Default to 5
+  maxCategoryToShow: 10
+  mailchimp: https://tylerrouze.us20.list-manage.com/subscribe/post?u=2999b5cece1fa6ee3e6af9a37&id=3addec2a8e
+
+  # Show your socail information with icon on index bio with `_index.md` content.
+  socialOptions:
+    dev-to:
+    email: tyler@tylerrouze.com
+    facebook:
+    github: https://github.com/trouze
+    instagram:
+    linkedin: https://www.linkedin.com/in/tylerrouze
+    medium: https://tylerrouze.medium.com/
+    stack-overflow:
+    steam:
+    telegram:
+    twitter:
+    twitch:
+    whatsapp:
+  
+  # Comments settings
+  comments:
+    enabled: true
+    provider: giscus
+
+    giscus:
+      repo: trouze/trouze.github.io
+      id: MDEwOlJlcG9zaXRvcnkyMDM4NTU5ODU=
+      category:
+        name: Blog Comments
+        id: DIC_kwDODCaYcc4CTODa
+
+menu:
+  header:
+    - identifier: home
+      name: ahome
+      url: "/"
+    - identifier: posts
+      name: bposts
+      url: "/posts"
+    - identifier: /now
+      name: c/now
+      url: "/now"
+    - identifier: subscribe
+      name: dsubscribe
+      url: "/subscribe"
+  footer:
+    - name: RSS
+      url: "/index.xml"
+
+markup:
+  highlight:
+    noClasses: false
+    lineNos: true
+  goldmark:
+    renderer:
+      unsafe: true
+
+outputs:
+  home: ["HTML", "RSS", "JSON"]
