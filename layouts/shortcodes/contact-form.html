@@ -1,21 +1,12 @@
 <link rel="stylesheet" href={{ "css/contact-form.css" | relURL }} />
 {{ $mailchimp_url := .Site.Params.mailchimp }}
-<div class="contact-form">
 
-	<form method="post" action="{{ $mailchimp_url }}" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form">
-
-		<div class="contact-form__item">
-			<input type="text" name="EMAIL" placeholder="Your email address..." class="contact-form__input" id="mce-EMAIL">
-		</div>
-
-		<input type="hidden" name="_next" value="/thanks" />
-		<input type="hidden" name="_subject" value="Subscribe form submission" />
-		<input type="text" name="_gotcha" style="display: none;" class="contact-form__gotcha" val="">
-
-		<div class="contact-form__item">
-			<input type="submit" value="Subscribe">
-		</div>
-		<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_2999b5cece1fa6ee3e6af9a37_3addec2a8e" tabindex="-1" value=""></div>
-	</form>
-	{{- .Inner }}
-</div>
+<form method="post" action="{{ $mailchimp_url }}" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form">
+	<input name="EMAIL" id="subscribe-email" type="search" placeholder="Your email address...">
+	<input type="hidden" name="_next" value="/thanks" />
+	<input type="hidden" name="_subject" value="Subscribe form submission" />
+	<input type="text" name="_gotcha" style="display: none;" class="contact-form__gotcha" val="">
+	<input type="submit" id="subscribe-button" value="Subscribe">
+	<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_2999b5cece1fa6ee3e6af9a37_3addec2a8e" tabindex="-1" value=""></div>
+</form>
+{{- .Inner }}
