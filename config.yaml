@@ -8,7 +8,7 @@ params:
   titleEmoji:
 
   # Logo will show before the blog title on site navbar.
-  titleLogo: favicon.ico
+  titleLogo:
   
   # Enable float footnotes.
   # Default to true
@@ -31,7 +31,7 @@ params:
   maxCategoryToShow: 10
   mailchimp: https://tylerrouze.us20.list-manage.com/subscribe/post?u=2999b5cece1fa6ee3e6af9a37&id=3addec2a8e
 
-  # Show your socail information with icon on index bio with `_index.md` content.
+  # Show your social information with icon on index bio with `_index.md` content.
   socialOptions:
     dev-to:
     email: tyler@tylerrouze.com
