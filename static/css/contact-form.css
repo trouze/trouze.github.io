@@ -1,17 +1,9 @@
-// - - - - - - - - - - - - - - - - - -
-
-// Contact form
-
-// - - - - - - - - - - - - - - - - - -
-
 .contact-form {
 	background: var(--light-background);
 	margin: 20px auto;
 	width: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 0;
     border-bottom: 2px solid var(--light-background);
 
     .icon {
@@ -21,10 +13,9 @@
 
     input {
         display: flex;
-        align-items: center;
+        align-items: left;
         margin-bottom: 0.25rem;
         border-width: 0;
-		margin-left: 1.5rem;
 		border-width: 2px;
 
     }
@@ -45,80 +36,11 @@
 }
 
 input[type=submit] {
-	margin-top: 0.25rem;
     cursor: pointer;
 	display: inline-block;
     border: 2px solid var(--link-color);
     padding: .75rem .75rem;
-    margin-right: .75rem;
-    font-weight: 500;
     background: var(--link-color);
     color: #fff;
     border-radius: .35rem;
-    font-size: 1.25rem;
-
-	&:focus {
-		box-shadow: 0px -3px 0px var(--link-color-darker) inset !important;
-		background: var(--link-color-darker) !important;
-	}
-}
-
-.contact-form__item {
-	margin-top: 15px;
-
-	&:first-child {
-		margin-top: 0;
-	}
-}
-
-.contact-form__item--error {
-
-	.contact-form__input,
-	.contact-form__textarea {
-		border-color: var(--accent-color);
-	}
-}
-
-.contact-form__label {
-	display: block;
-	font-size: 11;
-	font-weight: 1;
-	color: var(--medium-font-color);
-
-}
-
-.contact-form__input,
-.contact-form__textarea {
-	width: 100%;
-	margin-top: -2rem;
-	border: 2px solid var(--accent-color);
-	border-radius: 2px;
-	padding: 10px 12px;
-	background: var(--light-background);
-	font-size: 1.75rem !important;
-	line-height: 1.4;
-	color: var(--dark-font-color);
-	@include transition(all 0.15s ease-in-out);
-
-	&:focus {
-		border: 2px solid var(--accent-color);
-	}
-}
-
-::-webkit-input-placeholder {
-	color: lighten($text-light-color,15%);
-}
-::-moz-placeholder {
-	color: lighten($text-light-color,15%);
-}
-:-ms-input-placeholder {
-	color: lighten($text-light-color,15%);
-}
-:-moz-placeholder {
-	color: lighten($text-light-color,15%);
-}
-
-.contact-form__textarea {
-	min-height: 200px;
-	resize: none;
 }
