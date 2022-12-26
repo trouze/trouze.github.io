@@ -45,7 +45,9 @@ params:
     telegram:
     twitter:
     twitch:
+    vsco: https://vsco.co/tylerrouze
     whatsapp:
+    
   
   # Comments settings
   comments:
