@@ -48,3 +48,11 @@ if __name__ == "__main__":
     with stub.run():
         run_dbt.call()
 ```
+
+commands
+
+```
+modal run test.py
+modal deploy test.py
+curl 'https://trouze--run-dbt-demo-run-dbt.modal.run'
+```
