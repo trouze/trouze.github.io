@@ -24,7 +24,7 @@ I currently live in Austin, TX.
 
 ### Work
 
-I currently work for [Analytics8](https://www.analytics8.com) as a data management consultant. My role focuses on modernizing clients' data architectures, data modeling practices, and developer workflows. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I have even made open-source contributions to the [dbt-core](https://github.com/dbt-labs/dbt-core) project!
+I currently work for [Analytics8](https://www.analytics8.com) as a data management consultant. My role focuses on modernizing clients' data architectures, data modeling practices, and developer workflows. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/) (I'm an open-source contributor here!), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I have even made open-source contributions to the [dbt-core](https://github.com/dbt-labs/dbt-core) project!
 
 ### Education
 
