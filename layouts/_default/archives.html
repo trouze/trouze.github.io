@@ -25,10 +25,14 @@
         </div>
         <section id="articles-list">
             {{ range $pages.GroupByDate "2006" }}
+            {{ $year := .Key }}
+            {{ $posts := where .Pages "Date" "!=" nil }} <!-- Filter out posts without a date -->
+            {{ $visiblePosts := where $posts ".Params.unlisted" "!=" true }} <!-- Filter out unlisted posts -->
+            {{ if gt (len $visiblePosts) 0 }} <!-- Display the year header only if there are visible posts -->
             <section>
-                <h2>{{ .Key }}</h2>
+                <h2>{{ $year }}</h2>
                 <div class="posts">
-                    {{ range .Pages }}
+                    {{ range $visiblePosts }}
                     <div class="post">
                         <a href="{{ .RelPermalink }}">
                             <div class="post-row">
@@ -41,7 +45,8 @@
                 </div>
             </section>
             {{ end }}
-        </section>
+            {{ end }}
+        </section>       
     </div>
 </section>
 
