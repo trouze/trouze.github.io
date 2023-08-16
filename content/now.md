@@ -14,8 +14,7 @@ layout: page
 This page lists the most up-to-date information regarding what I am doing *right now*.
 
 ### A little bit about me.
-Motorhead, flying, golfing, baseball, hiking, skiing, bread making, guitar, you name it. My passions carry me in many different and odd directions,
-but I wouldn't have it any other way.
+Motorhead, flying, golfing, baseball, hiking, skiing, bread making, guitar, you name it. My passions carry me in many different and odd directions, but I wouldn't have it any other way.
 
 {{< gallery dir="/images/now_gallery/" />}} {{< load-photoswipe >}}
 
@@ -25,7 +24,7 @@ I currently live in Austin, TX.
 
 ### Work
 
-I currently work for [Analytics8](https://www.analytics8.com) as a data engineering consultant. This is a recently new role for me, so there'll be more to update here going forward. That said, my focuses are within the Modern Data Stack, mainly doing technology and cloud enablement using Google Cloud Platform as well as data warehousing tools like Snowflake and Databricks.
+I currently work for [Analytics8](https://www.analytics8.com) as a data management consultant. My role focuses on modernizing clients' data architectures, data modeling practices, and developer workflows. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/) (I'm an open-source contributor here!), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I have even made open-source contributions to the [dbt-core](https://github.com/dbt-labs/dbt-core) project!
 
 ### Education
 
@@ -54,5 +53,6 @@ If you share some of the same interests, drop a line below!
 Send me an email to [tyler @ this domain](mailto:tyler@tylerrouze.com). If you simply want to keep up with what's going on with me, you can subscribe to the [mailing list](https://tylerrouze.com/subscribe) for updates delivered straight to your inbox.
 
 <hr>
+<br>
 
-This page in inspiration from [this article](https://medium.com/@mikevardy/why-i-joined-the-now-page-movement-830b1b43fdf6)
+This page is an inspiration from [this article](https://medium.com/@mikevardy/why-i-joined-the-now-page-movement-830b1b43fdf6)
