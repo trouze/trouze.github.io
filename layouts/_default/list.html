@@ -17,7 +17,7 @@
     <section>
       <section>
         <div class="posts">
-          {{ range $pages }}
+          {{ range (where $pages ".Params.unlisted" "!=" "true") }}
           <div class="post">
             <a href="{{ .RelPermalink }}">
               <div class="post-row">
