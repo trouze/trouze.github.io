@@ -37,17 +37,18 @@ params:
     email: tyler@tylerrouze.com
     facebook:
     github: https://github.com/trouze
-    instagram: https://instagram.com/tylerrouze
+    instagram:
     linkedin: https://www.linkedin.com/in/tylerrouze
     medium:
-    stack-overflow: https://www.strava.com/athletes/116840931
+    stack-overflow:
     steam:
+    strava: https://www.strava.com/athletes/116840931
     telegram:
     twitter:
     twitch:
     vsco: https://vsco.co/tylerrouze
     whatsapp:
-    
+    youtube: https://www.youtube.com/@tylerrouze
   
   # Comments settings
   comments:
