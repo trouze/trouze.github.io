@@ -1,8 +1,7 @@
 ---
 title: "My First dbt-core Contribution!"
 date: 2023-08-03 12:00:00
-featured_image: '/images/prefect.jpeg'
-excerpt: "Automating a data pipeline carrying Apple Health data: in this tutorial I'll show you the programming and DevOps tasks necessary to setup and run a Data Pipeline on Google Cloud Platform, orchestrated using Prefect and developed using their design principles."
+excerpt: "I made my first open-source contribution to dbt-core. This PR makes model state selection logic mutually exclusive and collectively exhaustive, allowing for the ability to exclude views from your dbt DAG that haven't changed."
 ---
 I recently made my first `dbt-core` open-source contribution! This contribution adds `unmodified` and `old` [state selection](https://docs.getdbt.com/reference/node-selection/methods#the-state-method) methods to the dbt CLI. The main motivation is to make it easy to exclude late-binding views from our dbt job's DAG, reducing the runtime overhead. You can see some details that precipitated this contribution [here](https://github.com/dbt-labs/dbt-core/issues/7564). 
 
