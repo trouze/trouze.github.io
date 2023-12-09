@@ -9,6 +9,6 @@ I recently spoke at dbt labs' Coalesce Conference in San Diego! Alongside the He
 
 You can watch a recording of the talk below:
 
-<iframe width="766" height="431" src="https://www.youtube.com/watch?v=Z4f04K4Ljlg&t=1s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="766" height="431" src="https://www.youtube.com/embed/Z4f04K4Ljlg?si=vf6JNTloD3oIV5_N" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 If you work for an analytics team thinking about adopting a multi-project architecture with dbt, I'm always happy to discuss your vision with you and offer insights having done this at scale. Comment below or reach out to me via tyler [at] tylerrouze.com!
