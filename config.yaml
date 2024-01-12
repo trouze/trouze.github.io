@@ -14,7 +14,7 @@ params:
   # Default to true
   enableFootnotes: true
   
-  siteName: "Tyler Rouze - Data Engineering Consultant @ Analytics8"
+  siteName: "Tyler Rouze - Data Engineering Manager @ Analytics8"
   siteDesc: "Hi, I'm Tyler and this is where I write, think, and share. Join the conversation around Data engineering, the modern data stack, and lifelong learning."
   author: "Tyler Rouze"
 

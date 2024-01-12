@@ -24,7 +24,7 @@ I currently live in Austin, TX.
 
 ### Work
 
-I currently work for [Analytics8](https://www.analytics8.com) as a data management consultant. My role focuses on modernizing clients' data architectures, data modeling practices, and developer workflows. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I have even made open-source contributions to the [dbt-core](https://github.com/dbt-labs/dbt-core) project!
+I currently work for [Analytics8](https://www.analytics8.com) as a Managing Consultant. My role focuses on modernizing clients' data architectures, data modeling practices, and developer workflows while managing a team of consultants working on similar projects. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I have even made open-source contributions to the [dbt-core](https://github.com/dbt-labs/dbt-core) project!
 
 ### Education
 
@@ -40,11 +40,11 @@ Thanks to my time in college, I have strong passions for data-driven solutions a
 
 Some of my current interests are:
 
-* Aviation ([Microsoft Flight Simulator](https://www.flightsimulator.com/) anyone?)
 * Formula 1
+* Running (Chicago Marathon on deck!)
+* Aviation ([Microsoft Flight Simulator](https://www.flightsimulator.com/) anyone?)
 * Any book on our Human Nature (psychology/sociology), especially those with data driven research findings.
-* Modern Data Stack
-* Anything cutting edge involving [Python](https://www.python.org/), [R](https://www.r-project.org/), or [Julia](https://julialang.org/) languages
+* Modern Data Stack (especially [dbt](https://www.getdbt.com/))
 
 If you share some of the same interests, drop a line below!
 
