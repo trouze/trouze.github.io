@@ -1,1 +1,1 @@
-Data Engineering Consultant @ [Analytics8](https://www.analytics8.com)
+Managing Consultant @ [Analytics8](https://www.analytics8.com)
