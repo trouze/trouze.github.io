@@ -1,8 +1,7 @@
 ---
 title: "I ran my first half-marathon!"
 date: 2024-01-23 12:00:00
-featured_image: '/images/prefect.jpeg'
-excerpt: "I spoke at Coalesce 2023 alongside Yannick Misteli, discussing how they have deployed numerous dbt projects to manage analytics workflows within the Go-to-market department of Roche Pharmaceuticals."
+excerpt: "Starting from zero, I executed a five month training block to run my first half-marathon, adjusting goals along the way and setting a new, bigger one."
 ---
 
 About five months ago, I started my first training block ever to run a long distance race.
