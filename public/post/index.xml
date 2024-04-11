@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Tyler Rouze</title>
+    <link>http://localhost:1313/post/</link>
+    <description>Recent content in Posts on Tyler Rouze</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 21 Mar 2024 12:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>5 Steps to Optimize your dbt Implementation</title>
+      <link>http://localhost:1313/post/dbt-healthcheck-webinar/</link>
+      <pubDate>Thu, 21 Mar 2024 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/dbt-healthcheck-webinar/</guid>
+      <description>I recently took the opportunity to speak to clients of Analytics8 about keeping their data transformation practices up to date through periodic health checks!</description>
+    </item>
+    <item>
+      <title>Recap: My First Marathon</title>
+      <link>http://localhost:1313/post/austin-marathon/</link>
+      <pubDate>Mon, 19 Feb 2024 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/austin-marathon/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>I ran my first half-marathon!</title>
+      <link>http://localhost:1313/post/3m-half/</link>
+      <pubDate>Tue, 23 Jan 2024 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/3m-half/</guid>
+      <description>About five months ago, I started my first training block ever to run a long distance race.&#xA;I think it is a common experience for many who grow up playing team sports to view running as a punishment. Missed your free throws? Run lines. Got blown out on your home field? Next practice, we&amp;rsquo;re running. The crazy thing is, I even ran cross country for a time growing up, but even then, that was about running a race to beat people.</description>
+    </item>
+    <item>
+      <title>Coalesce Conference 2023: How Roche GTM Manages Multi-project dbt Deployments</title>
+      <link>http://localhost:1313/post/coalesce-2023/</link>
+      <pubDate>Fri, 08 Dec 2023 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/coalesce-2023/</guid>
+      <description>I recently spoke at dbt labs&amp;rsquo; Coalesce Conference in San Diego! Alongside the Head of Engineering for the Roche Go-to-market Analytics Department, Yannick Misteli and I discuss multi-project deployments of dbt to scale your analytics workflow. This talk precedes features that were announced at this Coalesce Conference around dbt mesh, discussing how Roche managed model interaction between dbt projects before these features existed.&#xA;You can watch a recording of the talk below:</description>
+    </item>
+    <item>
+      <title>My First dbt-core Contribution!</title>
+      <link>http://localhost:1313/post/first-dbt-core-contribution/</link>
+      <pubDate>Thu, 03 Aug 2023 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/first-dbt-core-contribution/</guid>
+      <description>I recently made my first dbt-core open-source contribution! This contribution adds unmodified and old state selection methods to the dbt CLI. The main motivation is to make it easy to exclude late-binding views from our dbt job&amp;rsquo;s DAG, reducing the runtime overhead. You can see some details that precipitated this contribution here.&#xA;You can watch a short demo on the contribution below:&#xA;To take it for a spin yourself, you might run a command that excludes the intersection of views and unchanged models from the DAG:</description>
+    </item>
+    <item>
+      <title>dbt Chicago Meetup - May 2023</title>
+      <link>http://localhost:1313/post/dbt-meetup-chicago-may-23/</link>
+      <pubDate>Mon, 01 May 2023 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/dbt-meetup-chicago-may-23/</guid>
+      <description>I took the opportunity to share some insights about my experiences in scaling dbt development in the enterprise during the May 2023 dbt Chicago Meetup. You can see the docs below and picture of me speaking at the event below!&#xA;Previous Next &amp;nbsp; &amp;nbsp; / [pdf] View the PDF file here. </description>
+    </item>
+    <item>
+      <title>Q&amp;A Session: What Does dbt Add to Databricks?</title>
+      <link>http://localhost:1313/post/dbt-with-databricks/</link>
+      <pubDate>Wed, 08 Feb 2023 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/dbt-with-databricks/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>How dbt Helps Our Clients Remove Data Engineering Bottlenecks</title>
+      <link>http://localhost:1313/post/a8-dbt-webinar/</link>
+      <pubDate>Fri, 01 Jul 2022 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/a8-dbt-webinar/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API</title>
+      <link>http://localhost:1313/post/td-ameritrade-api-setup/</link>
+      <pubDate>Mon, 16 Nov 2020 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/td-ameritrade-api-setup/</guid>
+      <description>Welcome to the first installment of what will likely be a series of tutorials on building algorithmic trading bots to do a multitude of things for us automatically! Along the way, we&amp;rsquo;ll touch on APIs, cloud computing, stock and option trading strategies, and a little bit of data science to search for opportunities. It should go without saying that none of what is written about here constitutes as financial advice, it&amp;rsquo;s quite likely you&amp;rsquo;ll lose money listening to me ;)</description>
+    </item>
+  </channel>
+</rss>

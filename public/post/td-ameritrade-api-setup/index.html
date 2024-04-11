@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="dark">
+    <title>Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API | Tyler Rouze</title>
+
+    
+    
+    
+    <meta property="og:site_name" content="Tyler Rouze - Data Engineering Manager @ Analytics8" />
+    <meta property="og:title" content="Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API | Tyler Rouze"/>
+    <meta itemprop="name" content="Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API | Tyler Rouze" />
+    <meta name="twitter:title" content="Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API | Tyler Rouze" />
+    <meta name="application-name" content="Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API | Tyler Rouze" /><meta name="twitter:card" content="summary"/>
+
+    <meta name="description" content="The beginning of a series on connecting to TD Ameritrade&#39;s API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us." />
+    <meta name="twitter:description" content="The beginning of a series on connecting to TD Ameritrade&#39;s API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us. "/>
+    <meta itemprop="description" content=" The beginning of a series on connecting to TD Ameritrade&#39;s API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us. "/>
+    <meta property="og:description" content=" The beginning of a series on connecting to TD Ameritrade&#39;s API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us. " />
+
+    
+
+<meta property="og:type" content="article" />
+<meta property="article:publisher" content="Tyler Rouze" />
+<meta property="og:article:published_time" content=2020-11-16T12:00:00Z />
+<meta property="article:published_time" content=2020-11-16T12:00:00Z />
+
+
+  <meta property="og:article:author" content="Tyler rouze" />
+  <meta property="article:author" content="Tyler rouze" />
+  <meta name="author" content="Tyler rouze" />
+
+
+
+
+<script defer type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Algorithmic Trading Series: Hooking up to TD Ameritrade's API",
+    "author": {
+      "@type": "Person",
+      "name": "Tyler Rouze"
+    },
+    "datePublished": "2020-11-16",
+    "description": "The beginning of a series on connecting to TD Ameritrade's API via Python to execute trades, building algorithms to search for opportunities, and leveraging cloud computing to automate it all for us.",
+    "wordCount":  1292 ,
+    "mainEntityOfPage": "True",
+    "dateModified": "2020-11-16",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tyler Rouze",
+      "logo": {
+        "@type": "imageObject",
+        "url": "http:\/\/localhost:1313\/favicon.ico"
+      }
+    }
+  }
+</script>
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <link rel="stylesheet" href="/sass/main.min.ea06eac753dfdcb8d93b7888c21252d91ab43515ceb77c20e34219f8a6797295.css">
+    
+</head>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RXL6BE795W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RXL6BE795W');
+</script>
+    
+    <script>
+        (function() {
+            const colorSchemeKey = 'ThemeColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'ThemeColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.userColorScheme = 'dark';
+        } else {
+            document.documentElement.dataset.userColorScheme = 'light';
+        }
+    })();
+</script>
+
+
+    <body class="dark">
+        <nav class="navbar">
+    <div class="container">
+        <div class="flex">
+            <div>
+                <a class="brand" href="/">
+                    
+                    
+                    Tyler Rouze
+                    </a>
+            </div>
+            <div class="flex">
+                
+                <a href="/">home</a>
+                
+                <a href="/posts">posts</a>
+                
+                <a href="/now">/now</a>
+                
+                <a href="/subscribe">subscribe</a>
+                
+                
+                    <button id="dark-mode-button">
+                    <svg class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M30.312.776C32 19 20 32 .776 30.312c8.199 7.717 21.091 7.588 29.107-.429C37.9 21.867 38.03 8.975 30.312.776z"/><path d="M30.705 15.915a1.163 1.163 0 1 0 1.643 1.641a1.163 1.163 0 0 0-1.643-1.641zm-16.022 14.38a1.74 1.74 0 0 0 0 2.465a1.742 1.742 0 1 0 0-2.465zm13.968-2.147a2.904 2.904 0 0 1-4.108 0a2.902 2.902 0 0 1 0-4.107a2.902 2.902 0 0 1 4.108 0a2.902 2.902 0 0 1 0 4.107z" fill="#FFCC4D"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    <svg class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M16 2s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2V2zm18 14s2 0 2 2s-2 2-2 2h-2s-2 0-2-2s2-2 2-2h2zM4 16s2 0 2 2s-2 2-2 2H2s-2 0-2-2s2-2 2-2h2zm5.121-8.707s1.414 1.414 0 2.828s-2.828 0-2.828 0L4.878 8.708s-1.414-1.414 0-2.829c1.415-1.414 2.829 0 2.829 0l1.414 1.414zm21 21s1.414 1.414 0 2.828s-2.828 0-2.828 0l-1.414-1.414s-1.414-1.414 0-2.828s2.828 0 2.828 0l1.414 1.414zm-.413-18.172s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zm-21 21s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zM16 32s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2v-2z"/><circle fill="#FFD983" cx="18" cy="18" r="10"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    </button>
+                
+            </div>
+            </div>
+    </div>
+</nav>
+
+        <main>
+            
+<div class="container">
+    <article>
+        <header class="article-header">
+            <div class="thumb">
+                <div>
+                    <h1>Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API</h1>
+                    <div class="post-meta">
+                        <div>
+                            
+                            
+                            By Tyler Rouze | <time>November 16, 2020</time>
+                            | 7 minutes
+                        </div>
+                        <div class="tags">
+                            
+                            <a href="/tags/programming/">Programming</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </article>
+
+    <div class="article-post">
+    <img src="/images/stock_trade.jpg">
+<hr><br>
+<p>Welcome to the first installment of what will likely be a series of tutorials on building algorithmic trading bots to do a multitude of things for us automatically! Along the way, we&rsquo;ll touch on APIs, cloud computing, stock and option trading strategies, and a little bit of data science to search for opportunities. It should go without saying that none of what is written about here constitutes as financial advice, it&rsquo;s quite likely you&rsquo;ll lose money listening to me ;)</p>
+<p>Let&rsquo;s get started.</p>
+<h2 id="setting-up-an-account-with-td-ameritrade">
+    <a href="#setting-up-an-account-with-td-ameritrade" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Setting up an account with TD Ameritrade
+</h2>
+<p>For the purpose of this series, I&rsquo;m going to be using TD Ameritrade as our broker for everything we cover. This is largely a personal preference (it&rsquo;s who I use for retirement, etc.), but what you choose is up to you- with the notable exception that your broker should have an API that you can get data from and access your account to make trades from. I believe Robinhood has an API as well, but I haven&rsquo;t explored its capabilities much at all.</p>
+<p>To get started, <a href="https://start.tdameritrade.com/select?entity=103">open an account</a> with TDA if you haven&rsquo;t already. The account type doesn&rsquo;t really matter, but Individual is probably your best bet if you want to follow along. You don&rsquo;t have to fund your account right away if you simply want to give this whole thing a shot first. Once you&rsquo;ve got a brokerage account, you&rsquo;ll need to <a href="https://developer.tdameritrade.com">register for a developer account</a>. This is a separate account, so you can use the same username for continuity.</p>
+<h2 id="building-your-first-app">
+    <a href="#building-your-first-app" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Building your first app
+</h2>
+<p>In order to place orders on your account, you need to create an developer application that will allow you to do so. Think of this as vehicle in which you can access your account. We need to create a module that will let us programmatically interact with our account via API and this is how we&rsquo;ll do it.</p>
+<img src="/images/build_app.png">
+<p>At the top left of the screen after you register, you&rsquo;ll see &ldquo;My Apps&rdquo;, click on this and add an app. From here it&rsquo;s pretty simple, give the app a name, a description, and then specify a callback URL. The callback URL is how you&rsquo;ll receive authentication to access your account, for the purpose of this tutorial we can simply use localhost to do this. It&rsquo;s best to use HTTPS protocol to do this so I&rsquo;m using <strong>https://127.0.0.1</strong>.</p>
+<img src="/images/build_app_page.png">
+<p>Once your app gets approved, you can go to My Apps and click on the app to view your Consumer/API Key. This key is important to keep personal (do not share it!), but we will need it to perform OAuth.</p>
+<h2 id="tda-api">
+    <a href="#tda-api" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    tda-api
+</h2>
+<p>There is a beautiful package of wrappers built by <a href="https://twitter.com/alex_golec">Alex Golec</a> that will allow us to do much of what we&rsquo;re going to want to in the near future (<a href="https://tda-api.readthedocs.io">documentation here</a> and <a href="https://github.com/alexgolec/tda-api">source code here</a>). As opposed to making a large number of HTTP requests to TD&rsquo;s API, we can simply use this wrapper to make things a little bit easier and less ugly. This package will make OAuth a breeze as opposed to having to handle a set of auth keys and tokens. We&rsquo;ll need to install the <code>tda-api</code> package, and we&rsquo;ll also want to have <code>ijson</code> on hand to parse the JSON responses we&rsquo;ll get from our requests, as well as <code>selenium</code> to perform the OAuth workflow. To download the necessary packages, I&rsquo;ll use <code>pip</code> in Z shell:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-zsh" data-lang="zsh"><span class="line"><span class="cl">% pip3 install tda-api
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">% pip3 install ijson
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">% pip3 install selenium
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="chromedriver">
+    <a href="#chromedriver" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Chromedriver
+</h2>
+<p>Once we have the packages, we&rsquo;ll also need to have <a href="http://chromedriver.chromium.org/downloads">Chromedriver</a> downloaded. This will allow Python to programmatically open Google Chrome (tda-api is browser agnostic, so Chrome isn&rsquo;t necessary but you need a driver of some sort). Take care in where you place the executable, we&rsquo;ll need to put the path in our script.</p>
+<h2 id="oauth">
+    <a href="#oauth" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    OAuth
+</h2>
+<p>To get the keys to the car so we can access our account and place trades, we need to get a token that will allow us to verify who we are. For 99% of people, using the process that the tda-api package has in place is exactly what we need. If you are wanting to go serverless with your trading, then this process will not be for you as we&rsquo;ll be generating a token file that will not work in a serverless architecture. To make my life easier, I&rsquo;m planning to instead use a VM instance. If your head is spinning at the last couple sentences, this process will work for you.</p>
+<p>To get this thing cooking, we&rsquo;ll go ahead and authenticate and then get some price history for $AAPL. To do this, we write up the following in a .py script.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 1.</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tda</span> <span class="kn">import</span> <span class="n">auth</span><span class="p">,</span> <span class="n">client</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2.</span>
+</span></span><span class="line"><span class="cl"><span class="n">token_path</span> <span class="o">=</span> <span class="s1">&#39;token&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 3.</span>
+</span></span><span class="line"><span class="cl"><span class="n">api_key</span> <span class="o">=</span> <span class="s1">&#39;YOUR_API_KEY@AMER.OAUTHAP&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 4.</span>
+</span></span><span class="line"><span class="cl"><span class="n">redirect_uri</span> <span class="o">=</span> <span class="s1">&#39;https://127.0.0.1&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#5.</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">client_from_token_file</span><span class="p">(</span><span class="n">token_path</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 6.</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="s1">&#39;/Users/trouze/Documents/td_bot/chromedriver&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">driver</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 7.</span>
+</span></span><span class="line"><span class="cl">        <span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">client_from_login_flow</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">driver</span><span class="p">,</span> <span class="n">api_key</span><span class="p">,</span> <span class="n">redirect_uri</span><span class="p">,</span> <span class="n">token_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 8.</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_price_history</span><span class="p">(</span><span class="s1">&#39;AAPL&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">period_type</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">PriceHistory</span><span class="o">.</span><span class="n">PeriodType</span><span class="o">.</span><span class="n">YEAR</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">period</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">PriceHistory</span><span class="o">.</span><span class="n">Period</span><span class="o">.</span><span class="n">TWENTY_YEARS</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">frequency_type</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">PriceHistory</span><span class="o">.</span><span class="n">FrequencyType</span><span class="o">.</span><span class="n">DAILY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">frequency</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">PriceHistory</span><span class="o">.</span><span class="n">Frequency</span><span class="o">.</span><span class="n">DAILY</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>To break it down, we are doing the following:</p>
+<ol>
+<li>Importing tda and json packages</li>
+<li>Specifying the token path, it&rsquo;s likely you&rsquo;ll want to keep it in the same directory that you&rsquo;re working in, so calling it <code>'token'</code> will suffice</li>
+<li><code>api_key</code> is the Consumer Key that is listed on your <a href="https://developer.tdameritrade.com/user/me/apps">app</a>. Leave the suffix <code>@AMER.OAUTHAP</code></li>
+<li><code>redirect_uri</code> is the callback URL we specified when making our developer app, if you&rsquo;re following along it should be <strong>https://127.0.0.1</strong></li>
+<li>What happens next is the script will try to authenticate, because we don&rsquo;t have a token yet, we will drop down to the <code>except</code> call, which will bring up a web browser.</li>
+<li>We need to tell <code>selenium</code> where to find the Chromedriver that we downloaded earlier, so enter the path after <code>executable_path=</code> and make sure you put <code>chromedriver</code> at the end of it so it can execute.</li>
+<li>This is where the login flow wrapper will open Chrome and bring us to the TD Ameritrade authentication page, enter your Brokerage account username and password (not developer account!). Under the hood, this makes a request with your Consumer key that sends back an authorization token to our Callback URL, in which we capture through <code>selenium</code>. The auth token gets written to our <code>token</code> file.</li>
+</ol>
+<img src="/images/auth_page.png">
+<ol start="8">
+<li>This part of the code uses our current authorized session to request price history on $AAPL</li>
+</ol>
+<p>Copy the above code block and put it in a Python script and run it.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-zsh" data-lang="zsh"><span class="line"><span class="cl">% python3 td_bot.py
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This will run the flow, print the price history, and save the auth token in a file <code>token</code> in the same directory.</p>
+<h2 id="auth-token">
+    <a href="#auth-token" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Auth Token
+</h2>
+<p>TDA&rsquo;s auth tokens last for 90 days, and the <code>tda-api</code> package will automatically update when the 90 days is up through the same workflow. It should also be noted that the auth token is used to generate a session token, which only lasts for 30 minutes. So if you&rsquo;re running this line by line and too much time passes, you&rsquo;ll have to re-authenticate:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">client_from_token_file</span><span class="p">(</span><span class="n">token_path</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And again, I can&rsquo;t stress enough, do not share any of the tokens/keys or put them online anywhere.</p>
+<p>If you&rsquo;ve made it this far, you now are set up to programmatically access your TD Ameritrade account via API request. Boom!</p>
+<p>Check back soon, as I&rsquo;ll be walking through how we can take this to the <a href="https://cloud.google.com">cloud</a> where we&rsquo;ll be able to schedule scripts to be ran during trading hours. To get updated automatically, <a href="https://tylerrouze.com/subscribe">subscribe</a> and I&rsquo;ll fire it out to you when it&rsquo;s ready.</p>
+
+    </div>
+</div>
+
+<div class="container">
+    
+    <nav class="flex container suggested">
+        
+        
+        
+        <a rel="next" href="/post/a8-dbt-webinar/" title="Next post (newer)">
+            <span>Next</span>
+            How dbt Helps Our Clients Remove Data Engineering Bottlenecks
+            </a> 
+        
+    </nav>
+    
+</div>
+ 
+<div class="container">
+    
+    <script src="https://giscus.app/client.js" 
+        data-repo="trouze/trouze.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMDM4NTU5ODU="
+        
+        data-category="Blog Comments"
+        data-category-id="DIC_kwDODCaYcc4CTODa"
+        
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-theme="light"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<script>
+    function setGiscusTeheme(theme) {
+        let giscus = document.querySelector('.giscus iframe');
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme
+                        }
+                    }
+                },
+                'https://giscus.app'
+            )
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://giscus.app') return;
+        setGiscusTeheme(document.documentElement.dataset.userColorScheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        setGiscusTeheme(e.detail)
+    })
+</script>
+
+</div>
+
+
+
+</main>
+
+
+        </main>
+        <footer class="footer flex">
+    <section class="container">
+        <nav class="footer-links">
+            
+            <a href="/index.xml">RSS</a>
+            
+        </nav>
+
+        <section class="copyright"> © <time>2024</time> Tyler Rouze. Powered by <a href="https://gohugo.io">Hugo</a> &amp; <a href="https://pages.github.com">Github Pages</a>.</section>
+    </section>
+    <script defer src="/ts/features.cf94d3fa57b2dba683675e007bd19a4c4e23a94096f8714c852077b600bfa597.js" 
+    data-enable-footnotes="true"
+    ></script>
+</footer>
+
+    </body>
+</html>

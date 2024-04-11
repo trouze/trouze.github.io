@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Tyler Rouze</title>
+    <link>http://localhost:1313/projects/</link>
+    <description>Recent content in Projects on Tyler Rouze</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kidney Exchange in Julia</title>
+      <link>http://localhost:1313/projects/2020-05-17-kidney-exchange/</link>
+      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/2020-05-17-kidney-exchange/</guid>
+      <description>The Kidney Donation Problem Some of the most powerful research coming from Operations Researchers originates in the healthcare field where there are some notorious inefficiencies. If you&amp;rsquo;ve ever had a loved one in need of a life-saving transplant, this emerging research may one day become the difference between life and death for many.&#xA;To preface the subject, kidney exchanges aren&amp;rsquo;t necessarily a new idea, we&amp;rsquo;ve just never found a way to do them at scale.</description>
+    </item>
+    <item>
+      <title>Neural Networks in R</title>
+      <link>http://localhost:1313/projects/2020-05-11-neuralnetwork/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/2020-05-11-neuralnetwork/</guid>
+      <description>Overview This project aims to implement and build a deeper level of understanding in Neural Networks. This article will profile how they learn just like the human brain does. Much of what you will see in this project is based on the first two chapters of the text by Michael Nielsen titled Neural Networks and Deep Learning. While Nielsen builds neural network that is capable of classifying handwritten digits in Python (2.</description>
+    </item>
+  </channel>
+</rss>

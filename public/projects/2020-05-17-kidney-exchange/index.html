@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="dark">
+    <title>Kidney Exchange in Julia | Tyler Rouze</title>
+
+    
+    
+    
+    <meta property="og:site_name" content="Tyler Rouze - Data Engineering Manager @ Analytics8" />
+    <meta property="og:title" content="Kidney Exchange in Julia | Tyler Rouze"/>
+    <meta itemprop="name" content="Kidney Exchange in Julia | Tyler Rouze" />
+    <meta name="twitter:title" content="Kidney Exchange in Julia | Tyler Rouze" />
+    <meta name="application-name" content="Kidney Exchange in Julia | Tyler Rouze" /><meta name="twitter:card" content="summary"/>
+
+    <meta name="description" content="This project is an implementation of the Kidney Exchange Problem using the Recursive Algorithm to build chains and cycles in which we maximize the number of people getting a matching kidney donor." />
+    <meta name="twitter:description" content="This project is an implementation of the Kidney Exchange Problem using the Recursive Algorithm to build chains and cycles in which we maximize the number of people getting a matching kidney donor. "/>
+    <meta itemprop="description" content=" This project is an implementation of the Kidney Exchange Problem using the Recursive Algorithm to build chains and cycles in which we maximize the number of people getting a matching kidney donor. "/>
+    <meta property="og:description" content=" This project is an implementation of the Kidney Exchange Problem using the Recursive Algorithm to build chains and cycles in which we maximize the number of people getting a matching kidney donor. " />
+
+    
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <link rel="stylesheet" href="/sass/main.min.ea06eac753dfdcb8d93b7888c21252d91ab43515ceb77c20e34219f8a6797295.css">
+    
+</head>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RXL6BE795W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RXL6BE795W');
+</script>
+    
+    <script>
+        (function() {
+            const colorSchemeKey = 'ThemeColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'ThemeColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.userColorScheme = 'dark';
+        } else {
+            document.documentElement.dataset.userColorScheme = 'light';
+        }
+    })();
+</script>
+
+
+    <body class="dark">
+        <nav class="navbar">
+    <div class="container">
+        <div class="flex">
+            <div>
+                <a class="brand" href="/">
+                    
+                    
+                    Tyler Rouze
+                    </a>
+            </div>
+            <div class="flex">
+                
+                <a href="/">home</a>
+                
+                <a href="/posts">posts</a>
+                
+                <a href="/now">/now</a>
+                
+                <a href="/subscribe">subscribe</a>
+                
+                
+                    <button id="dark-mode-button">
+                    <svg class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M30.312.776C32 19 20 32 .776 30.312c8.199 7.717 21.091 7.588 29.107-.429C37.9 21.867 38.03 8.975 30.312.776z"/><path d="M30.705 15.915a1.163 1.163 0 1 0 1.643 1.641a1.163 1.163 0 0 0-1.643-1.641zm-16.022 14.38a1.74 1.74 0 0 0 0 2.465a1.742 1.742 0 1 0 0-2.465zm13.968-2.147a2.904 2.904 0 0 1-4.108 0a2.902 2.902 0 0 1 0-4.107a2.902 2.902 0 0 1 4.108 0a2.902 2.902 0 0 1 0 4.107z" fill="#FFCC4D"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    <svg class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M16 2s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2V2zm18 14s2 0 2 2s-2 2-2 2h-2s-2 0-2-2s2-2 2-2h2zM4 16s2 0 2 2s-2 2-2 2H2s-2 0-2-2s2-2 2-2h2zm5.121-8.707s1.414 1.414 0 2.828s-2.828 0-2.828 0L4.878 8.708s-1.414-1.414 0-2.829c1.415-1.414 2.829 0 2.829 0l1.414 1.414zm21 21s1.414 1.414 0 2.828s-2.828 0-2.828 0l-1.414-1.414s-1.414-1.414 0-2.828s2.828 0 2.828 0l1.414 1.414zm-.413-18.172s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zm-21 21s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zM16 32s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2v-2z"/><circle fill="#FFD983" cx="18" cy="18" r="10"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    </button>
+                
+            </div>
+            </div>
+    </div>
+</nav>
+
+        <main>
+            
+<div class="container">
+    <article>
+        <header class="article-header">
+            <div class="thumb">
+                <div>
+                    <h1>Kidney Exchange in Julia</h1>
+                    <div class="post-meta">
+                        <div>
+                            
+                            
+                              
+                            
+                            By Tyler Rouze | <time>May 17, 2020</time>
+                            | 17 minutes
+                        </div>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </article>
+
+    <div class="article-post">
+    <img src="/images/chain.jpg">
+<hr>
+<br>
+<h2 id="the-kidney-donation-problem">
+    <a href="#the-kidney-donation-problem" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    The Kidney Donation Problem
+</h2>
+<p>Some of the most powerful research coming from Operations Researchers originates in the healthcare field where there are some notorious inefficiencies. If you&rsquo;ve ever had a loved one in need of a life-saving transplant, this emerging research may one day become the difference between life and death for many.</p>
+<p>To preface the subject, kidney exchanges aren&rsquo;t necessarily a new idea, we&rsquo;ve just never found a way to do them at scale. This project is in inspiration of <a href="https://www.pnas.org/content/112/3/663">this</a> PNAS research article.</p>
+<p>Full disclosure, I do not have a biology degree, that being said I can at least offer some information on the process of organ donation. For kidneys specifically, humans can live with only one, thus many healthy family members will step up and offer one of their&rsquo;s to a related family member in need of one. The issue is, there must be a match or some compatibility in blood type from donor to patient. Without it, we run the risk of the kidney being rejected by the patient. This presents a special sort of challenge. What if a patient doesn&rsquo;t have a family member with a compatible kidney? It turns out this is quite likely (25% of siblings are &ldquo;exact matches&rdquo;<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>). Usually what happens when there isn&rsquo;t a family member willing to give a kidney is that patients are put into a pool along with everyone else who doesn&rsquo;t have a matching family donor. Think of this as a sort of waiting list. From here, they wait for an unrelated organ donor (generally upon death) to give them a kidney, which may or may not ever happen. Thus we introduce the kidney exchange.</p>
+<h3 id="kidney-exchanges">
+    <a href="#kidney-exchanges" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Kidney Exchanges
+</h3>
+<p>To solve this predicament, we can introduce an exchange system. The way this works is in a sort of &ldquo;I&rsquo;ll scratch your back, if you scratch mine&rdquo; type solution. The idea is this: we have a patient; this patient has a family member <em>willing</em> to give a kidney, but unable to due to incompatibility; we find another patient who is in a similar situation; we match these <em>patient-donor pairs</em> with each other, giving us four total people in the exchange; the donors each give a kidney to the patient in which they are not family related. The power of this approach, however, is that we increase the supply of kidneys in the system. Of course if you&rsquo;re following along, this also presents a challenge of higher magnitude because now we must find a reciprocal match as opposed to a one-to-one match.  Thus, we implement chains and cycles.</p>
+<h3 id="chains">
+    <a href="#chains" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Chains
+</h3>
+<p>The idea behind chains is that with one Non-directed Donor (someone who gives their kidney altruistically or in posthumous organ donation), we can give that kidney to the first person on our kidney pool/list, and then the incompatible family member who would have liked to give them a kidney will give theirs to another patient in need. This starts a chain reaction of patients getting kidneys and donors giving theirs to those they don&rsquo;t know, in exchange for their family member receiving a kidney from someone else. Chains look something like this:</p>
+<img src="/images/chain.jpg">
+<h3 id="cycles">
+    <a href="#cycles" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Cycles
+</h3>
+<p>Cycles are similar to chains in their structure, the only difference is that cycles aren&rsquo;t started by NDDs but rather a donor from a patient-donor pairing. Ultimately, cycles end with a donor giving up their kidney to the patient whose donor began the cycle. This looks something like this:</p>
+<img src="/images/cycle.png">
+<p>As we&rsquo;ll see later, we will want to limit cycles to a maximum length of five. There are a few reasons we do this, but it is mainly because the longer a cycle is, the longer the time in which something could happen such that the patient-donor pair who began the cycle doesn&rsquo;t get a kidney at the end of the cycle. Restated from above, a cycle begins when a donor from an incompatible pairing gives their kidney to someone whom they do not know, but are compatible with. The cycle completes when a donor gives their kidney to the patient who&rsquo;s donor began the cycle.</p>
+<p>Perhaps you&rsquo;re wondering why have cycles at all? The reason we allow for cycles is because it gives our optimization problem some flexibility in which we can increase the number of patients who get compatible kidneys, and the kidneys in which they receive are more compatible. If we keep them short, we can give ourselves more opportunity (increase our feasible region) to match patients well.</p>
+<h3 id="the-data">
+    <a href="#the-data" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    The Data
+</h3>
+<p>The kidney exchange problem, in simplified terms, is an <a href="https://en.wikipedia.org/wiki/Integer_programming">integer-programming optimization problem</a>- nothing more. We are given a dataset of pairs in which the patient and donor are not compatible, and a score for which each pair is compatible with another pair (meaning there is a good match between the donor of one pair, and the patient of another pair). This compatibility score is the weights on our edges. The dataset looks like this:</p>
+<table>
+<thead>
+<tr>
+<th>from</th>
+<th>to</th>
+<th>w</th>
+<th>ndd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>721</td>
+<td>38</td>
+<td>13</td>
+</tr>
+<tr>
+<td>1</td>
+<td>272</td>
+<td>5</td>
+<td>978</td>
+</tr>
+<tr>
+<td>2</td>
+<td>71</td>
+<td>44</td>
+<td>999</td>
+</tr>
+<tr>
+<td>2</td>
+<td>411</td>
+<td>58</td>
+<td></td>
+</tr>
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, some pairs can perform more than one match- of course only one of these edges can have flow on it as once a patient has the kidney they need they won&rsquo;t need another. Additionally, we should note that we are supplied with our NDDs of which there are only three. This tells us that we will only have three chains as chains can only be began from an NDD.</p>
+<p>To explain the &ldquo;from&rdquo; and &ldquo;to&rdquo; columns, take the first row for example. Pairing 0&rsquo;s donor can give their kidney to pairing 721&rsquo;s patient in need of a kidney. This relationship may <em>not</em> be reciprocal, however. Meaning, 721&rsquo;s donor may not be able to give their kidney to pairing 0&rsquo;s patient. If 721&rsquo;s donor did have a compatible kidney, there would be a row in which 721 is in the &ldquo;from&rdquo; column and 0 is in the &ldquo;to&rdquo; column, but for the sake of keeping the table simple I won&rsquo;t show all the data. Rest assured, there are pairings in which pairing 0&rsquo;s patient can receive a compatible kidney.</p>
+<p>Finally, <code>w</code> is subscripted at <sub>ij</sub>. For example, w<sub>0,721</sub> is equal to 38.</p>
+<p>We load the data into <a href="https://julialang.org/">Julia</a> like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="n">dat</span> <span class="o">=</span> <span class="n">readdlm</span><span class="p">(</span><span class="s">&#34;donor-pool1.csv&#34;</span><span class="p">,</span> <span class="sc">&#39;,&#39;</span><span class="p">,</span> <span class="sc">&#39;\n&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fr</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">to</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">w</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">N</span> <span class="o">=</span> <span class="n">N</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">,]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">V</span> <span class="o">=</span> <span class="n">union</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span><span class="n">to</span><span class="p">)</span>       <span class="c"># set of all nodes</span>
+</span></span><span class="line"><span class="cl"><span class="n">E</span> <span class="o">=</span> <span class="n">collect</span><span class="p">(</span><span class="n">zip</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span><span class="n">to</span><span class="p">))</span> <span class="c"># set of all edges</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">W</span> <span class="o">=</span> <span class="kt">Dict</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">k</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">in</span> <span class="n">zip</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span><span class="n">to</span><span class="p">,</span><span class="n">w</span><span class="p">)</span> <span class="p">)</span>  <span class="c"># weights on edges</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="the-formulation">
+    <a href="#the-formulation" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    The Formulation
+</h2>
+<p>For more detail, view the formulation in the <a href="https://www.pnas.org/content/112/3/663#sec-2">PNAS article</a>.</p>
+<h3 id="decision-variables">
+    <a href="#decision-variables" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Decision Variables
+</h3>
+<p>In the kidney exchange problem, we want to maximize the compatibility between <em>all</em> patients and their newly matched donors. We achieve this through mathematical optimization which seeks to maximize our objective (patients treated and the corresponding compatibility) while remaining within constraints which we shall outline below. To do this, our optimizer will determine the pairs that should match with each other, which we will define as a decision variable.</p>
+<p>If you&rsquo;ve ever done an optimization problem, this may seem somewhat familiar. As with any optimization problem, we define our decision variables first. In terms of our problem, decision variables are the rows in which a pair in the &ldquo;from&rdquo; column should give its kidney to the patient in the &ldquo;to&rdquo; column. We can define this variable as <code>y</code>.</p>
+<ul>
+<li><code>y</code><sub>ij</sub> is a binary variable. If a donor in the &ldquo;from&rdquo; pairing gives their kidney to a patient in the &ldquo;to&rdquo; pairing, this variable is set to 1. For example, if pair 0&rsquo;s donor gives their kidney to pair 721&rsquo;s patient, y<sub>0, 721</sub> will be 1. The <code>i</code> and <code>j</code> represent the &ldquo;from&rdquo; and &ldquo;to&rdquo; pairs that are involved in the transplant.</li>
+<li>We also define a couple additional variables to set <em>flow in</em> and <em>flow out</em>. We will use these variables to limit the number of kidneys leaving a pair (donor gives their kidney) and the number of kidneys entering a pair (patient receives a kidney). We will set some constraints such that neither of these variables are greater than 1, but also such that if a donor gives their kidney, the incompatible patient whom they are giving the kidney for will eventually receive a compatible kidney from someone else. We can call these variables <code>f</code><sup>o</sup> and <code>f</code><sup>i</sup>. Each of these variables are subscripted with <code>v</code>. <code>v</code> is the set of our pairings, essentially a list from 0 to 1000 (including our NDDs). This way we can limit the flow in and out of each pairing in our dataset.</li>
+</ul>
+<p>In Julia&rsquo;s <a href="https://www.juliaopt.org/">JuMP</a>, we can create a model and add constraints like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="n">m</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">set_optimizer</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">Cbc</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@variable</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">in</span> <span class="n">E</span><span class="p">],</span> <span class="n">Bin</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@variable</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">f_in</span><span class="p">[</span><span class="n">i</span> <span class="k">in</span> <span class="n">V</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@variable</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">f_out</span><span class="p">[</span><span class="n">i</span> <span class="k">in</span> <span class="n">V</span><span class="p">])</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>We&rsquo;ll use the Cbc optimizer for this problem, of course there are <a href="https://www.juliaopt.org/JuMP.jl/stable/solvers/">others</a>.</p>
+<h3 id="objective-function">
+    <a href="#objective-function" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Objective Function
+</h3>
+<p>To solve, we want to maximize the number of pairings that receive a kidney and the corresponding compatibility (we&rsquo;d much rather match a donor to a patient with higher compatibility). In words, we maximize the sum of our weights for which a &ldquo;from&rdquo; pair&rsquo;s donor gives a kidney to a &ldquo;to&rdquo; pair&rsquo;s patient. To do this, we multiply the weight by the corresponding y<sub>i,j</sub> decision variable.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="nd">@objective</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">Max</span><span class="p">,</span> <span class="n">sum</span><span class="p">(</span> <span class="n">W</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span><span class="o">*</span><span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">in</span> <span class="n">E</span> <span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="constraints">
+    <a href="#constraints" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Constraints
+</h3>
+<p>We have six sets of constraints. In words, these constraints are:</p>
+<ul>
+<li>We must first create two set-constraints that connect the value of our <code>y</code><sub>ij</sub> decision variable to our <em>flow in</em> and <em>flow out</em> decision variables (<code>f</code><sup>o</sup> and <code>f</code><sup>i</sup>).</li>
+<li>We need to constrain our <em>flow in</em> and <em>flow out</em> variables such that if a donor from a pairing gives a kidney, then their pairing (patient) will also receive a kidney. We should make both of these less than or equal to one. This constraint should be over the set of non-compatible pairs.</li>
+<li><em>Flow out</em> of our NDDs should be less than or equal to one, as each NDD only has one kidney to give.</li>
+</ul>
+<p>The final constraint, or more accurately set of constraints, is to keep cycles from being greater than 5.</p>
+<h2 id="recursive-algorithm">
+    <a href="#recursive-algorithm" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Recursive Algorithm
+</h2>
+<p>If we were to merely want a solution of chains and cycles to match donors and patients with kidneys, then we&rsquo;ve completed the setup. However, we want a more realistic solution and to do that we have to constrain the length of cycles. In short, we can achieve this by solving the initial optimization problem, determining what cycles are longer than 5, and adding constraints to prevent each of those cycles when we resolve.</p>
+<p>In words, the constraint to prevent a cycle of length greater than 5 can be modeled through a sum of the y<sub>ij</sub>&rsquo;s, for which y<sub>ij</sub> is in the cycle that is longer than 5. We make this sum less than or equal to the length of the cycle, minus 1. In Julia, we can model it like so:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="nd">@constraint</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">Cycle</span><span class="p">[</span><span class="n">z</span><span class="p">],</span> <span class="n">j</span> <span class="k">in</span> <span class="n">Cycle</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="k">if</span> <span class="k">in</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">E</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">length</span><span class="p">(</span><span class="n">Cycle</span><span class="p">[</span><span class="n">z</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>In the algorithm, we capture all cycles greater than 5 in an array called <code>Cycle</code>, and we create a constraint for each cycle over 5. Step-by-step, our algorithm works like this:</p>
+<ol>
+<li>Solve optimization problem</li>
+<li>Identify cycles over 5</li>
+<li>Add constraints to prevent identified cycles over 5</li>
+<li>Resolve</li>
+</ol>
+<p>We repeat 2-4 until we have an optimal solution with cycles all under 5. We&rsquo;ve already shown how to build the initial optimization problem in Julia, so now we must show how to implement code to identify cycles, check if they&rsquo;re over 5, add constraints, and resolve until we have a solution without cycles over 5.</p>
+<h2 id="kep-in-julia">
+    <a href="#kep-in-julia" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    KEP in Julia
+</h2>
+<p>To solve initially, we call JuMP&rsquo;s <code>optimize!()</code> function like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="n">JuMP</span><span class="o">.</span><span class="n">optimize!</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>We&rsquo;ll put this and everything that follows in a <code>while</code> loop- while all cycles aren&rsquo;t under 5.</p>
+<h3 id="identifying-cycles">
+    <a href="#identifying-cycles" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Identifying Cycles
+</h3>
+<p>For speed in our algorithm, we should capture the y<sub>ij</sub> values that are equal to 1, meaning that a donor and patient have been matched. This represents our solution set.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="n">set</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">in</span> <span class="n">E</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="p">(</span><span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="n">set</span> <span class="o">=</span> <span class="n">union</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Then we instantiate a few arrays for use in our cycle identification:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="n">searched</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># set of pairs we&#39;ve searched</span>
+</span></span><span class="line"><span class="cl"><span class="n">U</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># capture current cycle being identified</span>
+</span></span><span class="line"><span class="cl"><span class="n">ExtendU</span> <span class="o">=</span> <span class="n">set</span><span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">)]</span> <span class="c"># choose a node at random to start at</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>We use searched to reduce the amount of pairs we search through each time, making our algorithm faster. Additionally, we use <code>U</code> to capture a single cycle at a time. With <code>ExtendU</code> we search for and assign the next matching pair to <code>ExtendU</code>, and then we add <code>ExtendU</code> to <code>U</code>. Once we&rsquo;ve reached the end of the cycle (when <code>ExtendU</code> is equal to the beginning of <code>U</code>) and the length of the cycle is over 5, we add it to an array called <code>Cycle</code>.</p>
+<p>To begin our search of mapping each cycle, which we do through another <code>while</code> loop- while all pairs in our solution haven&rsquo;t been matched, we randomly start somewhere within our solution set. Then, we add <code>ExtendU</code> to <code>U</code>, and reassign <code>ExtendU</code> to <code>nothing</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="k">while</span> <span class="n">length</span><span class="p">(</span><span class="n">setdiff</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="n">searched</span><span class="p">))</span><span class="o">!=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">push!</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ExtendU</span> <span class="o">=</span> <span class="nb">nothing</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>To perform our search of the next matching pair, we must introduce a for-loop to search through our solution set for the next pair. With an if statement, if we find the next pair we assign the pair to <code>ExtendU</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="n">union</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">setdiff</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="n">searched</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="k">in</span><span class="p">((</span><span class="n">U</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">j</span><span class="p">),</span><span class="n">E</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">JuMP</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">y</span><span class="p">[(</span><span class="n">U</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">j</span><span class="p">)])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">j</span>
+</span></span><span class="line"><span class="cl">            <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span>
+</span></span><span class="line"><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>There are three things that can happen after this search:</p>
+<ol>
+<li>We find the next pair and search for the next matching pair (while we haven&rsquo;t matched the entire solution set).</li>
+<li>We don&rsquo;t find the next matching pair. This means we&rsquo;ve come to the end of a <em>chain</em>, because chains end with the final pair not matching with anyone (meaning their donor doesn&rsquo;t give a kidney to anyone). If this happens, <code>ExtendU</code> will stay as <code>nothing</code>, so we&rsquo;ll reset everything to search for cycle. There are other ways to do this, as we could start from our NDDs and find the chains and remove them from our search. This is another way in which we find many sub-chains through the way we shorten our searchable set.</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="c"># if we&#39;ve found the end of a chain</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">isnothing</span><span class="p">(</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">print</span><span class="p">(</span><span class="s">&#34;Chain Found&#34;</span><span class="p">,</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">U</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="n">searched</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">)]</span> <span class="c"># don&#39;t pick the same one twice..</span>
+</span></span><span class="line"><span class="cl">    <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c"># we&#39;ve found a chain!</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>We find the next matching pair, but it&rsquo;s the same as the pair for which our cycle began, meaning we&rsquo;ve found a complete cycle.  If this occurs, we check if the cycle is over 5. If it is, we add it to our <code>Cycle</code> array to add a constraint later on to prevent it from being in our next solution. If it&rsquo;s under 5, we just reset and search for the next cycle.</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="c"># if we&#39;ve found the end of a cycle</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">ExtendU</span>
+</span></span><span class="line"><span class="cl">    <span class="n">print</span><span class="p">(</span><span class="s">&#34;Cycle Found&#34;</span><span class="p">,</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c"># we&#39;ve found a cycle, lets add it to our cycle list and create</span>
+</span></span><span class="line"><span class="cl">    <span class="c"># a constraint, if necessary</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">length</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span>
+</span></span><span class="line"><span class="cl">        <span class="n">push!</span><span class="p">(</span><span class="n">Cycle</span><span class="p">,</span><span class="n">U</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cycles_over_five</span> <span class="o">=</span> <span class="n">cycles_over_five</span> <span class="o">+</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="n">U</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="p">(</span><span class="n">set</span><span class="p">,</span><span class="n">searched</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This will repeat until every pair in our solution has been matched, whether as a part of a chain or cycle.</p>
+<p>Notice we introduce a variable <code>cycles_over_five</code>. This variable will allow us to determine if our current solution has no cycles over 5.
+If that is the case, we&rsquo;ll end the algorithm.</p>
+<h3 id="add-constraints-for-cycles-over-5">
+    <a href="#add-constraints-for-cycles-over-5" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Add Constraints for Cycles over 5
+</h3>
+<p>We introduce a for-loop to add constraints for each of the cycles we identify in our <em>solutions</em> (remember we solve iteratively). The number of constraints will accumulate as we solve each time as <code>Cycle</code> is a global variable.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">z</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">Cycle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">print</span><span class="p">(</span><span class="s">&#34;constraint added&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@constraint</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">Cycle</span><span class="p">[</span><span class="n">z</span><span class="p">],</span> <span class="n">j</span> <span class="k">in</span> <span class="n">Cycle</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="k">if</span> <span class="k">in</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span><span class="n">E</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">length</span><span class="p">(</span><span class="n">Cycle</span><span class="p">[</span><span class="n">z</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ending-the-recursive-algorithm">
+    <a href="#ending-the-recursive-algorithm" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Ending the Recursive Algorithm
+</h3>
+<p>To end the algorithm, we check if the aforementioned <code>cycles_over_five</code> is 0, meaning we have a solution with no cycles over 5.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="k">if</span> <span class="n">cycles_over_five</span><span class="o">==</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JuMP</span><span class="o">.</span><span class="n">optimize!</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">in</span> <span class="n">E</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="p">(</span><span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="n">println</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s">&#34; to &#34;</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">break</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>To finish, we print our final solution and we <code>break</code> the <code>while</code> loop so that we stop iterating.</p>
+<h2 id="solution-in-a-readable-format">
+    <a href="#solution-in-a-readable-format" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Solution in a Readable Format
+</h2>
+<p>To finish this project, we should put the final solution in a readable format for healthcare professionals to use the solution. When our final solution prints above, we have a list in the same order of our dataset showing which pairs should be matched. Ultimately, we want to see these in order. This means if pair 1 gives a kidney to pair 2, we next want to see who pair 2 gives their kidney to. To do this, we introduce some similar code to above to identify chains (starting from the NDD) and cycles.</p>
+<h3 id="chains-1">
+    <a href="#chains-1" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Chains
+</h3>
+<p>To find each chain, we capture our NDDs in a set, and we run a for-loop through each to match each pair that is in the chain having begun at an NDD. We supply the function with our solution from the recursive algorithm (<code>y</code>), our set of edges <code>E</code>, a list of pairs in our solution <code>soln</code>, and a list of our NDDs for this problem.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="k">function</span> <span class="n">find_chains</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">ndd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Chain</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">ndd</span>
+</span></span><span class="line"><span class="cl">        <span class="n">stop</span><span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl">        <span class="n">searched</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">U</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">i</span> <span class="c"># start at ndd to find chain</span>
+</span></span><span class="line"><span class="cl">        <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">stop</span><span class="o">==</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl">        <span class="c"># convert solution to a usable format for health professionals</span>
+</span></span><span class="line"><span class="cl">            <span class="n">push!</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ExtendU</span> <span class="o">=</span> <span class="nb">nothing</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="n">union</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">setdiff</span><span class="p">(</span><span class="n">soln</span><span class="p">,</span><span class="n">searched</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="k">in</span><span class="p">((</span><span class="n">U</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">j</span><span class="p">),</span><span class="n">E</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">y</span><span class="p">[(</span><span class="n">U</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">j</span><span class="p">)]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">j</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">print</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">searched</span><span class="p">),</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span>
+</span></span><span class="line"><span class="cl">                <span class="k">end</span>
+</span></span><span class="line"><span class="cl">            <span class="k">end</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">isnothing</span><span class="p">(</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">print</span><span class="p">(</span><span class="s">&#34;Chain Found&#34;</span><span class="p">,</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">push!</span><span class="p">(</span><span class="n">Chain</span><span class="p">,</span><span class="n">U</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">U</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">                <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="p">(</span><span class="n">soln</span><span class="p">,</span><span class="n">searched</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">)]</span> <span class="c"># don&#39;t pick the same one twice..</span>
+</span></span><span class="line"><span class="cl">                <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">stop</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">                <span class="c"># we&#39;ve found a chain!</span>
+</span></span><span class="line"><span class="cl">            <span class="k">end</span>
+</span></span><span class="line"><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">(</span><span class="n">Chain</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>We only stop searching when <code>ExtendU</code> is <code>nothing</code> because we know chains can only begin from an NDD and end with a pair who doesn&rsquo;t give up a kidney (i.e. nothing). We return an array of our chains.</p>
+<h3 id="cycles-1">
+    <a href="#cycles-1" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Cycles
+</h3>
+<p>Similarly, we introduce a function to capture all of our cycles. This has many similarities to how we find cycles within our Recursive algorithm, with one noticeable difference being that we don&rsquo;t search through pairs that were a part of a chain. We supply this function with an array of the chains we found in the above function, our solution from the recursive algorithm (<code>y</code>), our set of edges <code>E</code>, and a list of pairs in our solution <code>soln</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-julia" data-lang="julia"><span class="line"><span class="cl"><span class="k">function</span> <span class="n">find_cycles</span><span class="p">(</span><span class="n">foundchains</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">E</span><span class="p">,</span><span class="n">soln</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fcarray</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># find pairs that are a part of a chain</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Cycle</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">foundchains</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">union!</span><span class="p">(</span><span class="n">fcarray</span><span class="p">,</span><span class="n">foundchains</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tosearch</span> <span class="o">=</span> <span class="n">setdiff</span><span class="p">(</span><span class="n">soln</span><span class="p">,</span><span class="n">fcarray</span><span class="p">)</span> <span class="c"># search only pairs a part of cycles</span>
+</span></span><span class="line"><span class="cl">    <span class="n">searched</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">U</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">tosearch</span><span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">)]</span> <span class="c"># start at ndd to find chain</span>
+</span></span><span class="line"><span class="cl">    <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="n">length</span><span class="p">(</span><span class="n">setdiff</span><span class="p">(</span><span class="n">tosearch</span><span class="p">,</span><span class="n">searched</span><span class="p">))</span><span class="o">!=</span><span class="mi">0</span> <span class="c"># while we haven&#39;t searched all edges</span>
+</span></span><span class="line"><span class="cl">        <span class="n">push!</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExtendU</span> <span class="o">=</span> <span class="nb">nothing</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="n">tosearch</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="k">in</span><span class="p">((</span><span class="n">U</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">j</span><span class="p">),</span><span class="n">E</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">y</span><span class="p">[(</span><span class="n">U</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">j</span><span class="p">)]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">j</span>
+</span></span><span class="line"><span class="cl">                <span class="n">print</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">searched</span><span class="p">),</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            <span class="k">end</span>
+</span></span><span class="line"><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">ExtendU</span>
+</span></span><span class="line"><span class="cl">            <span class="c"># found a cycle</span>
+</span></span><span class="line"><span class="cl">            <span class="n">push!</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">push!</span><span class="p">(</span><span class="n">Cycle</span><span class="p">,</span><span class="n">U</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">U</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rn</span> <span class="o">=</span> <span class="n">setdiff</span><span class="p">(</span><span class="n">tosearch</span><span class="p">,</span><span class="n">searched</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ExtendU</span> <span class="o">=</span> <span class="n">rn</span><span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="k">end</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">push!</span><span class="p">(</span><span class="n">searched</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="k">end</span>
+</span></span><span class="line"><span class="cl">    <span class="n">push!</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">ExtendU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">push!</span><span class="p">(</span><span class="n">Cycle</span><span class="p">,</span><span class="n">U</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">(</span><span class="n">Cycle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">end</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>That&rsquo;s about it! To finish, we call each of these functions and write the returned arrays into a <code>.csv</code> file. If you&rsquo;d like to see the entire file and run a dataset on it for yourself, head over to my repository for the <a href="https://github.com/trouze/kidney-donor-pairing/blob/main/kidneyexchange.jl">Julia file</a> and the <a href="https://github.com/trouze/kidney-donor-pairing/blob/main/donor-pool1.csv">dataset</a>. Happy programming!</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://columbiasurgery.org/conditions-and-treatments/living-donor-kidney-transplants">Columbia Surgery source on kidney transplants</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+    </div>
+</div>
+
+<div class="container">
+    
+    <nav class="flex container suggested">
+        
+        <a rel="prev" href="/projects/2020-05-11-neuralnetwork/" title="Previous post (older)">
+            <span>Previous</span>
+            Neural Networks in R
+            </a>
+        
+        
+        
+    </nav>
+    
+</div>
+ 
+<div class="container">
+    
+    <script src="https://giscus.app/client.js" 
+        data-repo="trouze/trouze.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMDM4NTU5ODU="
+        
+        data-category="Blog Comments"
+        data-category-id="DIC_kwDODCaYcc4CTODa"
+        
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-theme="light"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<script>
+    function setGiscusTeheme(theme) {
+        let giscus = document.querySelector('.giscus iframe');
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme
+                        }
+                    }
+                },
+                'https://giscus.app'
+            )
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://giscus.app') return;
+        setGiscusTeheme(document.documentElement.dataset.userColorScheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        setGiscusTeheme(e.detail)
+    })
+</script>
+
+</div>
+
+
+
+</main>
+
+
+        </main>
+        <footer class="footer flex">
+    <section class="container">
+        <nav class="footer-links">
+            
+            <a href="/index.xml">RSS</a>
+            
+        </nav>
+
+        <section class="copyright"> © <time>2024</time> Tyler Rouze. Powered by <a href="https://gohugo.io">Hugo</a> &amp; <a href="https://pages.github.com">Github Pages</a>.</section>
+    </section>
+    <script defer src="/ts/features.cf94d3fa57b2dba683675e007bd19a4c4e23a94096f8714c852077b600bfa597.js" 
+    data-enable-footnotes="true"
+    ></script>
+</footer>
+
+    </body>
+</html>
