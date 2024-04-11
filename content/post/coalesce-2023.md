@@ -1,5 +1,5 @@
 ---
-title: "Coalesce 2023: How Roche GTM Manages Multi-project dbt Deployments"
+title: "Coalesce Conference 2023: How Roche GTM Manages Multi-project dbt Deployments"
 date: 2023-12-08 12:00:00
 featured_image: '/images/prefect.jpeg'
 excerpt: "I spoke at Coalesce 2023 alongside Yannick Misteli, discussing how they have deployed numerous dbt projects to manage analytics workflows within the Go-to-market department of Roche Pharmaceuticals."

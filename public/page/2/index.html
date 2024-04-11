@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head>
+	<meta name="generator" content="Hugo 0.124.1"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="dark">
+    <title>Tyler Rouze</title>
+
+    
+    
+    
+    <meta property="og:site_name" content="Tyler Rouze - Data Engineering Manager @ Analytics8" />
+    <meta property="og:title" content="Tyler Rouze"/>
+    <meta itemprop="name" content="Tyler Rouze" />
+    <meta name="twitter:title" content="Tyler Rouze" />
+    <meta name="application-name" content="Tyler Rouze" /><meta name="twitter:card" content="summary"/>
+
+    <meta name="description" content="Hi, I&#39;m Tyler and this is where I write, think, and share. Join the conversation around Data engineering, the modern data stack, and lifelong learning." />
+    <meta name="twitter:description" content="Hi, I&#39;m Tyler and this is where I write, think, and share. Join the conversation around Data engineering, the modern data stack, and lifelong learning."/>
+    <meta itemprop="description" content="Hi, I&#39;m Tyler and this is where I write, think, and share. Join the conversation around Data engineering, the modern data stack, and lifelong learning."/>
+    <meta property="og:description" content="Hi, I&#39;m Tyler and this is where I write, think, and share. Join the conversation around Data engineering, the modern data stack, and lifelong learning." />
+
+    
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <link rel="stylesheet" href="/sass/main.min.ea06eac753dfdcb8d93b7888c21252d91ab43515ceb77c20e34219f8a6797295.css">
+    
+</head>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RXL6BE795W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RXL6BE795W');
+</script>
+    
+    <script>
+        (function() {
+            const colorSchemeKey = 'ThemeColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'ThemeColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.userColorScheme = 'dark';
+        } else {
+            document.documentElement.dataset.userColorScheme = 'light';
+        }
+    })();
+</script>
+
+
+    <body class="dark">
+        <nav class="navbar">
+    <div class="container">
+        <div class="flex">
+            <div>
+                <a class="brand" href="/">
+                    
+                    
+                    Tyler Rouze
+                    </a>
+            </div>
+            <div class="flex">
+                
+                <a href="/" aria-current="page">home</a>
+                
+                <a href="/posts">posts</a>
+                
+                <a href="/now">/now</a>
+                
+                <a href="/subscribe">subscribe</a>
+                
+                
+                    <button id="dark-mode-button">
+                    <svg class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M30.312.776C32 19 20 32 .776 30.312c8.199 7.717 21.091 7.588 29.107-.429C37.9 21.867 38.03 8.975 30.312.776z"/><path d="M30.705 15.915a1.163 1.163 0 1 0 1.643 1.641a1.163 1.163 0 0 0-1.643-1.641zm-16.022 14.38a1.74 1.74 0 0 0 0 2.465a1.742 1.742 0 1 0 0-2.465zm13.968-2.147a2.904 2.904 0 0 1-4.108 0a2.902 2.902 0 0 1 0-4.107a2.902 2.902 0 0 1 4.108 0a2.902 2.902 0 0 1 0 4.107z" fill="#FFCC4D"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    <svg class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M16 2s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2V2zm18 14s2 0 2 2s-2 2-2 2h-2s-2 0-2-2s2-2 2-2h2zM4 16s2 0 2 2s-2 2-2 2H2s-2 0-2-2s2-2 2-2h2zm5.121-8.707s1.414 1.414 0 2.828s-2.828 0-2.828 0L4.878 8.708s-1.414-1.414 0-2.829c1.415-1.414 2.829 0 2.829 0l1.414 1.414zm21 21s1.414 1.414 0 2.828s-2.828 0-2.828 0l-1.414-1.414s-1.414-1.414 0-2.828s2.828 0 2.828 0l1.414 1.414zm-.413-18.172s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zm-21 21s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zM16 32s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2v-2z"/><circle fill="#FFD983" cx="18" cy="18" r="10"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    </button>
+                
+            </div>
+            </div>
+    </div>
+</nav>
+
+        <main>
+            
+
+<div class="container">
+    <section class="my">
+        <div class="pfp">
+            <img src="/images/avatar.jpg">
+        </div>
+        <div class="content">
+            
+            <p>Managing Consultant @ <a href="https://www.analytics8.com">Analytics8</a></p>
+
+            
+            <div class="bio-social">
+                
+                
+                
+                
+                
+                
+                <a href="mailto:tyler@tylerrouze.com" target="_blank" rel="noreferrer" title="tyler@tylerrouze.com"
+                    aria-label="email">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-7.07 4.42c-.32.2-.74.2-1.06 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72z"/></svg>
+                </a>
+                
+                
+                
+                
+                
+                
+                <a href="https://github.com/trouze" target="_blank" rel="noreferrer" title="github"
+                    aria-label="github">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 24 24" version="1.1">
+<g id="surface3680">
+<path fill="currentColor" d="M 10.898438 2.101562 C 6.300781 2.601562 2.601562 6.300781 2.101562 10.800781 C 1.601562 15.5 4.300781 19.699219 8.398438 21.300781 C 8.699219 21.398438 9 21.199219 9 20.800781 L 9 19.199219 C 9 19.199219 8.601562 19.300781 8.101562 19.300781 C 6.699219 19.300781 6.101562 18.101562 6 17.398438 C 5.898438 17 5.699219 16.699219 5.398438 16.398438 C 5.101562 16.300781 5 16.300781 5 16.199219 C 5 16 5.300781 16 5.398438 16 C 6 16 6.5 16.699219 6.699219 17 C 7.199219 17.800781 7.800781 18 8.101562 18 C 8.5 18 8.800781 17.898438 9 17.800781 C 9.101562 17.101562 9.398438 16.398438 10 16 C 7.699219 15.5 6 14.199219 6 12 C 6 10.898438 6.5 9.800781 7.199219 9 C 7.101562 8.800781 7 8.300781 7 7.601562 C 7 7.199219 7 6.601562 7.300781 6 C 7.300781 6 8.699219 6 10.101562 7.300781 C 10.601562 7.101562 11.300781 7 12 7 C 12.699219 7 13.398438 7.101562 14 7.300781 C 15.300781 6 16.800781 6 16.800781 6 C 17 6.601562 17 7.199219 17 7.601562 C 17 8.398438 16.898438 8.800781 16.800781 9 C 17.5 9.800781 18 10.800781 18 12 C 18 14.199219 16.300781 15.5 14 16 C 14.601562 16.5 15 17.398438 15 18.300781 L 15 20.898438 C 15 21.199219 15.300781 21.5 15.699219 21.398438 C 19.398438 19.898438 22 16.300781 22 12.101562 C 22 6.101562 16.898438 1.398438 10.898438 2.101562 Z M 10.898438 2.101562 "/>
+</g>
+</svg>
+
+                </a>
+                
+                
+                
+                
+                
+                
+                
+                <a href="https://www.linkedin.com/in/tylerrouze" target="_blank" rel="noreferrer" title="linkedin"
+                    aria-label="linkedin">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 30 30" width="25" height="25"><path fill="currentColor" d="M24,4H6C4.895,4,4,4.895,4,6v18c0,1.105,0.895,2,2,2h18c1.105,0,2-0.895,2-2V6C26,4.895,25.105,4,24,4z M10.954,22h-2.95 v-9.492h2.95V22z M9.449,11.151c-0.951,0-1.72-0.771-1.72-1.72c0-0.949,0.77-1.719,1.72-1.719c0.948,0,1.719,0.771,1.719,1.719 C11.168,10.38,10.397,11.151,9.449,11.151z M22.004,22h-2.948v-4.616c0-1.101-0.02-2.517-1.533-2.517 c-1.535,0-1.771,1.199-1.771,2.437V22h-2.948v-9.492h2.83v1.297h0.04c0.394-0.746,1.356-1.533,2.791-1.533 c2.987,0,3.539,1.966,3.539,4.522V22z"/></svg>
+
+                </a>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <a href="https://www.strava.com/athletes/116840931" target="_blank" rel="noreferrer" title="strava"
+                    aria-label="strava">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-strava" viewBox="0 0 16 16" width="25" height="25">
+  <path d="M6.731 0 2 9.125h2.788L6.73 5.497l1.93 3.628h2.766zm4.694 9.125-1.372 2.756L8.66 9.125H6.547L10.053 16l3.484-6.875z"/>
+</svg>
+                </a>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <a href="https://vsco.co/tylerrouze" target="_blank" rel="noreferrer" title="vsco"
+                    aria-label="vsco">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="25" height="25" viewBox="0 0 1280.000000 1280.000000"
+ preserveAspectRatio="xMidYMid meet">
+<g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path fill="currentColor" d="M5950 12793 c-924 -81 -1662 -283 -2420 -663 -1457 -730 -2580 -1984
+-3145 -3515 -188 -510 -300 -1005 -367 -1620 -21 -195 -18 -1026 5 -1235 72
+-659 221 -1253 458 -1822 587 -1410 1666 -2570 3029 -3257 715 -361 1407 -564
+2240 -658 127 -14 245 -18 650 -18 545 0 658 8 1065 76 1878 316 3505 1441
+4475 3094 120 205 328 632 414 850 245 622 383 1226 437 1907 16 204 6 936
+-15 1118 -95 817 -289 1491 -626 2175 -721 1466 -1986 2611 -3510 3178 -421
+157 -886 276 -1310 337 -341 48 -409 52 -880 55 -250 1 -475 1 -500 -2z m330
+-791 l0 -539 -147 -6 c-185 -8 -455 -39 -641 -73 -80 -15 -147 -22 -152 -18
+-4 5 -52 189 -105 409 -53 220 -110 450 -125 512 l-28 112 52 10 c179 35 225
+43 346 60 192 28 421 51 595 60 83 4 162 9 178 10 l27 1 0 -538z m475 523
+c269 -12 514 -43 843 -106 150 -29 162 -33 162 -53 0 -22 -244 -1014 -251
+-1020 -2 -2 -85 11 -184 30 -232 42 -474 73 -642 81 l-133 6 0 539 0 538 38
+-5 c20 -2 96 -7 167 -10z m-1811 -719 c70 -280 125 -510 124 -512 -2 -1 -71
+-24 -153 -49 -186 -58 -420 -146 -596 -224 -156 -70 -131 -80 -218 84 -218
+411 -411 784 -411 792 0 9 135 72 346 164 219 94 760 276 775 261 3 -4 63
+-236 133 -516z m3361 429 c105 -34 266 -93 360 -129 198 -78 495 -215 495
+-228 0 -13 -35 -80 -267 -513 -119 -220 -221 -406 -228 -413 -11 -12 -41 -1
+-181 61 -187 83 -434 177 -593 226 l-103 32 6 42 c8 47 205 852 231 941 l17
+58 36 -7 c21 -4 123 -35 227 -70z m-4660 -840 c103 -198 212 -406 242 -462
+l54 -101 -98 -58 c-147 -86 -433 -281 -563 -383 -63 -50 -120 -90 -127 -88 -6
+1 -167 177 -356 392 -274 310 -343 393 -334 404 17 20 138 117 272 218 254
+191 704 474 716 450 3 -6 91 -174 194 -372z m5990 217 c219 -136 549 -376 709
+-515 l40 -34 -22 -28 c-18 -22 -457 -519 -648 -733 l-40 -46 -80 66 c-163 134
+-406 305 -607 428 l-87 53 76 146 c41 80 155 293 252 473 l176 328 55 -31 c31
+-18 110 -65 176 -107z m-3375 -966 l0 -543 -117 -7 c-332 -20 -728 -106 -1066
+-233 -91 -34 -152 -52 -158 -46 -5 5 -112 222 -238 483 l-229 475 25 13 c94
+51 499 192 708 247 309 82 747 149 1003 154 l72 1 0 -544z m490 534 c368 -29
+728 -97 1075 -205 157 -49 489 -176 517 -197 14 -12 -10 -66 -217 -493 -141
+-289 -239 -479 -247 -478 -7 1 -78 26 -158 57 -340 129 -702 208 -1070 234
+l-105 7 -3 543 -2 542 42 0 c24 0 99 -5 168 -10z m-4313 -492 c385 -433 503
+-569 503 -579 0 -5 -60 -72 -133 -148 -154 -159 -279 -302 -396 -454 -46 -59
+-85 -107 -88 -107 -3 0 -200 135 -439 301 l-435 301 17 27 c36 54 165 222 254
+327 192 228 494 544 519 544 5 0 94 -96 198 -212z m8527 -198 c173 -192 435
+-516 424 -525 -31 -24 -881 -605 -882 -603 -2 2 -36 46 -76 98 -115 149 -205
+252 -379 435 -88 93 -161 173 -161 177 0 7 314 364 604 685 l101 112 123 -122
+c68 -67 179 -183 246 -257z m-6556 -245 c187 -388 261 -548 256 -556 -2 -4
+-50 -33 -106 -65 -287 -164 -498 -326 -764 -587 l-202 -197 -416 332 c-240
+191 -416 338 -414 346 8 36 389 413 563 557 219 181 494 369 735 504 l145 81
+29 -58 c16 -31 94 -192 174 -357z m4262 375 c288 -145 698 -441 1003 -725 106
+-97 377 -382 377 -395 0 -3 -30 -31 -67 -61 -131 -105 -599 -475 -686 -543
+l-87 -68 -158 159 c-170 172 -273 263 -452 395 -110 82 -296 202 -407 264 -29
+16 -53 32 -53 36 0 16 459 968 467 968 2 0 30 -13 63 -30z m-1855 -806 c753
+-95 1429 -419 1968 -944 218 -211 350 -371 500 -601 286 -441 471 -949 533
+-1469 19 -163 22 -594 4 -750 -71 -636 -294 -1201 -671 -1703 -524 -698 -1268
+-1163 -2119 -1326 -228 -43 -344 -53 -640 -53 -315 0 -449 14 -725 74 -628
+136 -1227 464 -1686 921 -553 551 -893 1245 -994 2032 -12 94 -17 206 -17 405
+0 199 5 311 17 405 145 1128 789 2075 1780 2617 424 232 879 366 1405 412 93
+8 529 -5 645 -20z m-4985 -412 c162 -113 302 -211 311 -219 15 -13 8 -29 -78
+-171 -90 -150 -276 -509 -321 -619 -11 -29 -26 -53 -31 -53 -9 0 -326 117
+-851 315 -69 26 -129 51 -134 56 -29 26 274 625 481 952 l75 117 126 -87 c70
+-48 260 -179 422 -291z m9898 28 c150 -260 374 -734 355 -750 -4 -4 -71 -31
+-148 -60 -77 -29 -292 -110 -479 -181 -186 -71 -344 -129 -351 -129 -7 0 -40
+62 -75 138 -81 179 -191 390 -291 558 -44 75 -79 137 -77 138 7 7 633 440 748
+519 l125 85 49 -76 c27 -43 92 -151 144 -242z m-8718 -475 l420 -334 -58 -81
+c-200 -279 -373 -623 -493 -980 -37 -113 -63 -174 -71 -173 -7 1 -231 52 -498
+113 -267 61 -499 114 -516 117 l-31 5 33 112 c140 470 329 880 590 1279 89
+136 191 277 199 277 3 0 194 -151 425 -335z m7293 223 c238 -328 461 -755 611
+-1170 63 -175 127 -391 118 -399 -4 -3 -232 -57 -507 -118 -275 -62 -510 -115
+-521 -117 -20 -5 -25 6 -64 128 -112 354 -258 658 -467 971 l-92 138 242 192
+c286 227 601 476 604 477 1 0 35 -46 76 -102z m-9190 -907 c261 -98 482 -183
+490 -187 13 -8 10 -27 -25 -134 -53 -168 -131 -476 -157 -630 -13 -69 -24
+-135 -27 -147 -3 -18 -9 -21 -37 -17 -17 2 -241 29 -497 60 -567 67 -530 60
+-530 89 0 39 59 349 95 499 73 308 178 646 200 646 7 0 227 -81 488 -179z
+m11105 78 c89 -238 239 -870 245 -1034 l2 -60 -130 -17 c-309 -40 -917 -109
+-922 -105 -2 3 -20 88 -38 189 -43 232 -105 475 -180 705 -3 7 12 21 33 32 73
+36 942 362 956 358 5 -2 20 -32 34 -68z m-9983 -1109 c285 -66 520 -122 522
+-123 1 -2 -4 -41 -12 -88 -63 -372 -68 -767 -15 -1153 11 -77 19 -141 17 -142
+-3 -3 -696 -161 -919 -210 -70 -15 -130 -25 -133 -22 -8 8 -40 202 -61 370
+-22 177 -30 683 -15 889 17 226 73 599 90 599 4 0 240 -54 526 -120z m8884 34
+c25 -140 50 -346 62 -496 15 -203 6 -736 -15 -908 -21 -167 -56 -373 -65 -382
+-3 -4 -135 22 -291 57 -323 74 -754 176 -758 180 -2 1 6 70 18 151 53 387 52
+721 -1 1087 -11 77 -19 141 -16 143 6 6 1009 232 1033 233 19 1 23 -7 33 -65z
+m-10449 -309 c555 -64 670 -79 680 -85 7 -5 7 -81 -1 -240 -9 -178 -9 -290 0
+-469 7 -128 8 -237 4 -241 -8 -7 -1054 -133 -1059 -127 -1 1 -8 86 -14 188
+-12 179 -8 806 6 952 l6 57 41 0 c23 0 175 -16 337 -35z m11844 -27 c14 -96
+18 -746 6 -948 -6 -113 -13 -206 -14 -207 -3 -4 -1002 113 -1041 122 -20 4
+-20 12 -20 478 l0 473 505 61 c278 33 517 61 531 62 24 1 28 -3 33 -41z
+m-11115 -1340 c5 -29 20 -102 31 -163 29 -150 91 -391 144 -560 24 -77 41
+-143 37 -147 -5 -6 -778 -298 -939 -354 -45 -16 -54 -17 -62 -4 -27 44 -142
+445 -199 693 -37 162 -91 467 -82 467 3 1 224 27 491 59 267 33 504 59 527 60
+l42 1 10 -52z m10386 -3 c527 -60 663 -78 676 -86 33 -20 -98 -613 -217 -981
+-31 -95 -57 -174 -59 -176 -5 -6 -983 354 -997 367 -3 3 12 62 33 131 57 180
+125 447 154 607 37 203 30 186 73 179 20 -3 172 -22 337 -41z m-8931 -277
+c114 -364 262 -675 463 -976 46 -69 80 -128 78 -133 -8 -11 -827 -664 -834
+-664 -9 0 -216 308 -288 430 -139 233 -265 496 -365 760 -51 135 -160 486
+-154 492 5 5 962 226 1046 242 3 1 27 -68 54 -151z m7341 92 c254 -58 828
+-191 842 -195 14 -5 -4 -73 -79 -305 -138 -424 -376 -899 -626 -1252 -48 -67
+-91 -123 -96 -122 -5 0 -196 150 -425 333 l-417 333 98 147 c182 276 320 557
+422 863 30 90 60 182 66 205 6 26 15 41 23 38 6 -2 93 -23 192 -45z m-8367
+-1182 c84 -175 139 -277 254 -470 38 -65 68 -122 66 -128 -2 -6 -197 -145
+-433 -309 -429 -299 -430 -299 -447 -278 -9 12 -72 114 -140 227 -185 308
+-425 797 -402 820 9 9 565 224 844 326 l145 53 17 -37 c9 -20 53 -112 96 -204z
+m9755 51 c265 -99 486 -184 491 -190 12 -11 -25 -97 -145 -344 -119 -243 -323
+-602 -394 -691 l-20 -25 -185 127 c-208 143 -634 439 -666 464 -22 16 -21 17
+83 191 100 167 250 455 306 587 14 34 31 62 37 62 6 0 228 -81 493 -181z
+m-7933 -365 c97 -109 337 -335 442 -417 130 -101 292 -212 428 -293 69 -41
+125 -79 125 -84 0 -6 -103 -226 -230 -489 l-230 -479 -85 45 c-313 169 -675
+432 -965 701 -122 113 -376 379 -396 414 -7 13 73 81 409 351 229 185 419 336
+422 335 3 0 39 -38 80 -84z m5951 -231 c201 -161 385 -310 409 -331 l44 -39
+-18 -29 c-36 -55 -481 -490 -601 -587 -155 -126 -348 -266 -475 -345 -122 -76
+-342 -202 -353 -202 -4 0 -53 93 -108 208 -176 362 -359 751 -359 760 0 5 42
+33 93 62 288 163 534 354 792 614 105 106 195 190 200 187 6 -3 175 -136 376
+-298z m1344 -591 c226 -156 412 -286 414 -288 10 -9 -206 -283 -367 -467 -158
+-180 -407 -430 -423 -425 -8 3 -171 181 -362 397 l-348 393 150 154 c150 154
+318 346 421 481 l54 72 26 -16 c14 -9 210 -145 435 -301z m-8551 208 c117
+-153 246 -301 402 -460 l142 -145 -319 -360 c-176 -198 -338 -378 -360 -400
+l-39 -40 -150 153 c-281 287 -643 723 -624 753 8 13 853 599 864 599 4 0 41
+-45 84 -100z m2815 -409 c303 -102 628 -168 941 -189 l105 -7 3 -544 2 -544
+-122 7 c-538 30 -1097 160 -1595 370 l-112 47 38 82 c21 45 98 206 171 357 73
+151 161 335 196 407 l63 133 82 -35 c44 -19 147 -57 228 -84z m2715 32 c82
+-163 426 -885 426 -893 0 -11 -335 -142 -500 -195 -275 -88 -579 -156 -848
+-190 -132 -16 -362 -35 -434 -35 l-48 0 2 543 3 542 165 13 c91 6 221 21 290
+32 252 41 611 141 815 229 39 16 75 30 80 30 6 1 28 -34 49 -76z m2014 -720
+c154 -175 312 -356 352 -402 l72 -83 -34 -29 c-74 -65 -402 -307 -533 -394
+-155 -103 -414 -259 -420 -254 -2 3 -189 357 -441 837 l-53 102 52 34 c309
+198 518 343 665 463 30 23 55 43 57 43 2 0 130 -143 283 -317z m-6688 239
+c155 -125 408 -300 593 -411 48 -29 87 -55 87 -58 0 -5 -148 -287 -403 -769
+-51 -95 -94 -174 -97 -174 -3 0 -59 32 -125 71 -256 152 -531 344 -753 526
+-90 75 -101 86 -90 102 25 33 692 781 698 781 3 0 43 -31 90 -68z m1165 -700
+c153 -64 332 -129 510 -184 l141 -43 -129 -520 c-71 -286 -130 -521 -131 -522
+-6 -6 -402 123 -561 182 -212 79 -565 235 -565 249 0 7 379 724 467 883 l34
+63 58 -29 c31 -16 111 -52 176 -79z m4352 -134 c201 -375 363 -685 363 -695 0
+-13 -217 -116 -396 -189 -300 -122 -707 -256 -724 -238 -4 5 -62 232 -129 504
+-67 272 -124 502 -127 511 -4 14 27 27 173 74 197 63 447 159 593 228 52 25
+100 46 106 46 6 1 70 -108 141 -241z m-3325 -178 c221 -42 442 -69 719 -86
+l106 -6 6 -112 c4 -61 7 -303 7 -539 l0 -427 -52 5 c-29 2 -109 7 -178 10
+-152 7 -370 29 -545 55 -167 25 -398 69 -414 79 -13 8 14 128 159 711 44 177
+80 324 80 326 0 6 -1 6 112 -16z m2127 -312 c167 -682 171 -702 151 -710 -23
+-8 -261 -52 -420 -77 -170 -27 -396 -49 -565 -56 -77 -3 -152 -8 -167 -10
+l-28 -4 0 478 c0 263 3 505 6 539 l7 60 86 7 c296 21 528 48 706 84 50 10 102
+19 117 20 l26 1 81 -332z"/>
+</g>
+</svg>
+
+                </a>
+                
+                
+                
+                
+                
+                
+                
+                <a href="https://www.youtube.com/@tylerrouze" target="_blank" rel="noreferrer" title="youtube"
+                    aria-label="youtube">
+                    <svg data-name="youtube" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="25" height="25"> <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" fill="white"></path> </svg>
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+
+<div class="container">
+    <section>
+        <h2>
+            Latest Articles
+            
+            <a class="section-button" href="/posts/">View all</a>
+            
+        </h2>
+        <div class="posts">
+            
+            <div class="post">
+                <a href="/post/dbt-meetup-chicago-may-23/">
+                    <div class="post-row">
+                        <time>May 01</time>
+                        <h3>dbt Chicago Meetup - May 2023</h3>
+                    </div>
+                    
+                </a>
+            </div>
+            
+            <div class="post">
+                <a href="/post/dbt-with-databricks/">
+                    <div class="post-row">
+                        <time>Feb 08</time>
+                        <h3>Q&amp;A Session: What Does dbt Add to Databricks?</h3>
+                    </div>
+                    
+                </a>
+            </div>
+            
+            <div class="post">
+                <a href="/post/a8-dbt-webinar/">
+                    <div class="post-row">
+                        <time>Jul 01</time>
+                        <h3>How dbt Helps Our Clients Remove Data Engineering Bottlenecks</h3>
+                    </div>
+                    
+                </a>
+            </div>
+            
+        </div>
+    </section>
+    
+    <section>
+        <h2>Projects</h2>
+        <div class="projects">
+            
+            <div class="project">
+                <div>
+                    <a href="/projects/2020-05-17-kidney-exchange/">
+                        <div class="icon">📝</div>
+                        <h3>Kidney Exchange in Julia</h3>
+                    </a>
+                    <div class="description">This project is an implementation of the Kidney Exchange Problem using the Recursive Algorithm to build chains and cycles in which we maximize the number of people getting a matching kidney donor.</div>
+                </div>
+                <div class="flex">
+                    <a href="https://github.com/trouze/kidney-donor-pairing" class="button" target="_blank" rel="noreferrer">Github</a>
+                </div>
+            </div>
+            
+            <div class="project">
+                <div>
+                    <a href="/projects/2020-05-11-neuralnetwork/">
+                        <div class="icon">📝</div>
+                        <h3>Neural Networks in R</h3>
+                    </a>
+                    <div class="description">Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language</div>
+                </div>
+                <div class="flex">
+                    <a href="https://github.com/trouze/neural-network-r" class="button" target="_blank" rel="noreferrer">Github</a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+</div>
+
+
+        </main>
+        <footer class="footer flex">
+    <section class="container">
+        <nav class="footer-links">
+            
+            <a href="/index.xml">RSS</a>
+            
+        </nav>
+
+        <section class="copyright"> © <time>2024</time> Tyler Rouze. Powered by <a href="https://gohugo.io">Hugo</a> &amp; <a href="https://pages.github.com">Github Pages</a>.</section>
+    </section>
+    <script defer src="/ts/features.cf94d3fa57b2dba683675e007bd19a4c4e23a94096f8714c852077b600bfa597.js" 
+    data-enable-footnotes="true"
+    ></script>
+</footer>
+
+    </body>
+</html>

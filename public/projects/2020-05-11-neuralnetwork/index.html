@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="dark">
+    <title>Neural Networks in R | Tyler Rouze</title>
+
+    
+    
+    
+    <meta property="og:site_name" content="Tyler Rouze - Data Engineering Manager @ Analytics8" />
+    <meta property="og:title" content="Neural Networks in R | Tyler Rouze"/>
+    <meta itemprop="name" content="Neural Networks in R | Tyler Rouze" />
+    <meta name="twitter:title" content="Neural Networks in R | Tyler Rouze" />
+    <meta name="application-name" content="Neural Networks in R | Tyler Rouze" /><meta name="twitter:card" content="summary"/>
+
+    <meta name="description" content="Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language" />
+    <meta name="twitter:description" content="Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language "/>
+    <meta itemprop="description" content=" Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language "/>
+    <meta property="og:description" content=" Classifying Handwritten Digits from MNIST data using a Neural Network implemented in R programming language " />
+
+    
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <link rel="stylesheet" href="/sass/main.min.ea06eac753dfdcb8d93b7888c21252d91ab43515ceb77c20e34219f8a6797295.css">
+    
+</head>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RXL6BE795W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RXL6BE795W');
+</script>
+    
+    <script>
+        (function() {
+            const colorSchemeKey = 'ThemeColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'ThemeColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.userColorScheme = 'dark';
+        } else {
+            document.documentElement.dataset.userColorScheme = 'light';
+        }
+    })();
+</script>
+
+
+    <body class="dark">
+        <nav class="navbar">
+    <div class="container">
+        <div class="flex">
+            <div>
+                <a class="brand" href="/">
+                    
+                    
+                    Tyler Rouze
+                    </a>
+            </div>
+            <div class="flex">
+                
+                <a href="/">home</a>
+                
+                <a href="/posts">posts</a>
+                
+                <a href="/now">/now</a>
+                
+                <a href="/subscribe">subscribe</a>
+                
+                
+                    <button id="dark-mode-button">
+                    <svg class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M30.312.776C32 19 20 32 .776 30.312c8.199 7.717 21.091 7.588 29.107-.429C37.9 21.867 38.03 8.975 30.312.776z"/><path d="M30.705 15.915a1.163 1.163 0 1 0 1.643 1.641a1.163 1.163 0 0 0-1.643-1.641zm-16.022 14.38a1.74 1.74 0 0 0 0 2.465a1.742 1.742 0 1 0 0-2.465zm13.968-2.147a2.904 2.904 0 0 1-4.108 0a2.902 2.902 0 0 1 0-4.107a2.902 2.902 0 0 1 4.108 0a2.902 2.902 0 0 1 0 4.107z" fill="#FFCC4D"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    <svg class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M16 2s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2V2zm18 14s2 0 2 2s-2 2-2 2h-2s-2 0-2-2s2-2 2-2h2zM4 16s2 0 2 2s-2 2-2 2H2s-2 0-2-2s2-2 2-2h2zm5.121-8.707s1.414 1.414 0 2.828s-2.828 0-2.828 0L4.878 8.708s-1.414-1.414 0-2.829c1.415-1.414 2.829 0 2.829 0l1.414 1.414zm21 21s1.414 1.414 0 2.828s-2.828 0-2.828 0l-1.414-1.414s-1.414-1.414 0-2.828s2.828 0 2.828 0l1.414 1.414zm-.413-18.172s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zm-21 21s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zM16 32s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2v-2z"/><circle fill="#FFD983" cx="18" cy="18" r="10"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    </button>
+                
+            </div>
+            </div>
+    </div>
+</nav>
+
+        <main>
+            
+<div class="container">
+    <article>
+        <header class="article-header">
+            <div class="thumb">
+                <div>
+                    <h1>Neural Networks in R</h1>
+                    <div class="post-meta">
+                        <div>
+                            
+                            
+                              
+                            
+                            By Tyler Rouze | <time>May 11, 2020</time>
+                            | 13 minutes
+                        </div>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </article>
+
+    <div class="article-post">
+    <img src="/images/nn.jpg">
+<br>
+<hr>
+<h3 id="overview">
+    <a href="#overview" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Overview
+</h3>
+<p>This project aims to implement and build a deeper level of understanding in Neural Networks. This article will profile how they learn just like the human brain does. Much of what you will see in this project is based on the first two chapters of the text by Michael Nielsen titled <a href="http://neuralnetworksanddeeplearning.com/">Neural Networks and Deep Learning</a>. While Nielsen builds neural network that is capable of classifying handwritten digits in Python (2.7), I&rsquo;ll show you how we can do it in R for a special sort of challenge.</p>
+<p>To follow along or see the data, you can download from <a href="https://github.com/trouze/UMNStuffs/blob/master/HW4NN.zip">my repository</a> on Github, which also includes the R script to load the data and build the Neural Network. What will follow will be two-fold: 1) a tl;dr version of what a Neural Network is and how it works; 2) an implementation in R for those who may want to learn how to do it in this language. For those unfamiliar with statistics, calculus, and data science, the first part of this article will be valuable to your understanding what Neural Networks are and how they work. That being said, the second part of this article should be valuable to those who are ready to dip their feet into the world of data science. With that out of the way, let&rsquo;s get started.</p>
+<h3 id="how-do-neural-networks-work">
+    <a href="#how-do-neural-networks-work" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    How do Neural Networks, work?
+</h3>
+<p>At a high level, Neural Networks are just that, a model of how your neurons work in your brain. The difference here is that it&rsquo;s an emulation of your brain in a computer (not as scary as it sounds). The idea is that if you were shown the number 5 right now, your eyes would register the number, pass that information to your brain where certain neurons would fire based on the image. Then, your brain would determine that it is a 5 you are seeing.</p>
+<p>In order to do this in a computer, we introduce a few equivalents to model what happens in the human brain. For this project, we are taking a large dataset of handwritten digits. Each digit comprises of 784 pixels, and looks like this:</p>
+<img src="/images/handwrittenfive.jpeg">
+<p>Each pixel represents an input, and each pixel is given a grayscale number, meaning a white pixel is 0, and a darker pixel is a number representing how dark the pixel is.</p>
+<p>So, we input 784 values. These values are weighted (weights are learned through training data) and passed to the next layer of the network. A network and its layers look like this:</p>
+<img src="/images/network.jpg">
+<p>Each of the 784 input values is sent to each of the nodes in the middle (hidden) layer. What I mean by this is that one pixel value is sent to each of the 30 nodes in the hidden layer. In our case, this represents a 784 by 30 matrix as you&rsquo;ll see we use 30 nodes in the hidden layer. You&rsquo;ll also notice 10 nodes in what is called the output layer. Each of these nodes represents a final determination of the handwritten digit being 0 through 9.</p>
+<p>Let&rsquo;s talk through how one pixel (input) would pass through the entire network after having been weighted and passed to the middle (hidden) layer. From here, the new, weighted value is input into the middle layer. The node in the middle layer takes the value and runs it through what is called an activation function. In our case, we&rsquo;ll use a Sigmoid function which looks like this:</p>
+<img src="/images/sigmoid.jpg">
+<p>In R, our now weighted input is passed into the below function as <code>z</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="n">sigmoid</span> <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="m">1</span><span class="o">/</span><span class="p">(</span><span class="m">1</span><span class="o">+</span><span class="nf">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>So what does the Activation (Sigmoid) function do? In laymen&rsquo;s terms, it determines if the input is of value. You&rsquo;ll see what this means in the next paragraph.</p>
+<p>From here, the output of the Sigmoid function is weighted and passed as input into the final layer of 10 nodes (remember: representing each of the 10 digits 0 through 9). That input is ran through the Activation function again, and the neural network outputs a vector of ten values, like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="o">&gt;</span> <span class="n">a</span>
+</span></span><span class="line"><span class="cl">              <span class="n">[</span><span class="p">,</span><span class="m">1</span><span class="n">]</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[1</span><span class="p">,</span><span class="n">]</span> <span class="m">0.1041222329</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[2</span><span class="p">,</span><span class="n">]</span> <span class="m">0.0056134030</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[3</span><span class="p">,</span><span class="n">]</span> <span class="m">0.3600190030</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[4</span><span class="p">,</span><span class="n">]</span> <span class="m">0.9930337436</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[5</span><span class="p">,</span><span class="n">]</span> <span class="m">0.0004073771</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[6</span><span class="p">,</span><span class="n">]</span> <span class="m">0.0179073440</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[7</span><span class="p">,</span><span class="n">]</span> <span class="m">0.0938795106</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[8</span><span class="p">,</span><span class="n">]</span> <span class="m">0.0071585077</span>
+</span></span><span class="line"><span class="cl"> <span class="n">[9</span><span class="p">,</span><span class="n">]</span> <span class="m">0.9863697174</span>
+</span></span><span class="line"><span class="cl"><span class="n">[10</span><span class="p">,</span><span class="n">]</span> <span class="m">0.0175402033</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>These values represent how much the neural network &ldquo;thinks&rdquo; the handwritten inputted image is each number. We simply take the highest output (closest to 1) and consider the neural network to have classified the digit as that value. This output is from an untrained network, but it makes logical sense that the network thinks an 8 and 3 look similar. In this case, we&rsquo;d say the network predicts that the handwritten image is a 3!</p>
+<p>The key points to remember of how a network classifies a digit are: edges weight the inputs, nodes determine if those weighted inputs are of value, the values at the nodes are passed on to be weighted and valued again until the output layer is reached. The output tells us what the input should be classified as.</p>
+<h3 id="implementing-nn-in-r">
+    <a href="#implementing-nn-in-r" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Implementing NN in R
+</h3>
+<p>Now that we&rsquo;ve briefly walked through what steps a network takes to classify a handwritten digit, we must walk through how we train the network to get good at classifying digits correctly. Let&rsquo;s try to do this while also showcasing some of the code to be implemented in R.</p>
+<p>To train a network, we must give it some data so it can learn. We do this by splitting the dataset. If you&rsquo;ve studied statistical modeling in any capacity, you&rsquo;ll likely be familiar with this practice. In our handwritten image dataset we have 70,000 images, so we&rsquo;ll feed our network 60,000 images to learn from and 10,000 to test on. The primary difference between the &ldquo;learning&rdquo; and &ldquo;testing&rdquo; digits is that in the learning phase we are able to adjust the weights and biases such that it gets more digits right. This is done through a reduction in what is called a cost function.</p>
+<h4 id="stochastic-gradient-descent">
+    <a href="#stochastic-gradient-descent" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Stochastic Gradient Descent
+</h4>
+<p>To start, we begin with the Stochastic Gradient Descent function. The cost function I referenced above? <a href="https://en.wikipedia.org/wiki/Gradient">Gradient</a> descent is a fancy way of saying we minimize the cost function (i.e. minimize how many digit classifications we get wrong). We want to minimize cost because cost represents how poorly our network classifies digits. The higher the cost, the worse our network classifies digits correctly.</p>
+<p>The stochastic portion of Stochastic Gradient Descent references the fact that we are estimating gradient descent.</p>
+<p>We estimate the gradient descent because in order to train our neural network, we will utilize a process called mini batching. We use mini batching for a number of reasons; the main reasons being that we can train our network using a much smaller amount of computing power (this is by far not a complete <a href="https://stats.stackexchange.com/questions/49528/batch-gradient-descent-versus-stochastic-gradient-descent/68326#68326">answer</a>).</p>
+<p>To begin building this learning part of our network, we must split the training data out into mini-batches of size 10 (meaning each mini batch has 10 handwritten images in it). In R, this is how we&rsquo;ll do it.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="c1"># appends the result to the 785th column, with 60000</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># rows - one row per observation</span>
+</span></span><span class="line"><span class="cl"><span class="n">training_data</span> <span class="o">&lt;-</span> <span class="nf">cbind</span><span class="p">(</span><span class="n">train</span><span class="o">$</span><span class="n">x</span><span class="p">,</span><span class="n">train</span><span class="o">$</span><span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">for</span> <span class="p">(</span><span class="n">j</span> <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="n">epochs</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># shuffle the data to prep for mini-batches</span>
+</span></span><span class="line"><span class="cl">    <span class="n">training_data</span> <span class="o">&lt;-</span> <span class="n">training_data</span><span class="nf">[sample</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">training_data</span><span class="p">)),</span><span class="n">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mini.batches</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">seq1</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="n">from</span><span class="o">=</span><span class="m">1</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="m">60000</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="n">mini.batch.size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">for</span><span class="p">(</span><span class="n">u</span> <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span><span class="o">/</span><span class="n">mini.batch.size</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># pull out 10 rows from training_data for each</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># iteration of this loop to create 6000 mini-batches</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mini.batches[[u]]</span> <span class="o">&lt;-</span> <span class="n">training_data[seq1[u]</span><span class="o">:</span><span class="p">(</span><span class="n">seq1[u]</span><span class="m">+9</span><span class="p">),</span><span class="n">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>We create a nested list of 6000 mini batches, each of size <code>mini.batch.size = 10</code>.</p>
+<p>Now, we feed each mini batch through our neural network and calculate weights and biases such that it will classify the mini batch correctly. So, we build a for loop to iterate through each mini batch, and call a new function <code>update.mini.batch</code>.</p>
+<h4 id="update-mini-batch">
+    <a href="#update-mini-batch" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Update Mini Batch
+</h4>
+<p>Within this function, we instantiate an empty list for the weights and biases. We iterate through each observation in the mini batch, feeding the gradient values (how dark a pixel is) as <code>x</code> and the actual handwritten digit (0 thru 9) as <code>y</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="c1"># create empty lists of weights and biases</span>
+</span></span><span class="line"><span class="cl"><span class="n">nabla.b</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes[2]</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes[3]</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">nabla.w</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,(</span><span class="n">sizes[2]</span><span class="o">*</span><span class="n">sizes[1]</span><span class="p">)),</span> <span class="n">nrow</span><span class="o">=</span><span class="n">sizes[2]</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="n">sizes[1]</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                  <span class="nf">matrix</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,(</span><span class="n">sizes[3]</span><span class="o">*</span><span class="n">sizes[2]</span><span class="p">)),</span> <span class="n">nrow</span><span class="o">=</span><span class="n">sizes[3]</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="n">sizes[2]</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">## train through mini-batch</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">for</span><span class="p">(</span><span class="n">p</span> <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="n">mini.batch.size</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">mini_batch[p</span><span class="p">,</span><span class="m">-785</span><span class="n">]</span> <span class="c1"># 784 input gradient values</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">&lt;-</span> <span class="n">mini_batch[p</span><span class="p">,</span><span class="m">785</span><span class="n">]</span> <span class="c1"># actual digit classification</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## backprop for each observation in mini-batch</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delta_nablas</span> <span class="o">&lt;-</span> <span class="nf">backprop</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">num_layers</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>You&rsquo;ll notice above we call our backpropagation function. Read on to see what this does.</p>
+<h4 id="backpropagation">
+    <a href="#backpropagation" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Backpropagation
+</h4>
+<p>In laymens terms, backpropagation takes the observations of a mini batch and determines the weights and biases for each observation that will correctly classify the digits in the mini batch. That&rsquo;s a mouth full, but this is how our network improves its classification ability. We will adjust our weights and biases for each observation in the mini batch. The reason it is called backpropagation is because through mathematical proofs, we can show how to efficiently calculate the gradient (or cost function) through each layer going backwards from the output layer. I will try to save the mathematical speak for Michael Nielsen, who explains it in detail <a href="http://neuralnetworksanddeeplearning.com/chap2.html">here</a>.</p>
+<p>To implement in R, we initialize our weights and biases (remember: these are on the edges in the network) and a list of the activations at each node. To start, these activations are just our inputs (784 grey scale pixel values). We feed these values <em>forward</em> first, calculating what our current network would classify this digit as. All of this is done in the following code:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="c1">## initialize updates</span>
+</span></span><span class="line"><span class="cl">  <span class="n">nabla_b_backprop</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes[2]</span><span class="p">),</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="n">sizes[3]</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="n">nabla_w_backprop</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,(</span><span class="n">sizes[2]</span><span class="o">*</span><span class="n">sizes[1]</span><span class="p">)),</span> <span class="n">nrow</span><span class="o">=</span><span class="n">sizes[2]</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="n">sizes[1]</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                  <span class="nf">matrix</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,(</span><span class="n">sizes[3]</span><span class="o">*</span><span class="n">sizes[2]</span><span class="p">)),</span> <span class="n">nrow</span><span class="o">=</span><span class="n">sizes[3]</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="n">sizes[2]</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">## Feed Forward</span>
+</span></span><span class="line"><span class="cl">  <span class="n">activation</span> <span class="o">&lt;-</span> <span class="nf">matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nrow</span><span class="o">=</span><span class="nf">length</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="m">1</span><span class="p">)</span> <span class="c1"># all 784 inputs in single column matrix</span>
+</span></span><span class="line"><span class="cl">  <span class="n">activations</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nrow</span><span class="o">=</span><span class="nf">length</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="m">1</span><span class="p">))</span> <span class="c1"># list to store all activations, layer by layer</span>
+</span></span><span class="line"><span class="cl">  <span class="n">zs</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">()</span> <span class="c1"># list to store all z vectors, layer by layer</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">for</span><span class="p">(</span><span class="n">f</span> <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">weight</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">&lt;-</span> <span class="n">biases[[f]]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span> <span class="o">&lt;-</span> <span class="n">weight[[f]]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w_a</span> <span class="o">&lt;-</span> <span class="n">w</span><span class="o">%*%</span><span class="n">activation</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b_broadcast</span> <span class="o">&lt;-</span> <span class="nf">matrix</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">nrow</span><span class="o">=</span><span class="nf">dim</span><span class="p">(</span><span class="n">w_a</span><span class="p">)</span><span class="n">[1]</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="nf">dim</span><span class="p">(</span><span class="n">w_a</span><span class="p">)</span><span class="n">[2]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">z</span> <span class="o">&lt;-</span> <span class="n">w_a</span> <span class="o">+</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zs[[f]]</span> <span class="o">&lt;-</span> <span class="n">z</span>
+</span></span><span class="line"><span class="cl">    <span class="n">activation</span> <span class="o">&lt;-</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">activations[[f</span><span class="m">+1</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">activation</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>To help you understand where we are- we&rsquo;ve just taken one observation; ran it through our network; calculated the weight on each edge; and calculated the activation at each node. Now is where we backpropagate. This means we determine the weights in which we will classify the digit correctly. We estimate this through the gradient of our cost function, meaning we attempt to minimize the chance our network missclassifies the digit.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="c1">## backpropagate where we update the gradient using delta errors</span>
+</span></span><span class="line"><span class="cl"><span class="n">delta</span> <span class="o">&lt;-</span> <span class="nf">cost.derivative</span><span class="p">(</span><span class="n">activations[</span><span class="nf">[length</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span><span class="n">]]</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="nf">sigmoid_prime</span><span class="p">(</span><span class="n">zs[</span><span class="nf">[length</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="n">]]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">nabla_b_backprop[</span><span class="nf">[length</span><span class="p">(</span><span class="n">nabla_b_backprop</span><span class="p">)</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl"><span class="n">nabla_w_backprop[</span><span class="nf">[length</span><span class="p">(</span><span class="n">nabla_w_backprop</span><span class="p">)</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">delta</span> <span class="o">%*%</span> <span class="nf">t</span><span class="p">(</span><span class="n">activations[</span><span class="nf">[length</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span><span class="m">-1</span><span class="n">]]</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This calls our <code>cost.derivative</code> function. This function takes our vector of output activations (the list of 10 values between 0 and 1 from earlier), and subtracts 1 from the activation in which our digit actually is. This is important, as this is how our network learns. We take this vector of activations and calculate our output error (by multiplying by the derivative of our activation function).</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="n">delta</span> <span class="o">&lt;-</span> <span class="nf">cost.derivative</span><span class="p">(</span><span class="n">activations[</span><span class="nf">[length</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span><span class="n">]]</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="nf">sigmoid_prime</span><span class="p">(</span><span class="n">zs[</span><span class="nf">[length</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="n">]]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">cost.derivative</span> <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span><span class="n">output.activations</span><span class="p">,</span> <span class="n">y</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="n">output.activations</span> <span class="o">-</span> <span class="nf">digit.to.vector</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>To close, we calculate our weights and biases that feed into our output layer, such that we get the digit classification right (or as close as we can get it). Based on these weights and biases, we can calculate the changes necessary to the weights and biases in the layer behind too. This, in essence, is backpropagation. We return a list of the weights and biases that, given the inputs we just gave the network, would classify the digit correctly. This is done in the code below:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-R" data-lang="R"><span class="line"><span class="cl"><span class="c1"># take output from cost.derivative call and store it</span>
+</span></span><span class="line"><span class="cl"><span class="n">nabla_b_backprop[</span><span class="nf">[length</span><span class="p">(</span><span class="n">nabla_b_backprop</span><span class="p">)</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl"><span class="n">nabla_w_backprop[</span><span class="nf">[length</span><span class="p">(</span><span class="n">nabla_w_backprop</span><span class="p">)</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">delta</span> <span class="o">%*%</span> <span class="nf">t</span><span class="p">(</span><span class="n">activations[</span><span class="nf">[length</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span><span class="m">-1</span><span class="n">]]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># backpropagate through the layers behind the output</span>
+</span></span><span class="line"><span class="cl"><span class="kr">for</span> <span class="p">(</span><span class="n">q</span> <span class="kr">in</span> <span class="m">2</span><span class="o">:</span><span class="p">(</span><span class="n">num_layers</span><span class="m">-1</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">sp</span> <span class="o">&lt;-</span> <span class="nf">sigmoid_prime</span><span class="p">(</span><span class="n">zs[</span><span class="nf">[length</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">q</span><span class="m">-1</span><span class="p">)</span><span class="n">]]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">delta</span> <span class="o">&lt;-</span> <span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">weight[</span><span class="nf">[length</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">q</span><span class="m">-2</span><span class="p">)</span><span class="n">]]</span><span class="p">)</span> <span class="o">%*%</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="n">sp</span>
+</span></span><span class="line"><span class="cl">  <span class="n">nabla_b_backprop[</span><span class="nf">[length</span><span class="p">(</span><span class="n">nabla_b_backprop</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">q</span><span class="m">-1</span><span class="p">)</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl">  <span class="n">testyy</span> <span class="o">&lt;-</span> <span class="nf">t</span><span class="p">(</span><span class="n">activations[</span><span class="nf">[length</span><span class="p">(</span><span class="n">activations</span><span class="p">)</span><span class="o">-</span><span class="n">q]]</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">nabla_w_backprop[</span><span class="nf">[length</span><span class="p">(</span><span class="n">nabla_w_backprop</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">q</span><span class="m">-1</span><span class="p">)</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="n">delta</span> <span class="o">%*%</span> <span class="n">testyy</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">return</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">nabla_b_backprop</span><span class="p">,</span><span class="n">nabla_w_backprop</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The backpropagate function will be called each time as it iterates through each observation in the mini batch.</p>
+<h4 id="finish-update-mini-batch">
+    <a href="#finish-update-mini-batch" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Finish Update Mini Batch
+</h4>
+<p>After we&rsquo;ve calculated the weights and biases that would best classify each digit in our mini batch, we come back out of the backpropagation function and finish up updating our network. We take the weights and biases (of which we have a different set for each observation in the mini batch) and we edit the current weights and biases of the network. These edits are made based on what would be necessary to correctly classify the entire mini batch we just backpropagated, with a suppressing factor called the learning rate (or eta).</p>
+<p>To touch on the learning rate briefly, it influences the extent of which we can change the current weights and biases of the network. This change is based on what would best classify the mini batch we just backpropagated. Without a learning rate, we may completely jump over our optimal weights and biases for which our network does the best at classifying <em>all</em> digits, not just the digits in a mini batch.</p>
+<h4 id="taking-a-step-out">
+    <a href="#taking-a-step-out" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Taking a step out&hellip;
+</h4>
+<p>So at a high-level, we&rsquo;ve done the following thus far:</p>
+<ul>
+<li>Split our training data into batches of 10</li>
+<li>Backpropagated to determine the weights and biases for which our network would best classify each handwritten digit in the mini batch correctly</li>
+<li>Updated the weights and biases of our network to best classify based on the mini batch it has just been trained on</li>
+</ul>
+<p>To finish training the network, we simply have to set up a <code>for</code> loop to do everything we&rsquo;ve talked about up to this point. For each mini batch, we update the weights and biases of the network to better classify digits. Remember, we had a dataset of 60,000 digits, with batch sizes of only 10 digits, so we&rsquo;ll iterate many times. Once we&rsquo;ve done that, we can evaluate our network on our testing data. If we&rsquo;ve done everything right, we should have well tuned weights and biases that should classify images of handwritten digits at 50% accuracy.</p>
+<h4 id="epochs">
+    <a href="#epochs" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Epochs
+</h4>
+<p>You read that right! 50% accuracy. That&rsquo;s because I forgot to mention, once we&rsquo;ve tuned the weights and biases over each mini batch we&rsquo;ve only completed one epoch. Remember the learning rate I talked about earlier? Instead of loosening things up and running the risk of our network getting <em>worse</em> over time, we have to do an epoch a number of times so our network can incrementally improve towards optimality. This means we keep the weights and biases of the network, randomly split our data into mini batches, backpropagate over each mini batch, and update weights all over again.</p>
+<p>Ideally, once we&rsquo;ve tuned our network&rsquo;s weights over a number of epochs, we could begin using our network to classify digits in real time. Think along the lines of banks automating the processing of checks. Kind of cool, right?</p>
+<h4 id="in-closing">
+    <a href="#in-closing" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    In Closing
+</h4>
+<p>If you&rsquo;ve made it this far, congratulations. I hope you&rsquo;ve learned a little bit about how neural networks are implemented and how they learn. If you&rsquo;d like to try it our for yourself, see the <a href="https://github.com/trouze/UMNStuffs/blob/master/HW4NN.zip">source code</a>. There are a number of helper functions that I didn&rsquo;t go over for the sake of brevity, so be sure to familiarize yourself with those too. Otherwise, leave a comment and let me know what you thought of this project!</p>
+
+    </div>
+</div>
+
+<div class="container">
+    
+    <nav class="flex container suggested">
+        
+        
+        
+        <a rel="next" href="/projects/2020-05-17-kidney-exchange/" title="Next post (newer)">
+            <span>Next</span>
+            Kidney Exchange in Julia
+            </a> 
+        
+    </nav>
+    
+</div>
+ 
+<div class="container">
+    
+    <script src="https://giscus.app/client.js" 
+        data-repo="trouze/trouze.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkyMDM4NTU5ODU="
+        
+        data-category="Blog Comments"
+        data-category-id="DIC_kwDODCaYcc4CTODa"
+        
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-theme="light"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+        >
+</script>
+
+<script>
+    function setGiscusTeheme(theme) {
+        let giscus = document.querySelector('.giscus iframe');
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme
+                        }
+                    }
+                },
+                'https://giscus.app'
+            )
+        }
+    }
+
+    addEventListener('message', event => {
+        if (event.origin !== 'https://giscus.app') return;
+        setGiscusTeheme(document.documentElement.dataset.userColorScheme)
+    });
+
+    window.addEventListener('onColorSchemeChange', (e) => {
+        setGiscusTeheme(e.detail)
+    })
+</script>
+
+</div>
+
+
+
+</main>
+
+
+        </main>
+        <footer class="footer flex">
+    <section class="container">
+        <nav class="footer-links">
+            
+            <a href="/index.xml">RSS</a>
+            
+        </nav>
+
+        <section class="copyright"> © <time>2024</time> Tyler Rouze. Powered by <a href="https://gohugo.io">Hugo</a> &amp; <a href="https://pages.github.com">Github Pages</a>.</section>
+    </section>
+    <script defer src="/ts/features.cf94d3fa57b2dba683675e007bd19a4c4e23a94096f8714c852077b600bfa597.js" 
+    data-enable-footnotes="true"
+    ></script>
+</footer>
+
+    </body>
+</html>
