@@ -48,7 +48,7 @@
       <link>http://localhost:1313/post/dbt-meetup-chicago-may-23/</link>
       <pubDate>Mon, 01 May 2023 12:00:00 +0000</pubDate>
       <guid>http://localhost:1313/post/dbt-meetup-chicago-may-23/</guid>
-      <description>I took the opportunity to share some insights about my experiences in scaling dbt development in the enterprise during the May 2023 dbt Chicago Meetup. You can see the docs below and picture of me speaking at the event below!&#xA;Previous Next &amp;nbsp; &amp;nbsp; / [pdf] View the PDF file here. </description>
+      <description>I took the opportunity to share some insights about my experiences in scaling dbt development in the enterprise during the May 2023 dbt Chicago Meetup. You can see the slides below and picture of me speaking at the event below!&#xA;Previous Next &amp;nbsp; &amp;nbsp; / [pdf] View the PDF file here. </description>
     </item>
     <item>
       <title>Q&amp;A Session: What Does dbt Add to Databricks?</title>
@@ -63,13 +63,6 @@
       <pubDate>Fri, 01 Jul 2022 12:00:00 +0000</pubDate>
       <guid>http://localhost:1313/post/a8-dbt-webinar/</guid>
       <description></description>
-    </item>
-    <item>
-      <title>Algorithmic Trading Series: Hooking up to TD Ameritrade&#39;s API</title>
-      <link>http://localhost:1313/post/td-ameritrade-api-setup/</link>
-      <pubDate>Mon, 16 Nov 2020 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/td-ameritrade-api-setup/</guid>
-      <description>Welcome to the first installment of what will likely be a series of tutorials on building algorithmic trading bots to do a multitude of things for us automatically! Along the way, we&amp;rsquo;ll touch on APIs, cloud computing, stock and option trading strategies, and a little bit of data science to search for opportunities. It should go without saying that none of what is written about here constitutes as financial advice, it&amp;rsquo;s quite likely you&amp;rsquo;ll lose money listening to me ;)</description>
     </item>
   </channel>
 </rss>
