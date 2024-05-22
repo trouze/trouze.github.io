@@ -4,10 +4,17 @@
     <title>Posts on Tyler Rouze</title>
     <link>http://localhost:1313/post/</link>
     <description>Recent content in Posts on Tyler Rouze</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 Mar 2024 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Apr 2024 12:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Recent dbt Community Spotlight!</title>
+      <link>http://localhost:1313/post/dbt-community-spotlight/</link>
+      <pubDate>Sat, 20 Apr 2024 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/dbt-community-spotlight/</guid>
+      <description>I recently had the honor of being featured on dbt Labs&amp;rsquo; community spotlight! You can read more about it here.&#xA;It&amp;rsquo;s been an absolute pleasure to be a part of this community for a few years now. I&amp;rsquo;ve said it before during my talks, but working in data, especially in our space pushing the boundaries and defining what best practices should be, is difficult work. It&amp;rsquo;s a common trope, but most of the world&amp;rsquo;s data goes unanalyzed, and that means there&amp;rsquo;s so much more we can learn about our world if we&amp;rsquo;re able to effectively process and analyze it.</description>
+    </item>
     <item>
       <title>5 Steps to Optimize your dbt Implementation</title>
       <link>http://localhost:1313/post/dbt-healthcheck-webinar/</link>
