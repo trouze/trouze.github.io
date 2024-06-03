@@ -1,1 +1,1 @@
-Managing Consultant @ [Analytics8](https://www.analytics8.com)
+Resident Architect @ [dbt Labs](https://www.getdbt.com)
