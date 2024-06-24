@@ -24,9 +24,7 @@ I currently live in Austin, TX.
 
 ### Work
 
-I currently work for [Analytics8](https://www.analytics8.com) as a Managing Consultant. My role focuses on modernizing clients' data architectures, data modeling practices, and developer workflows while managing a team of consultants working on similar projects. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I have even made open-source contributions to the [dbt-core](https://github.com/dbt-labs/dbt-core) project!
-
-I also help coordinate the organization of the [Chicago dbt meetup](https://www.meetup.com/chicago-dbt-meetup/) each quarter!
+I currently work for [dbt Labs](https://www.getdbt.com) as a Resident Architect. My role focuses on helping dbt Labs' biggest dbt Cloud customers get more out of the platform, and ultimately steward them towards a more highly-functioning data team and platform. I combine a mix of technical hands-on experience with more strategic and architectural frameworks to help data teams, taking specific interests in data modeling practices, platform engineering principles, and developer workflows impact on productivity. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I'm also a contributor to the [dbt-core](https://github.com/dbt-labs/dbt-core) project.
 
 ### Volunteerism
 

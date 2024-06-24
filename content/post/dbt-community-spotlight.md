@@ -1,7 +1,7 @@
 ---
 title: "My Recent dbt Community Spotlight!"
 date: 2024-04-20 12:00:00
-excerpt: "I was recently "
+excerpt: "I was recently spotlighted on dbt Labs' quartly community spotlight! Read on to learn about how much being a part of this community has impacted my career."
 ---
 
 <img src="/images/dbt_nyc.jpg">
