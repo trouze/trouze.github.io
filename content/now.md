@@ -3,7 +3,6 @@ title: /now
 description: What Tyler is doing right now
 subtitle: A place to keep up with what I'm doing right now!
 author: "Tyler Rouze"
-date: now
 layout: page
 ---
 <img src="/images/austin.jpg">
