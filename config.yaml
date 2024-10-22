@@ -1,7 +1,9 @@
 baseurl: "https://tylerrouze.com"
 languageCode: "en-us"
 title: "Tyler Rouze"
-paginate: 5
+
+pagination:
+  pagerSize: 5
 
 params:
   # Emoji will show before the blog title on site navbar.
