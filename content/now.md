@@ -13,7 +13,7 @@ layout: page
 This page lists the most up-to-date information regarding what I am doing right *now*.
 
 ### A little bit about me.
-Motorhead, flying, golfing, baseball, hiking, skiing, bread making, running, you name it. My passions carry me in many different and odd directions, but I wouldn't have it any other way.
+Motorhead, golfing, baseball, hiking, skiing, breadmaking, running, you name it. My passions carry me in many different and odd directions, but I wouldn't have it any other way.
 
 {{< gallery dir="/images/now_gallery/" />}} {{< load-photoswipe >}}
 
@@ -33,11 +33,10 @@ I currently volunteer at [Marbridge](https://www.marbridge.org/), a residential 
 
 Some of my current interests are:
 
-* Modern Data Stack (especially [dbt](https://docs.getdbt.com/community/spotlight))
-* [Marathoning](https://www.strava.com/athletes/116840931) (I'll be running Grandma's in Duluth, [fundraising](https://pages.lls.org/tnt/ctx/chicago24/tylerrouze#Tylers-Team-In-Training-Fundraiser) and running Chicago this fall)
-* Formula 1
-* Aviation
-* Any book on our Human Nature (psychology/sociology), especially those with data-driven research findings.
+* Modern Data Stack (especially [dbt](https://docs.getdbt.com/community/spotlight/tyler-rouze))
+* [Marathoning](https://www.strava.com/athletes/116840931) (with a stretch goal to qualify for Boston in the next year!)
+* Formula 1, playing in a wood-bat baseball league (I played in college!), sourdough breadmaking, Packers football and two-stepping at [Sagebrush](https://sagebrushtexas.com/) in Austin.
+* Any book on our Human Nature (psychology/sociology), especially those with data-driven research findings. I'm currently reading and fascinated by [The Biggest Bluff](https://www.mariakonnikova.com/books/the-biggest-bluff/).
 
 ### Education
 
