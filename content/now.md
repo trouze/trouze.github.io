@@ -23,7 +23,7 @@ I currently live in Austin, TX.
 
 ### Work
 
-I currently work for [dbt Labs](https://www.getdbt.com) as a Resident Architect. My role focuses on helping dbt Labs' biggest dbt Cloud customers get more out of the platform, and ultimately steward them towards a more highly-functioning data team and platform. I combine a mix of technical hands-on experience with more strategic and architectural frameworks to help data teams, taking specific interests in data modeling practices, platform engineering principles, and developer workflows impact on productivity. I am a certified professional in a number of technologies, including [dbt](https://www.getdbt.com/), [Google Cloud](https://cloud.google.com/), and [Databricks](https://www.databricks.com/). I'm also a contributor to the [dbt-core](https://github.com/dbt-labs/dbt-core) project.
+I currently work for [dbt Labs](https://www.getdbt.com) as a Resident Architect. My role focuses on helping dbt Labs' biggest customers get more out of the product, and ultimately steward them towards a more highly-functioning data team and platform. I combine a mix of technical hands-on experience with more strategic and architectural frameworks to help data teams, taking specific interests in data modeling practices, platform engineering principles, and developer workflows impact on productivity. One of my favorite parts of my job is being able to take customer & community feedback and improve the dbt product and ecosystem through open source contributions. Thus far, I've contributed to [dbt-core](https://github.com/dbt-labs/dbt-core), [the dbt Terraform provider](https://github.com/dbt-labs/terraform-provider-dbtcloud), and the [dbt MCP server](https://github.com/dbt-labs/dbt-mcp). I am also a certified professional in a number of technologies, including dbt ([Architect](https://www.getdbt.com/certifications/dbt-architect-certification-exam) and [Analytics Engineer](https://www.getdbt.com/certifications/analytics-engineer-certification-exam)), [Google Cloud](https://cloud.google.com/learn/certification/data-engineer), and [Databricks](https://www.databricks.com/learn/certification/data-engineer-associate).
 
 ### Volunteerism
 
@@ -34,13 +34,13 @@ I currently volunteer at [Marbridge](https://www.marbridge.org/), a residential 
 Some of my current interests are:
 
 * Modern Data Stack (especially [dbt](https://docs.getdbt.com/community/spotlight/tyler-rouze))
-* [Marathoning](https://www.strava.com/athletes/116840931) (with a stretch goal to qualify for Boston in the next year!)
-* Formula 1, playing in a wood-bat baseball league (I played in college!), sourdough breadmaking, Packers football and two-stepping at [Sagebrush](https://sagebrushtexas.com/) in Austin.
-* Any book on our Human Nature (psychology/sociology), especially those with data-driven research findings. I'm currently reading and fascinated by [The Biggest Bluff](https://www.mariakonnikova.com/books/the-biggest-bluff/).
+* [Marathoning](https://www.strava.com/athletes/116840931) (I'm a Boston Qualifier, running Berlin in Fall 2025 next)
+* Formula 1, playing in a wood-bat baseball league (I played in college), sourdough breadmaking, Packers football and two-stepping at [Sagebrush](https://sagebrushtexas.com/) in Austin.
+* Any book on human nature, especially those summarizing data-driven research findings. I'm currently reading and fascinated by [The Biggest Bluff](https://www.mariakonnikova.com/books/the-biggest-bluff/).
 
 ### Education
 
-I have quite a passion for lifelong learning. So while much of education is in the *past*, I am definitely continuing to learn new topics right */now*. It's this passion that motivated me to learn web development by making this website. More formally, I earned my Bachelors degree from the University of Minnesota in [Industrial and Systems Engineering](https://cse.umn.edu/isye) (yes that's me on the front page!). If you don't know what the IE curriculum entails, it is the science of Decision making, usually based on data, done so via:
+I have quite a passion for lifelong learning. So while much of education is in the *past*, I am definitely continuing to learn new topics right */now*. It's this passion that motivated me to learn web development by making this website. More formally, I earned my Bachelors degree from the University of Minnesota in [Industrial and Systems Engineering](https://cse.umn.edu/isye) (yes, that's me on the front page). If you don't know what the IE curriculum entails, it is the science of Decision making, usually based on data, done so via:
 
 * Statistics
 * Optimization
