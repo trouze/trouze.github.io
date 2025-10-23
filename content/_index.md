@@ -1,1 +1,1 @@
-Resident Architect @ [dbt Labs](https://www.getdbt.com)
+Senior Resident Architect @ [dbt Labs](https://www.getdbt.com)
