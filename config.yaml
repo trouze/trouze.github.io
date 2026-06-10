@@ -31,7 +31,7 @@ params:
   # Limit how many categories filter show above search input.
   # Default to 5
   maxCategoryToShow: 10
-  mailchimp: https://tylerrouze.us20.list-manage.com/subscribe/post?u=2999b5cece1fa6ee3e6af9a37&id=3addec2a8e
+  listmonk: https://mailing.tylerrouze.com
 
   # Show your social information with icon on index bio with `_index.md` content.
   socialOptions:
