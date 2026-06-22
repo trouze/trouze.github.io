@@ -1,3 +1,10 @@
-resources/
+# Astro
+dist/
+.astro/
+
+# Node
+node_modules/
+package-lock.json
+
+# OS
 .DS_Store
-public/

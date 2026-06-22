@@ -1,0 +1,100 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const meta = {
+	description: "Subscribe to Tyler Rouze's mailing list for updates on data engineering, the modern data stack, and more.",
+	title: "Subscribe",
+};
+
+const LISTMONK_URL = "https://mailing.tylerrouze.com";
+const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
+---
+
+<PageLayout meta={meta}>
+	<section class="subscribe" aria-labelledby="subscribe-label">
+		<div class="section-label" id="subscribe-label">Subscribe</div>
+		<div class="content">
+			<p>Want to stay in touch? Subscribe below for future updates on data engineering, the modern data stack, and whatever else I happen to be thinking about.</p>
+			<form method="post" action={`${LISTMONK_URL}/subscription/form`} class="subscribe-form">
+				<input
+					type="email"
+					name="email"
+					placeholder="Your email address"
+					required
+					autocomplete="email"
+				/>
+				<input type="hidden" name="l" value={LIST_ID} />
+				<button type="submit">Subscribe</button>
+			</form>
+			<p class="alt-contact">
+				Prefer a more direct line? Send me an email at <a href="mailto:tyler@tylerrouze.com">tyler@tylerrouze.com</a>.
+			</p>
+		</div>
+	</section>
+</PageLayout>
+
+<style>
+	.subscribe {
+		margin-bottom: 64px;
+	}
+	.content {
+		font-family: var(--font-serif);
+		font-size: 17.5px;
+		line-height: 1.75;
+		color: hsl(var(--theme-text));
+		max-width: var(--reading-width);
+	}
+	.content p {
+		margin: 0 0 28px;
+	}
+	.subscribe-form {
+		display: flex;
+		gap: 10px;
+		margin-bottom: 28px;
+		flex-wrap: wrap;
+	}
+	.subscribe-form input[type="email"] {
+		flex: 1 1 240px;
+		padding: 10px 14px;
+		font-family: var(--font-sans);
+		font-size: 14px;
+		border: 1px solid hsl(var(--theme-text) / 0.2);
+		border-radius: 4px;
+		background: hsl(var(--theme-bg));
+		color: hsl(var(--theme-text));
+		outline: none;
+		transition: border-color 0.2s ease;
+	}
+	.subscribe-form input[type="email"]:focus {
+		border-color: hsl(var(--theme-accent));
+	}
+	.subscribe-form button {
+		padding: 10px 22px;
+		font-family: var(--font-sans);
+		font-size: 14px;
+		font-weight: 500;
+		background: hsl(var(--theme-text));
+		color: hsl(var(--theme-bg));
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: opacity 0.2s ease;
+	}
+	.subscribe-form button:hover {
+		opacity: 0.8;
+	}
+	.alt-contact {
+		font-size: 15px;
+		color: hsl(var(--theme-text-muted));
+	}
+	.alt-contact a {
+		color: hsl(var(--theme-text));
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-text) / 0.35);
+		text-underline-offset: 3px;
+	}
+	.alt-contact a:hover {
+		color: hsl(var(--theme-accent));
+		text-decoration-color: hsl(var(--theme-accent));
+	}
+</style>

@@ -1,8 +1,0 @@
-<link rel="stylesheet" href={{ "css/contact-form.css" | relURL }} />
-
-<form method="post" action="{{ .Site.Params.listmonk }}/subscription/form">
-	<input name="email" id="subscribe-email" type="email" placeholder="Your email address...">
-	<input type="hidden" name="l" value="e769d1fd-a069-436a-acf3-c523b1745b6b">
-	<input type="submit" id="subscribe-button" value="Subscribe">
-</form>
-{{- .Inner }}

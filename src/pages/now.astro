@@ -1,0 +1,78 @@
+---
+import { getEntry, render } from "astro:content";
+import PageLayout from "@/layouts/Base.astro";
+
+const entry = await getEntry("page", "now");
+if (!entry) throw new Error("Missing src/content/page/now.md");
+const { Content } = await render(entry);
+
+const meta = {
+	description: entry.data.description ?? "What Tyler Rouze is doing right now.",
+	title: entry.data.title,
+};
+---
+
+<PageLayout meta={meta}>
+	<section class="now" aria-labelledby="now-label">
+		<div class="section-label" id="now-label">/now</div>
+		<div class="prose">
+			<Content />
+		</div>
+	</section>
+</PageLayout>
+
+<style>
+	.now {
+		margin-bottom: 64px;
+	}
+	.prose {
+		font-family: var(--font-serif);
+		font-size: 17.5px;
+		line-height: 1.75;
+		color: hsl(var(--theme-text));
+		max-width: var(--reading-width);
+	}
+	.prose :global(h3) {
+		font-size: 18px;
+		font-weight: 600;
+		margin: 32px 0 12px;
+	}
+	.prose :global(p) {
+		margin: 0 0 22px;
+		text-wrap: pretty;
+	}
+	.prose :global(p:last-child) {
+		margin-bottom: 0;
+	}
+	.prose :global(ul) {
+		list-style: disc;
+		list-style-position: inside;
+		margin: 0 0 28px;
+		padding: 0;
+	}
+	.prose :global(ul li) {
+		margin-bottom: 6px;
+	}
+	.prose :global(hr) {
+		border: none;
+		border-top: 1px solid var(--hairline);
+		margin: 32px 0;
+	}
+	.prose :global(img) {
+		max-width: 100%;
+		border-radius: 4px;
+		margin-bottom: 24px;
+	}
+	.prose :global(a) {
+		color: hsl(var(--theme-text));
+		text-decoration: underline;
+		text-decoration-color: hsl(var(--theme-text) / 0.35);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+		transition: color 0.2s ease, text-decoration-color 0.2s ease;
+	}
+	.prose :global(a:hover) {
+		color: hsl(var(--theme-accent));
+		text-decoration-color: hsl(var(--theme-accent));
+	}
+</style>
