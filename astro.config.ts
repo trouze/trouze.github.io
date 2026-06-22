@@ -1,13 +1,12 @@
 import fs from "node:fs";
 import mdx from "@astrojs/mdx";
+import { unified } from "@astrojs/markdown-remark";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
-import expressiveCode from "astro-expressive-code";
+import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
 import { defineConfig } from "astro/config";
-import { expressiveCodeOptions } from "./src/site.config";
 import { siteConfig } from "./src/site.config";
 import partytown from "@astrojs/partytown";
 
@@ -42,11 +41,7 @@ export default defineConfig({
 				forward: ["dataLayer.push"],
 			},
 		}),
-		expressiveCode(expressiveCodeOptions),
 		icon(),
-		tailwind({
-			applyBaseStyles: false,
-		}),
 		sitemap({
 			changefreq: "weekly",
 			priority: 0.7,
@@ -90,26 +85,38 @@ export default defineConfig({
 		(await import("@playform/compress")).default(),
 	],
 	markdown: {
-		rehypePlugins: [
-			rehypeUnwrapImages,
-			[rehypeBasePath, { base: BASE_PATH }],
-			// rehype-katex must run before rehype-external-links so the latter
-			// doesn't rewrite anchors inside katex's emitted DOM.
-			rehypeKatex,
-			[
-				rehypeExternalLinks,
-				{
-					rel: ["nofollow, noreferrer"],
-					target: "_blank",
-				},
-			],
-		],
-		remarkPlugins: [remarkReadingTime, remarkDirective, remarkAdmonitions, remarkMath],
-		remarkRehype: {
-			footnoteLabelProperties: {
-				className: [""],
+		shikiConfig: {
+			themes: {
+				light: "min-light",
+				dark: "min-dark",
 			},
+			// defaultColor: false lets us control colors entirely via CSS vars
+			// tied to the site's [data-theme] toggle.
+			defaultColor: false,
+			wrap: false,
 		},
+		processor: unified({
+			remarkPlugins: [remarkReadingTime, remarkDirective, remarkAdmonitions, remarkMath],
+			rehypePlugins: [
+				rehypeUnwrapImages,
+				[rehypeBasePath, { base: BASE_PATH }],
+				// rehype-katex must run before rehype-external-links so the latter
+				// doesn't rewrite anchors inside katex's emitted DOM.
+				rehypeKatex,
+				[
+					rehypeExternalLinks,
+					{
+						rel: ["nofollow, noreferrer"],
+						target: "_blank",
+					},
+				],
+			],
+			remarkRehype: {
+				footnoteLabelProperties: {
+					className: [""],
+				},
+			},
+		}),
 	},
 	// https://docs.astro.build/en/guides/prefetch/
 	prefetch: true,
@@ -117,7 +124,7 @@ export default defineConfig({
 		optimizeDeps: {
 			exclude: ["@resvg/resvg-js"],
 		},
-		plugins: [rawFonts([".ttf", ".woff"])],
+		plugins: [tailwindcss(), rawFonts([".ttf", ".woff"])],
 	},
 });
 

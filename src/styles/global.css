@@ -5,9 +5,31 @@
 @import "@fontsource-variable/jetbrains-mono/wght.css";
 @import "katex/dist/katex.min.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Shiki dual-theme: light is default, [data-theme="dark"] switches to dark vars. */
+/* defaultColor: false means no inline color/bg — we drive everything from CSS. */
+.astro-code,
+.astro-code span {
+	color: var(--shiki-light);
+}
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+	color: var(--shiki-dark);
+}
+.astro-code {
+	background-color: #f0e9d6;
+	border-radius: 4px;
+	padding: 1rem;
+	overflow-x: auto;
+	font-family: var(--font-mono);
+	font-size: 0.875rem;
+	line-height: 1.7142857;
+	transition: background-color 0.35s ease;
+}
+:root[data-theme="dark"] .astro-code {
+	background-color: #1a1715;
+}
 
 @layer base {
 	html {
@@ -20,7 +42,7 @@
 	}
 }
 
-/* `--theme-*` are hsl-channel for Tailwind alpha utilities; `--paper`/`--hairline`/`--faint`/`--accent-soft` are direct colors. */
+/* `--theme-*` are hsl-channel CSS custom properties; `--paper`/`--hairline`/`--faint`/`--accent-soft` are direct colors. */
 
 @layer base {
 	:root {
