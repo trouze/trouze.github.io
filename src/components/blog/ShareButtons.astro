@@ -174,14 +174,7 @@ const linkedinHref = `https://www.linkedin.com/sharing/share-offsite/?url=${enco
 			const url = btn.dataset.url ?? window.location.href;
 			try {
 				await navigator.clipboard.writeText(url);
-			} catch {
-				const input = document.createElement("input");
-				input.value = url;
-				document.body.appendChild(input);
-				input.select();
-				try { document.execCommand("copy"); } catch {}
-				input.remove();
-			}
+			} catch {}
 			btn.dataset.copied = "true";
 			btn.setAttribute("aria-label", "Copied");
 			if (label) label.textContent = "Copied!";
