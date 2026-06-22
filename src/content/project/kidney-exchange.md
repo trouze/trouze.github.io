@@ -3,7 +3,6 @@ title: "Kidney Exchange in Julia"
 publishDate: 2020-05-17
 description: "An optimization model for kidney exchange programs, maximizing compatible donor-recipient pairs using chains and cycles in Julia."
 tags: [julia, optimization, operations-research]
-codeStyle: terminal
 ---
 
 <img src="/images/chain.png" alt="Kidney exchange chain diagram">
