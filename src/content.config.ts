@@ -9,6 +9,8 @@ function removeDupsAndLowerCase(array: string[]) {
 	return Array.from(distinctItems);
 }
 
+const codeStyleSchema = z.enum(["default", "mac", "terminal"]).optional();
+
 const post = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/post" }),
 	schema: ({ image }) =>
@@ -32,6 +34,7 @@ const post = defineCollection({
 				.string()
 				.optional()
 				.transform((str) => (str ? new Date(str) : undefined)),
+			codeStyle: codeStyleSchema,
 		}),
 });
 
@@ -58,6 +61,7 @@ const project = defineCollection({
 				.string()
 				.optional()
 				.transform((str) => (str ? new Date(str) : undefined)),
+			codeStyle: codeStyleSchema,
 		}),
 });
 

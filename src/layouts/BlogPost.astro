@@ -27,7 +27,7 @@ const idx = isProject ? -1 : sortedAll.findIndex((p) => p.id === post.id);
 const newerPost = idx > 0 ? sortedAll[idx - 1] : undefined;
 const olderPost = idx >= 0 && idx < sortedAll.length - 1 ? sortedAll[idx + 1] : undefined;
 const {
-	data: { coverImage, description, ogImage, publishDate, title, updatedDate, tags, draft },
+	data: { coverImage, description, ogImage, publishDate, title, updatedDate, tags, draft, codeStyle },
 	id: slug,
 } = post;
 const socialImage = ogImage ?? `/og-image/${slug}.png`;
@@ -126,7 +126,7 @@ const giscusThemes = import.meta.env.PROD
 				<hr class="rule" />
 			)}
 
-			<article class="post-article">
+			<article class="post-article" data-code-style={codeStyle ?? "default"}>
 				<slot />
 			</article>
 
@@ -529,6 +529,10 @@ const giscusThemes = import.meta.env.PROD
 		transition: background-color 0.35s ease, border-color 0.35s ease;
 	}
 
+	.post-article .code-wrapper {
+		position: relative;
+		margin: 28px 0;
+	}
 	.post-article pre {
 		background: var(--paper);
 		border: 1px solid var(--hairline);
@@ -541,6 +545,9 @@ const giscusThemes = import.meta.env.PROD
 		line-height: 1.7;
 		transition: background-color 0.35s ease, border-color 0.35s ease;
 	}
+	.post-article .code-wrapper > pre {
+		margin: 0;
+	}
 	.post-article pre code {
 		background: transparent;
 		border: 0;
@@ -551,6 +558,99 @@ const giscusThemes = import.meta.env.PROD
 	/* expressive-code wrapper safety */
 	.post-article .expressive-code {
 		margin: 28px 0;
+	}
+	.post-article .copy-code-btn {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		font-family: var(--font-mono);
+		font-size: 10.5px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: hsl(var(--theme-text) / 0.45);
+		background: var(--paper);
+		border: 1px solid var(--hairline);
+		border-radius: 3px;
+		padding: 3px 8px;
+		cursor: pointer;
+		opacity: 0;
+		line-height: 1.6;
+		transition: opacity 0.18s ease, color 0.18s ease, border-color 0.18s ease, background-color 0.35s ease;
+	}
+	.post-article .code-wrapper:hover .copy-code-btn,
+	.post-article .copy-code-btn:focus-visible {
+		opacity: 1;
+	}
+	.post-article .copy-code-btn:hover {
+		color: hsl(var(--theme-accent));
+		border-color: hsl(var(--theme-accent) / 0.5);
+	}
+	.post-article .copy-code-btn[data-copied="true"] {
+		color: hsl(var(--theme-accent));
+		opacity: 1;
+	}
+
+	/* Mac window style */
+	.post-article .mac-bar {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 0 12px;
+		height: 36px;
+		background: var(--paper);
+		border: 1px solid var(--hairline);
+		border-bottom: 0;
+		border-radius: 4px 4px 0 0;
+		transition: background-color 0.35s ease, border-color 0.35s ease;
+	}
+	.post-article .mac-dot {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+	.post-article .mac-dot:nth-child(1) { background: #FF5F57; }
+	.post-article .mac-dot:nth-child(2) { background: #FFBD2E; }
+	.post-article .mac-dot:nth-child(3) { background: #28CA41; }
+	.post-article .code-wrapper.mac-window > pre {
+		border-top: 0;
+		border-radius: 0 0 4px 4px;
+	}
+	/* Copy button lives in the title bar for mac-window blocks */
+	.post-article .mac-bar .copy-code-btn {
+		position: static;
+		margin-left: auto;
+		opacity: 0.45;
+	}
+	.post-article .code-wrapper.mac-window:hover .copy-code-btn,
+	.post-article .mac-bar .copy-code-btn:focus-visible {
+		opacity: 1;
+	}
+
+	/* Terminal style — dots | spacer | copy, with a distinct bar color */
+	.post-article .terminal-bar {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		padding: 0 12px;
+		height: 36px;
+		background: var(--hairline);
+		border: 1px solid var(--hairline);
+		border-bottom: 0;
+		border-radius: 4px 4px 0 0;
+		transition: background-color 0.35s ease, border-color 0.35s ease;
+	}
+	.post-article .terminal-dots {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.post-article .code-wrapper.terminal > pre {
+		border-top: 0;
+		border-radius: 0 0 4px 4px;
+	}
+	.post-article .code-wrapper.terminal > .copy-code-btn {
+		top: calc(36px + 8px);
 	}
 
 	.post-article ul {
@@ -873,6 +973,67 @@ const giscusThemes = import.meta.env.PROD
 		);
 		lazyImgs.forEach((img) => io.observe(img));
 	}
+
+	const articleEl = document.querySelector<HTMLElement>(".post-article");
+	const postCodeStyle = articleEl?.dataset.codeStyle ?? "default";
+
+	document.querySelectorAll<HTMLPreElement>(".post-article pre").forEach((pre) => {
+		const metaParts = (pre.dataset.meta ?? "").split(/\s+/);
+		const isMac = postCodeStyle === "mac" || metaParts.includes("mac");
+		const isTerminal = postCodeStyle === "terminal" || metaParts.includes("terminal");
+
+		const wrapper = document.createElement("div");
+		wrapper.className =
+			"code-wrapper" + (isMac ? " mac-window" : isTerminal ? " terminal" : "");
+		pre.parentNode?.insertBefore(wrapper, pre);
+		wrapper.appendChild(pre);
+
+		const btn = document.createElement("button");
+		btn.type = "button";
+		btn.className = "copy-code-btn";
+		btn.setAttribute("aria-label", "Copy code");
+		btn.textContent = "copy";
+		btn.addEventListener("click", async () => {
+			const text = pre.querySelector("code")?.textContent ?? pre.textContent ?? "";
+			try {
+				await navigator.clipboard.writeText(text);
+				btn.textContent = "copied";
+				btn.dataset.copied = "true";
+				setTimeout(() => {
+					btn.textContent = "copy";
+					delete btn.dataset.copied;
+				}, 1500);
+			} catch {}
+		});
+
+		if (isMac) {
+			const bar = document.createElement("div");
+			bar.className = "mac-bar";
+			for (let i = 0; i < 3; i++) {
+				const dot = document.createElement("span");
+				dot.className = "mac-dot";
+				bar.appendChild(dot);
+			}
+			bar.appendChild(btn);
+			wrapper.insertBefore(bar, pre);
+		} else if (isTerminal) {
+			const bar = document.createElement("div");
+			bar.className = "terminal-bar";
+
+			const dotsEl = document.createElement("div");
+			dotsEl.className = "terminal-dots";
+			for (let i = 0; i < 3; i++) {
+				const dot = document.createElement("span");
+				dot.className = "mac-dot";
+				dotsEl.appendChild(dot);
+			}
+			bar.appendChild(dotsEl);
+			wrapper.insertBefore(bar, pre);
+			wrapper.appendChild(btn);
+		} else {
+			wrapper.appendChild(btn);
+		}
+	});
 
 	const slugify = (s: string) =>
 		s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
