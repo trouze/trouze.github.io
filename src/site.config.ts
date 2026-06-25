@@ -19,7 +19,7 @@ export const siteConfig: SiteConfig = {
 	hideThemeCredit: false,
 	profile: {
 		name: "Tyler Rouze",
-		email: "tyler@tylerrouze.com",
+		email: "hello@tylerrouze.com",
 		github: "https://github.com/trouze",
 		linkedin: "https://www.linkedin.com/in/tylerrouze",
 		strava: "https://www.strava.com/athletes/116840931",

@@ -25,13 +25,30 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 				/>
 				<input type="hidden" name="l" value={LIST_ID} />
 				<button type="submit">Subscribe</button>
+				<altcha-widget
+					id="altcha"
+					challengeurl="https://mailing.tylerrouze.com/api/public/captcha/"
+					hidefooter
+				></altcha-widget>
 			</form>
 			<p class="alt-contact">
-				Prefer a more direct line? Send me an email at <a href="mailto:tyler@tylerrouze.com">tyler@tylerrouze.com</a>.
+				Prefer a more direct line? Send me an email at <a href="mailto:hello@tylerrouze.com">hello@tylerrouze.com</a>.
 			</p>
 		</div>
 	</section>
 </PageLayout>
+
+<script is:inline type="module" src="https://cdn.jsdelivr.net/npm/altcha/dist/altcha.min.js"></script>
+<script is:inline>
+	const email = document.querySelector('.subscribe-form input[type="email"]');
+	const widget = document.getElementById('altcha');
+	email.addEventListener('input', () => {
+		if (!widget.classList.contains('visible')) {
+			widget.classList.add('visible');
+			widget.setAttribute('auto', 'onload');
+		}
+	}, { once: true });
+</script>
 
 <style>
 	.subscribe {
@@ -82,6 +99,13 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 	}
 	.subscribe-form button:hover {
 		opacity: 0.8;
+	}
+	.subscribe-form altcha-widget {
+		flex-basis: 100%;
+		display: none;
+	}
+	.subscribe-form altcha-widget.visible {
+		display: block;
 	}
 	.alt-contact {
 		font-size: 15px;

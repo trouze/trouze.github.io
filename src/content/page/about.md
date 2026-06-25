@@ -13,4 +13,4 @@ Outside of work I'm usually running (Boston Qualifier, targeting Berlin 2025), p
 
 I earned my Bachelor's degree from the [University of Minnesota in Industrial and Systems Engineering](https://cse.umn.edu/isye).
 
-Find me on [GitHub](https://github.com/trouze), [LinkedIn](https://www.linkedin.com/in/tylerrouze), or by [email](mailto:tyler@tylerrouze.com).
+Find me on [GitHub](https://github.com/trouze), [LinkedIn](https://www.linkedin.com/in/tylerrouze), or by [email](mailto:hello@tylerrouze.com).
