@@ -1,9 +1,9 @@
 # trouze.github.io
-Repo for my Github pages website hosted at https://tylerrouze.com. Uses [Hugo](https://gohugo.io) to generate.
+Repo for my Github pages website hosted at https://tylerrouze.com. Uses [Astro](https://astro.build) to generate.
 
 ## Build Locally
-Must have hugo installed:
+Must have node installed:
 
 ```sh
-hugo server
+pnpm dev
 ```
