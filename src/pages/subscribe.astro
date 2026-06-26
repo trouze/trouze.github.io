@@ -24,6 +24,14 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 					autocomplete="email"
 				/>
 				<input type="hidden" name="l" value={LIST_ID} />
+				<input
+					type="text"
+					name="website"
+					autocomplete="off"
+					tabindex="-1"
+					aria-hidden="true"
+					style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
+				/>
 				<button type="submit">Subscribe</button>
 				<altcha-widget
 					id="altcha"
