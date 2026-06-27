@@ -6,8 +6,6 @@ const meta = {
 	title: "Subscribe",
 };
 
-const LISTMONK_URL = "https://mailing.tylerrouze.com";
-const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 ---
 
 <PageLayout meta={meta}>
@@ -15,7 +13,7 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 		<div class="section-label" id="subscribe-label">Subscribe</div>
 		<div class="content">
 			<p>Want to stay in touch? Subscribe below for future updates on data engineering, the modern data stack, and whatever else I happen to be thinking about.</p>
-			<form method="post" action={`${LISTMONK_URL}/subscription/form`} class="subscribe-form">
+			<form class="subscribe-form" novalidate>
 				<input
 					type="email"
 					name="email"
@@ -23,7 +21,6 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 					required
 					autocomplete="email"
 				/>
-				<input type="hidden" name="l" value={LIST_ID} />
 				<input
 					type="text"
 					name="website"
@@ -32,13 +29,14 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 					aria-hidden="true"
 					style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
 				/>
-				<button type="submit">Subscribe</button>
+				<button type="submit" id="subscribe-btn" disabled>Subscribe</button>
 				<altcha-widget
 					id="altcha"
 					challengeurl="https://mailing.tylerrouze.com/api/public/captcha/altcha"
 					hidefooter
 				></altcha-widget>
 			</form>
+			<div id="subscribe-result" aria-live="polite" hidden></div>
 			<p class="alt-contact">
 				Prefer a more direct line? Send me an email at <a href="mailto:hello@tylerrouze.com">hello@tylerrouze.com</a>.
 			</p>
@@ -48,26 +46,83 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 
 <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/altcha/dist/altcha.min.js"></script>
 <script is:inline>
-	const form = document.querySelector('.subscribe-form');
-	const email = form.querySelector('input[type="email"]');
-	const widget = document.getElementById('altcha');
+	const LISTMONK_URL = 'https://mailing.tylerrouze.com';
+	const LIST_UUID = 'e769d1fd-a069-436a-acf3-c523b1745b6b';
 
-	email.addEventListener('input', () => {
+	const form = document.querySelector('.subscribe-form');
+	const emailInput = form.querySelector('input[type="email"]');
+	const honeypot = form.querySelector('input[name="website"]');
+	const widget = document.getElementById('altcha');
+	const btn = document.getElementById('subscribe-btn');
+	const result = document.getElementById('subscribe-result');
+
+	// Show the widget as soon as the user starts typing an email address.
+	emailInput.addEventListener('input', () => {
 		if (!widget.classList.contains('visible')) {
 			widget.classList.add('visible');
 			widget.setAttribute('auto', 'onload');
 		}
 	}, { once: true });
 
-	form.addEventListener('submit', (e) => {
-		// altcha injects a hidden input named "altcha" with the solution payload when solved
-		const payload = form.querySelector('input[name="altcha"]');
-		if (!payload || !payload.value) {
-			e.preventDefault();
+	// Enable the submit button only after altcha has been solved.
+	// This closes the window where a bot could submit before the captcha fires.
+	widget.addEventListener('altcha-verified', () => {
+		btn.disabled = false;
+	});
+
+	form.addEventListener('submit', async (e) => {
+		e.preventDefault();
+
+		// Honeypot: if filled by a bot, pretend success and stop.
+		if (honeypot.value) {
+			showResult('success');
+			return;
+		}
+
+		const altchaPayload = form.querySelector('input[name="altcha"]');
+		if (!altchaPayload?.value) {
 			widget.classList.add('visible');
-			widget.setAttribute('auto', 'onload');
+			return;
+		}
+
+		btn.disabled = true;
+		btn.textContent = 'Subscribing…';
+
+		try {
+			const res = await fetch(`${LISTMONK_URL}/api/public/subscription`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email: emailInput.value,
+					list_uuids: [LIST_UUID],
+					captcha_solution: altchaPayload.value,
+					website: '',
+				}),
+			});
+
+			if (res.ok) {
+				showResult('success');
+			} else {
+				showResult('error');
+				btn.disabled = false;
+				btn.textContent = 'Subscribe';
+			}
+		} catch {
+			showResult('error');
+			btn.disabled = false;
+			btn.textContent = 'Subscribe';
 		}
 	});
+
+	function showResult(type) {
+		form.hidden = true;
+		result.hidden = false;
+		if (type === 'success') {
+			result.innerHTML = '<p>You\'re subscribed — thanks! Check your inbox to confirm.</p>';
+		} else {
+			result.innerHTML = '<p>Something went wrong. Try again or email <a href="mailto:hello@tylerrouze.com">hello@tylerrouze.com</a> directly.</p>';
+		}
+	}
 </script>
 
 <style>
@@ -126,6 +181,9 @@ const LIST_ID = "e769d1fd-a069-436a-acf3-c523b1745b6b";
 	}
 	.subscribe-form altcha-widget.visible {
 		display: block;
+	}
+	#subscribe-result p {
+		margin: 0 0 28px;
 	}
 	.alt-contact {
 		font-size: 15px;
