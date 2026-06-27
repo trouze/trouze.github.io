@@ -21,15 +21,7 @@ const meta = {
 					required
 					autocomplete="email"
 				/>
-				<input
-					type="text"
-					name="website"
-					autocomplete="off"
-					tabindex="-1"
-					aria-hidden="true"
-					style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
-				/>
-				<button type="submit" id="subscribe-btn" disabled>Subscribe</button>
+	<button type="submit" id="subscribe-btn" disabled>Subscribe</button>
 				<altcha-widget
 					id="altcha"
 					challengeurl="https://mailing.tylerrouze.com/api/public/captcha/altcha"
@@ -51,7 +43,6 @@ const meta = {
 
 	const form = document.querySelector('.subscribe-form');
 	const emailInput = form.querySelector('input[type="email"]');
-	const honeypot = form.querySelector('input[name="website"]');
 	const widget = document.getElementById('altcha');
 	const btn = document.getElementById('subscribe-btn');
 	const result = document.getElementById('subscribe-result');
@@ -73,14 +64,7 @@ const meta = {
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
 
-		// Honeypot: if filled by a bot, pretend success and stop.
-		if (honeypot.value) {
-			showResult('success');
-			return;
-		}
-
-		const altchaPayload = form.querySelector('input[name="altcha"]');
-		if (!altchaPayload?.value) {
+		if (!widget.value) {
 			widget.classList.add('visible');
 			return;
 		}
@@ -95,8 +79,7 @@ const meta = {
 				body: JSON.stringify({
 					email: emailInput.value,
 					list_uuids: [LIST_UUID],
-					captcha_solution: altchaPayload.value,
-					website: '',
+					altcha: widget.value,
 				}),
 			});
 
