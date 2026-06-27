@@ -21,10 +21,11 @@ const meta = {
 					required
 					autocomplete="email"
 				/>
-	<button type="submit" id="subscribe-btn" disabled>Subscribe</button>
+	<button type="submit" id="subscribe-btn">Subscribe</button>
 				<altcha-widget
 					id="altcha"
 					challengeurl="https://mailing.tylerrouze.com/api/public/captcha/altcha"
+					auto="onload"
 					hidefooter
 				></altcha-widget>
 			</form>
@@ -47,19 +48,10 @@ const meta = {
 	const btn = document.getElementById('subscribe-btn');
 	const result = document.getElementById('subscribe-result');
 
-	// Show the widget as soon as the user starts typing an email address.
+	// Show the widget once the user starts typing — it's already solving in the background.
 	emailInput.addEventListener('input', () => {
-		if (!widget.classList.contains('visible')) {
-			widget.classList.add('visible');
-			widget.setAttribute('auto', 'onload');
-		}
+		widget.classList.add('visible');
 	}, { once: true });
-
-	// Enable the submit button only after altcha has been solved.
-	// This closes the window where a bot could submit before the captcha fires.
-	widget.addEventListener('altcha-verified', () => {
-		btn.disabled = false;
-	});
 
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
