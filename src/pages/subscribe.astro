@@ -56,7 +56,8 @@ const meta = {
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
 
-		if (!widget.value) {
+		const altchaPayload = form.querySelector('input[name="altcha"]')?.value;
+		if (!altchaPayload) {
 			widget.classList.add('visible');
 			return;
 		}
@@ -71,7 +72,7 @@ const meta = {
 				body: JSON.stringify({
 					email: emailInput.value,
 					list_uuids: [LIST_UUID],
-					altcha: widget.value,
+					altcha: altchaPayload,
 				}),
 			});
 
