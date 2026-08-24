@@ -40,34 +40,93 @@ const paginationProps = {
 };
 
 const totalCount = page.total;
+
+const tagCounts = new Map<string, number>();
+for (const p of page.data) {
+	for (const tag of p.data.tags) {
+		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+	}
+}
+const tags = Array.from(tagCounts.entries())
+	.sort(([a], [b]) => a.localeCompare(b))
+	.map(([name, count]) => ({ name, count }));
 ---
 
-<PageLayout meta={meta}>
+<PageLayout meta={meta} wide>
 	<section class="writing" aria-labelledby="writing-label">
-		<div class="section-label" id="writing-label">Writing · {totalCount} posts</div>
-		<div class="timeline">
-			{
-				page.data.map((p, idx) => (
-					<a
-						class="post"
-						data-astro-prefetch
-						href={withBase(`/posts/${p.id}/`)}
-						style={`--i: ${idx}`}
-					>
-						<div class="post-rail">
-							<time class="post-date" datetime={getPostSortDate(p).toISOString()}>
-								{formatRailDate(getPostSortDate(p))}
-							</time>
-							<span class="post-dot" aria-hidden="true" />
-						</div>
-						<div class="post-body">
-							<h2 class="post-title">{p.data.title}</h2>
-							<p class="post-preview">{p.data.description}</p>
-						</div>
-					</a>
-				))
-			}
+		<div class="section-label" id="writing-label">
+			Writing · <span id="visible-count">{totalCount}</span> posts
 		</div>
+		<div class="posts-layout">
+			{
+				tags.length > 0 && (
+					<aside class="tag-sidebar">
+						<details class="tag-filter" open>
+							<summary class="tag-filter-summary">
+								<span>Filter by tag</span>
+								<svg
+									aria-hidden="true"
+									viewBox="0 0 16 16"
+									fill="none"
+									class="tag-filter-chevron"
+								>
+									<path
+										d="M4 6l4 4 4-4"
+										stroke="currentColor"
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</summary>
+							<div class="tag-filter-body">
+								<div class="tag-filter-head">
+									<span class="tag-filter-label">Tags</span>
+									<button type="button" class="tag-clear" hidden>
+										Clear
+									</button>
+								</div>
+								<ul class="tag-list">
+									{tags.map(({ name, count }) => (
+										<li>
+											<button type="button" class="tag-chip" data-tag={name} aria-pressed="false">
+												<span class="tag-name">{name}</span>
+												<span class="tag-count">{count}</span>
+											</button>
+										</li>
+									))}
+								</ul>
+							</div>
+						</details>
+					</aside>
+				)
+			}
+			<div class="timeline">
+				{
+					page.data.map((p, idx) => (
+						<a
+							class="post"
+							data-astro-prefetch
+							data-tags={p.data.tags.join(",")}
+							href={withBase(`/posts/${p.id}/`)}
+							style={`--i: ${idx}`}
+						>
+							<div class="post-rail">
+								<time class="post-date" datetime={getPostSortDate(p).toISOString()}>
+									{formatRailDate(getPostSortDate(p))}
+								</time>
+								<span class="post-dot" aria-hidden="true" />
+							</div>
+							<div class="post-body">
+								<h2 class="post-title">{p.data.title}</h2>
+								<p class="post-preview">{p.data.description}</p>
+							</div>
+						</a>
+					))
+				}
+			</div>
+		</div>
+		<p class="tag-empty" hidden>No posts match the selected tags.</p>
 		{
 			(paginationProps.prevUrl || paginationProps.nextUrl) && (
 				<nav class="pagination" aria-label="Pagination">
@@ -87,9 +146,239 @@ const totalCount = page.total;
 	</section>
 </PageLayout>
 
+<script>
+	const sidebar = document.querySelector<HTMLElement>(".tag-sidebar");
+	const tagFilter = document.querySelector<HTMLDetailsElement>(".tag-filter");
+	const chips = Array.from(document.querySelectorAll<HTMLButtonElement>(".tag-chip"));
+	const posts = Array.from(document.querySelectorAll<HTMLElement>(".timeline .post"));
+	const emptyState = document.querySelector<HTMLElement>(".tag-empty");
+	const clearBtn = document.querySelector<HTMLButtonElement>(".tag-clear");
+	const visibleCountEl = document.querySelector<HTMLElement>("#visible-count");
+
+	if (tagFilter) {
+		const desktopQuery = window.matchMedia("(min-width: 860px)");
+		const syncOpenState = (matches: boolean) => {
+			tagFilter.open = matches;
+		};
+		syncOpenState(desktopQuery.matches);
+		desktopQuery.addEventListener("change", (e) => syncOpenState(e.matches));
+	}
+
+	if (sidebar && chips.length > 0) {
+		const params = new URLSearchParams(location.search);
+		const selected = new Set(
+			(params.get("tags") ?? "")
+				.split(",")
+				.map((t) => t.trim())
+				.filter(Boolean),
+		);
+
+		const syncUrl = () => {
+			const url = new URL(location.href);
+			if (selected.size > 0) {
+				url.searchParams.set("tags", Array.from(selected).join(","));
+			} else {
+				url.searchParams.delete("tags");
+			}
+			history.replaceState(null, "", url);
+		};
+
+		const applyFilter = () => {
+			let visibleCount = 0;
+			for (const post of posts) {
+				const postTags = (post.dataset.tags ?? "").split(",").filter(Boolean);
+				const matches = Array.from(selected).every((tag) => postTags.includes(tag));
+				post.hidden = !matches;
+				if (matches) visibleCount++;
+			}
+			for (const chip of chips) {
+				chip.setAttribute("aria-pressed", selected.has(chip.dataset.tag ?? "") ? "true" : "false");
+			}
+			if (emptyState) emptyState.hidden = visibleCount !== 0;
+			if (clearBtn) clearBtn.hidden = selected.size === 0;
+			if (visibleCountEl) visibleCountEl.textContent = String(visibleCount);
+		};
+
+		for (const chip of chips) {
+			chip.addEventListener("click", () => {
+				const tag = chip.dataset.tag;
+				if (!tag) return;
+				if (selected.has(tag)) {
+					selected.delete(tag);
+				} else {
+					selected.add(tag);
+				}
+				syncUrl();
+				applyFilter();
+			});
+		}
+
+		clearBtn?.addEventListener("click", () => {
+			selected.clear();
+			syncUrl();
+			applyFilter();
+		});
+
+		applyFilter();
+	}
+</script>
+
 <style>
 	.writing {
 		margin-bottom: 96px;
+	}
+
+	.posts-layout {
+		display: block;
+	}
+
+	.tag-sidebar {
+		margin-bottom: 32px;
+	}
+
+	.tag-filter-summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		font-family: var(--font-mono);
+		font-size: 11.5px;
+		font-weight: 500;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: hsl(var(--theme-text-muted));
+		cursor: pointer;
+		list-style: none;
+		padding: 10px 14px;
+		border: 1px solid var(--hairline);
+		border-radius: 6px;
+	}
+	.tag-filter-summary::-webkit-details-marker {
+		display: none;
+	}
+	.tag-filter-chevron {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+		transition: transform 0.2s ease;
+	}
+	.tag-filter[open] .tag-filter-chevron {
+		transform: rotate(180deg);
+	}
+
+	.tag-filter-body {
+		padding: 16px 2px 4px;
+	}
+	.tag-filter-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 12px;
+	}
+	.tag-filter-label {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: hsl(var(--theme-text) / 0.55);
+	}
+	.tag-clear {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: hsl(var(--theme-accent));
+		background: none;
+		border: none;
+		padding: 2px 0;
+		cursor: pointer;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.tag-clear:hover {
+		opacity: 0.75;
+	}
+
+	.tag-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.tag-chip {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px;
+		width: 100%;
+		font-family: var(--font-sans);
+		font-size: 13.5px;
+		color: hsl(var(--theme-text) / 0.82);
+		background: none;
+		border: none;
+		border-radius: 5px;
+		padding: 6px 8px;
+		cursor: pointer;
+		text-align: left;
+		transition: background-color 0.15s ease, color 0.15s ease;
+	}
+	.tag-chip:hover {
+		background: var(--accent-soft);
+		color: hsl(var(--theme-text));
+	}
+	.tag-chip[aria-pressed="true"] {
+		background: hsl(var(--theme-accent));
+		color: hsl(var(--theme-bg));
+	}
+	.tag-chip[aria-pressed="true"] .tag-count {
+		color: hsl(var(--theme-bg) / 0.75);
+	}
+	.tag-chip:focus-visible {
+		outline: 2px solid hsl(var(--theme-accent));
+		outline-offset: 2px;
+	}
+	.tag-name {
+		overflow-wrap: anywhere;
+	}
+	.tag-count {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		color: hsl(var(--theme-text) / 0.5);
+		flex-shrink: 0;
+	}
+
+	.tag-empty {
+		font-size: 15px;
+		color: hsl(var(--theme-text-muted));
+		margin: -12px 0 32px;
+	}
+
+	@media (min-width: 860px) {
+		.posts-layout {
+			display: grid;
+			grid-template-columns: 1fr 200px;
+			gap: 48px;
+			align-items: start;
+		}
+		.tag-sidebar {
+			grid-column: 2;
+			grid-row: 1;
+			margin-bottom: 0;
+			position: sticky;
+			top: 36px;
+		}
+		.timeline {
+			grid-column: 1;
+			grid-row: 1;
+		}
+		.tag-filter-summary {
+			display: none;
+		}
+		.tag-filter-body {
+			padding: 0;
+		}
 	}
 
 	.pagination {
