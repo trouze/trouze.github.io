@@ -9,10 +9,13 @@ import type { SiteMeta } from "@/types";
 
 interface Props {
 	meta: SiteMeta;
+	/** Widen the page shell — used by pages with a secondary column (e.g. the posts archive's tag sidebar). */
+	wide?: boolean;
 }
 
 const {
 	meta: { articleDate, description = siteConfig.description, ogImage, title },
+	wide = false,
 } = Astro.props;
 ---
 
@@ -23,7 +26,7 @@ const {
 	</head>
 	<body>
 		<SkipLink />
-		<div class="wrap">
+		<div class:list={["wrap", wide && "wrap--wide"]}>
 			<Header />
 			<main id="main">
 				<slot />
@@ -75,6 +78,7 @@ const {
 				flex-direction: column;
 			}
 			.wrap > main { flex: 1 0 auto; }
+			.wrap--wide { max-width: 900px; }
 
 			@media (max-width: 720px) {
 				.wrap {
