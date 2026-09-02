@@ -32,7 +32,7 @@ const {
 } = post;
 const socialImage = ogImage ?? `/og-image/${slug}.png`;
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
-const { remarkPluginFrontmatter } = await render(post);
+const { remarkPluginFrontmatter, headings } = await render(post);
 
 const authorName = siteConfig.profile?.name ?? siteConfig.author;
 const comments = siteConfig.comments;
@@ -48,6 +48,19 @@ const bylineDate = formatBylineDate(publishDate);
 // Prefer remark plugin's value; fall back to "".
 const readingTime: string =
 	(remarkPluginFrontmatter as { minutesRead?: string })?.minutesRead ?? "";
+
+// Left-rail table of contents: h2/h3 only, and only when the post has real sections.
+// "footnote-label" is the auto-injected Footnotes section, not a real heading.
+const tocHeadings = headings.filter(
+	(h) =>
+		(h.depth === 2 || h.depth === 3) &&
+		h.slug !== "footnote-label" &&
+		h.slug.length > 0 &&
+		h.text.trim().length > 0,
+);
+// Indent relative to the shallowest depth, so h3-only posts still read flat.
+const tocBaseDepth = tocHeadings.length > 0 ? Math.min(...tocHeadings.map((h) => h.depth)) : 2;
+const showToc = tocHeadings.length >= 3;
 
 // Custom giscus themes only in prod: the giscus.app iframe can't fetch CSS from localhost / private IPs.
 const giscusThemes = import.meta.env.PROD
@@ -77,6 +90,20 @@ const giscusThemes = import.meta.env.PROD
 
 <BaseLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
 	<div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+	{showToc && (
+		<nav class="toc" aria-label="On this page">
+			<p class="toc-label">On this page</p>
+			<ul class="toc-list">
+				{tocHeadings.map((h) => (
+					<li class:list={["toc-item", { "toc-child": h.depth > tocBaseDepth }]}>
+						<a href={`#${h.slug}`} data-toc-link={h.slug}>
+							{h.text}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)}
 	<div class="post-shell">
 		<div class="post-main" data-pagefind-body>
 			<div id="blog-hero" class="post-header">
@@ -190,6 +217,84 @@ const giscusThemes = import.meta.env.PROD
 		z-index: 100;
 		pointer-events: none;
 		transition: width 0.05s linear;
+	}
+
+	/* Left-rail TOC: fixed beside the centered column, wide viewports only. */
+	.toc {
+		display: none;
+	}
+	@media (min-width: 1240px) {
+		.toc {
+			display: block;
+			position: fixed;
+			top: 128px;
+			/* 380px is half the .wrap column width; hug its left edge. */
+			right: calc(50% + 380px + 28px);
+			width: 200px;
+			max-height: calc(100vh - 176px);
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: none;
+			font-family: var(--font-sans);
+			font-size: 13px;
+			line-height: 1.45;
+		}
+		.toc::-webkit-scrollbar {
+			width: 0;
+		}
+		.toc-label {
+			font-family: var(--font-mono);
+			font-size: 11px;
+			font-weight: 500;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: hsl(var(--theme-text) / 0.55);
+			margin: 0 0 14px;
+		}
+		.toc-list {
+			list-style: none;
+			margin: 0;
+			/* Room for the active-section dot hanging left of each item. */
+			padding: 0 0 0 18px;
+		}
+		.toc-item {
+			position: relative;
+			margin-bottom: 9px;
+		}
+		.toc-item:last-child {
+			margin-bottom: 0;
+		}
+		.toc-child {
+			padding-left: 16px;
+			font-size: 12.5px;
+		}
+		.toc-item a {
+			display: block;
+			color: hsl(var(--theme-text) / 0.6);
+			transition: color 0.15s ease;
+		}
+		.toc-item a:hover {
+			color: hsl(var(--theme-accent));
+		}
+		.toc-item a[aria-current] {
+			color: hsl(var(--theme-text));
+			font-weight: 500;
+		}
+		.toc-item a[aria-current]::before {
+			content: "";
+			position: absolute;
+			left: -13px;
+			top: 0.55em;
+			width: 5px;
+			height: 5px;
+			border-radius: 50%;
+			background: hsl(var(--theme-accent));
+		}
+		.toc-item a:focus-visible {
+			outline: 2px solid hsl(var(--theme-accent));
+			outline-offset: 3px;
+			border-radius: 3px;
+		}
 	}
 
 	.post-cover {
@@ -773,6 +878,7 @@ const giscusThemes = import.meta.env.PROD
 	.post-article h2,
 	.post-article h3 {
 		position: relative;
+		scroll-margin-top: 2rem;
 	}
 	.post-article .heading-anchor {
 		position: absolute;
@@ -1048,19 +1154,73 @@ const giscusThemes = import.meta.env.PROD
 			usedIds.add(id);
 			if (!h.id) h.id = id;
 
-			const btn = document.createElement("button");
-			btn.type = "button";
-			btn.className = "heading-anchor";
-			btn.setAttribute("aria-label", `Copy link to ${h.textContent ?? "section"}`);
-			btn.textContent = "#";
-			btn.addEventListener("click", async () => {
-				const url = `${location.origin}${location.pathname}#${id}`;
-				try {
-					await navigator.clipboard.writeText(url);
-					btn.textContent = "✓";
-					setTimeout(() => (btn.textContent = "#"), 1200);
-				} catch {}
-			});
-			h.prepend(btn);
+		const btn = document.createElement("button");
+		btn.type = "button";
+		btn.className = "heading-anchor";
+		btn.setAttribute("aria-label", `Copy link to ${h.textContent ?? "section"}`);
+		btn.textContent = "#";
+		btn.addEventListener("click", async () => {
+			const url = `${location.origin}${location.pathname}#${id}`;
+			try {
+				await navigator.clipboard.writeText(url);
+				btn.textContent = "✓";
+				setTimeout(() => (btn.textContent = "#"), 1200);
+			} catch {}
 		});
+		h.prepend(btn);
+	});
+
+	const tocNav = document.querySelector<HTMLElement>(".toc");
+	if (tocNav) {
+		const tocItems: { link: HTMLAnchorElement; heading: HTMLElement }[] = [];
+		tocNav.querySelectorAll<HTMLAnchorElement>("[data-toc-link]").forEach((link) => {
+			const heading = document.getElementById(link.dataset.tocLink ?? "");
+			if (heading) tocItems.push({ link, heading });
+		});
+
+		if (tocItems.length > 0) {
+			const SPY_OFFSET = 96;
+			let currentItem = -1;
+
+			const syncToc = () => {
+				let active = 0;
+				tocItems.forEach((item, i) => {
+					if (item.heading.getBoundingClientRect().top <= SPY_OFFSET) active = i;
+				});
+				// Fully scrolled to the bottom: the last section wins.
+				const doc = document.documentElement;
+				if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+					active = tocItems.length - 1;
+				}
+				if (active === currentItem) return;
+				currentItem = active;
+
+				tocItems.forEach((item, i) => {
+					if (i === active) {
+						item.link.setAttribute("aria-current", "location");
+						// Keep the active link visible when the list itself scrolls.
+						if (tocNav.scrollHeight > tocNav.clientHeight) {
+							item.link.scrollIntoView({ block: "nearest" });
+						}
+					} else {
+						item.link.removeAttribute("aria-current");
+					}
+				});
+			};
+
+			let tocTicking = false;
+			const onTocScroll = () => {
+				if (tocTicking) return;
+				tocTicking = true;
+				requestAnimationFrame(() => {
+					tocTicking = false;
+					syncToc();
+				});
+			};
+
+			syncToc();
+			window.addEventListener("scroll", onTocScroll, { passive: true });
+			window.addEventListener("resize", onTocScroll, { passive: true });
+		}
+	}
 </script>
