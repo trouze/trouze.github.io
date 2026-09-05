@@ -7,6 +7,8 @@ description: What Tyler Rouze is up to right now — work, life, and current int
 
 This page lists the most up-to-date information regarding what I am doing right *now*.
 
+Updated: September 5, 2026.
+
 ---
 
 ### A little bit about me
