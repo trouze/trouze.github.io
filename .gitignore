@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# Wrangler
+.wrangler/
+
 # Node
 node_modules/
 package-lock.json

@@ -1,0 +1,19 @@
+// Cloudflare Workers static-assets deployment for tylerrouze.com.
+// `pnpm build` outputs the site to dist/ which is served directly —
+// no worker script is needed for a fully static site.
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "tylerrouze-com",
+	"compatibility_date": "2026-10-07",
+	"assets": {
+		"directory": "./dist",
+		// Serve /404.html with a 404 status for unknown routes (Astro emits it)
+		"not_found_handling": "404-page",
+		// /about.html redirects to /about, /about serves content directly
+		"html_handling": "auto-trailing-slash",
+	},
+	// Provisions/updates the proxied DNS record for the apex on deploy,
+	// replacing the old GitHub Pages records. Requires a token with
+	// Zone:DNS:Edit in addition to Workers permissions.
+	"routes": [{ "pattern": "tylerrouze.com", "custom_domain": true }],
+}
