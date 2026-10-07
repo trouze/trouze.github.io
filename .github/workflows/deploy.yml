@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -7,16 +7,14 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: cloudflare-workers
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build
+  deploy:
+    name: Build & deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -30,35 +28,13 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v6
-        with:
-          enablement: true
-
       - run: pnpm build
+
+      # Deploys the site as Workers static assets and attaches the
+      # tylerrouze.com custom domain (wrangler.jsonc routes).
+      # Static asset deploys invalidate changed assets automatically,
+      # so no manual cache purge is needed.
+      - run: pnpm exec wrangler deploy
         env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
-
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
-
-      - name: Purge Cloudflare cache
-        run: |
-          curl -sf -X POST \
-            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}'
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
