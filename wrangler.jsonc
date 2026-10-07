@@ -12,8 +12,11 @@
 		// /about.html redirects to /about, /about serves content directly
 		"html_handling": "auto-trailing-slash",
 	},
-	// Provisions/updates the proxied DNS record for the apex on deploy,
-	// replacing the old GitHub Pages records. Requires a token with
-	// Zone:DNS:Edit in addition to Workers permissions.
-	"routes": [{ "pattern": "tylerrouze.com", "custom_domain": true }],
+	// Provisions/updates the proxied DNS records for these hostnames on
+	// deploy. Any pre-existing DNS records for these hostnames must be
+	// deleted first (the API won't replace them — error 100117).
+	"routes": [
+		{ "pattern": "tylerrouze.com", "custom_domain": true },
+		{ "pattern": "www.tylerrouze.com", "custom_domain": true }
+	],
 }
