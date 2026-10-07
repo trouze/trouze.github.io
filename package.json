@@ -28,7 +28,7 @@
 		"astro-seo-schema": "^7.0.0",
 		"astro-webmanifest": "^1.0.0",
 		"hastscript": "^9.0.1",
-		"katex": "^0.17.0",
+		"katex": "^0.18.2",
 		"mdast-util-directive": "^3.1.0",
 		"mdast-util-to-markdown": "^2.1.2",
 		"mdast-util-to-string": "^4.0.0",
