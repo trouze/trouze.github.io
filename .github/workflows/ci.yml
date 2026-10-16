@@ -11,13 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
+      - uses: taiki-e/install-action@v2
         with:
-          node-version: 24
-          cache: pnpm
+          tool: zola@0.23.6
 
-      - run: pnpm install --frozen-lockfile
-
-      - run: pnpm build
+      - run: zola build

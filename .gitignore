@@ -1,13 +1,9 @@
-# Astro
+# Zola build output
 dist/
-.astro/
+dist-zola/
 
-# Wrangler
-.wrangler/
-
-# Node
-node_modules/
-package-lock.json
+# Webmentions cache (regenerated at build time when configured)
+.data/
 
 # OS
 .DS_Store

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title="404 — Not found"
+	description="The page you were looking for doesn't exist."
+	article_date=""
+	canonical={config.base_url ~ "/404"}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="not-found">
+		<div class="eyebrow">Error · 404</div>
+		<h1>This page wandered off.</h1>
+		<p>
+			The page you were looking for doesn't exist. It may have been moved, renamed,
+			or just isn't there yet. Try the <a href="{{ get_url(path="/", trailing_slash=true) }}">home</a> page, or browse the
+			<a href="{{ get_url(path="posts/", trailing_slash=true) }}">writing</a>.
+		</p>
+	</section>
+{{<m.shell_end />}}
+</body>
+</html>

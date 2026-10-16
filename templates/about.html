@@ -1,0 +1,25 @@
+{% set profile = config.extra.profile %}
+{% set author_name = profile.name | default(value=config.extra.author) %}
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title={page.title}
+	description={page.description | default(value=author_name ~ " — about me.")}
+	article_date=""
+	canonical={page.permalink}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfilePage","mainEntity":{"@type":"Person","name":"{{ author_name }}"{% if profile.avatar %},"image":"{{ get_url(path=profile.avatar) }}"{% endif %}{% if profile.job_title %},"jobTitle":"{{ profile.job_title }}"{% endif %}{% if profile.employer %},"worksFor":{"@type":"Organization","name":"{{ profile.employer }}"{% if profile.employer_url %},"url":"{{ profile.employer_url }}"{% endif %}}{% endif %}{% if profile.alumni %},"alumniOf":{"@type":"CollegeOrUniversity","name":"{{ profile.alumni }}"}{% endif %}{% if profile.linkedin or profile.github %},"sameAs":[{% if profile.linkedin %}"{{ profile.linkedin }}"{% endif %}{% if profile.linkedin and profile.github %},{% endif %}{% if profile.github %}"{{ profile.github }}"{% endif %}]{% endif %}}}</script>
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="about" aria-labelledby="about-label">
+		<div class="section-label" id="about-label">About</div>
+		<div class="bio">
+			{{ page.content | safe }}
+		</div>
+	</section>
+{{<m.shell_end />}}
+</body>
+</html>

@@ -1,0 +1,150 @@
+{% set posts_section = get_section(path="posts/_index.md") %}
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title="Home"
+	description={config.description}
+	article_date=""
+	canonical={config.base_url ~ "/"}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ config.base_url }}/"},{"@type":"ListItem","position":2,"name":"About","item":"{{ get_url(path="about") }}"},{"@type":"ListItem","position":3,"name":"Posts","item":"{{ get_url(path="posts") }}"}</script>
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="hero">
+		<div class="hero-layout">
+			<div class="pfp-wrap">
+				<img src="{{ get_url(path=config.extra.profile.avatar) }}" alt="{{ config.extra.profile.name }}" class="pfp" />
+			</div>
+			<div class="hero-content">
+				<p>{{ config.description }}</p>
+				<div class="socials">
+					{% if config.extra.profile.github %}
+					<a href="{{ config.extra.profile.github }}" rel="noreferrer" target="_blank" aria-label="GitHub">
+						{{<m.icon name="github" />}}
+					</a>
+					{% endif %}
+					{% if config.extra.profile.linkedin %}
+					<a href="{{ config.extra.profile.linkedin }}" rel="noreferrer" target="_blank" aria-label="LinkedIn">
+						{{<m.icon name="linkedin" />}}
+					</a>
+					{% endif %}
+					{% if config.extra.profile.email %}
+					<a href="mailto:{{ config.extra.profile.email }}" aria-label="Email">
+						{{<m.icon name="email-outline" />}}
+					</a>
+					{% endif %}
+					{% if config.extra.profile.strava %}
+					<a href="{{ config.extra.profile.strava }}" rel="noreferrer" target="_blank" aria-label="Strava">
+						{{<m.icon name="strava" />}}
+					</a>
+					{% endif %}
+					{% if config.extra.profile.spotify %}
+					<a href="{{ config.extra.profile.spotify }}" rel="noreferrer" target="_blank" aria-label="Spotify">
+						{{<m.icon name="spotify" />}}
+					</a>
+					{% endif %}
+					{% if config.extra.profile.youtube %}
+					<a href="{{ config.extra.profile.youtube }}" rel="noreferrer" target="_blank" aria-label="YouTube">
+						{{<m.icon name="youtube" />}}
+					</a>
+					{% endif %}
+					{% if config.extra.profile.vsco %}
+					<a href="{{ config.extra.profile.vsco }}" rel="noreferrer" target="_blank" aria-label="VSCO">
+						{{<m.icon name="camera" />}}
+					</a>
+					{% endif %}
+					<a href="{{ get_url(path="rss.xml") }}" aria-label="RSS">
+						{{<m.icon name="rss" />}}
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="writing" aria-labelledby="writing-label">
+		<div class="section-label" id="writing-label">Writing</div>
+		<div class="timeline">
+			{% set all_posts = posts_section.pages %}
+			{% set timeline = all_posts[0:5] %}
+			{% set rest = timeline[1:] %}
+			{% set featured = timeline | first %}
+			{% if featured %}
+			<a class="post featured" href="{{ featured.permalink }}" style="--i: 0">
+				<div class="post-rail">
+					<time class="post-date" datetime="{{ featured.date }}">{{ featured.date | date(format=config.extra.date_rail) }}</time>
+					<span class="post-dot" aria-hidden="true"></span>
+				</div>
+				<div class="post-body">
+					<div class="post-stamp">Latest · {{ featured.date | date(format=config.extra.date_stamp) }}</div>
+					<h2 class="post-title">{{ featured.title }}</h2>
+					<p class="post-excerpt">{{ featured.description }}</p>
+					{% if featured.extra.tags %}
+					<div class="post-meta">
+						{% for t in featured.extra.tags %}{% if not loop.first %}<span class="dot">·</span>{% endif %}<span>{{ t }}</span>{% endfor %}
+					</div>
+					{% endif %}
+				</div>
+			</a>
+			{% endif %}
+
+			{% for p in rest %}
+			<a class="post" href="{{ p.permalink }}" style="--i: {{ loop.index }}">
+				<div class="post-rail">
+					<time class="post-date" datetime="{{ p.date }}">{{ p.date | date(format=config.extra.date_rail) }}</time>
+					<span class="post-dot" aria-hidden="true"></span>
+				</div>
+				<div class="post-body">
+					<h3 class="post-title">{{ p.title }}</h3>
+					<p class="post-preview">{{ p.description }}</p>
+				</div>
+			</a>
+			{% endfor %}
+
+			<div class="archive-link" style="--i: {{ rest | length + 1 }}">
+				<a href="{{ get_url(path="posts/", trailing_slash=true) }}">View all {{ all_posts | length }} posts →</a>
+			</div>
+		</div>
+	</section>
+
+	{% if config.extra.showcase %}
+	<section class="work" aria-labelledby="work-label">
+		<div class="section-label" id="work-label">Showcase</div>
+		<ul class="work-list">
+			{% for item in config.extra.showcase %}
+			<li style="--i: {{ loop.index }}">
+				{% if item.slug %}
+				<div class="item-split">
+					<div class="head">
+						<a class="name" href="{{ get_url(path="showcase/" ~ item.slug ~ "/", trailing_slash=true) }}">
+							{{ item.name }}
+						</a>
+						<span class="stack">{{ item.stack }}</span>
+						{% if item.badge %}
+						<a class="badge" href="{{ item.href }}" rel="noreferrer" target="_blank">
+							{{<m.icon name="github" />}}
+						</a>
+						{% endif %}
+					</div>
+					<p>{{ item.desc }}</p>
+				</div>
+				{% else %}
+				<a href="{{ item.href }}" rel="noreferrer" target="_blank">
+					<div class="head">
+						<span class="name">{{ item.name }}</span>
+						<span class="stack">{{ item.stack }}</span>
+						{% if item.badge %}<span class="badge">{{<m.icon name="github" />}}</span>{% endif %}
+					</div>
+					<p>{{ item.desc }}</p>
+				</a>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+	</section>
+	{% endif %}
+{{<m.shell_end />}}
+</body>
+</html>

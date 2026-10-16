@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title={page.title}
+	description={page.description | default(value="What Tyler Rouze is doing right now.")}
+	article_date=""
+	canonical={page.permalink}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="now" aria-labelledby="now-label">
+		<div class="section-label" id="now-label">/now</div>
+		<div class="prose">
+			{{ page.content | safe }}
+		</div>
+	</section>
+{{<m.shell_end />}}
+</body>
+</html>
