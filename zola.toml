@@ -1,0 +1,110 @@
+# Zola build of tylerrouze.com
+base_url = "https://tylerrouze.com"
+title = "Tyler Rouze"
+description = "Hi, I'm Tyler — Senior Forward Deployed Architect at dbt Labs. This is where I write, think, and share on data engineering, the modern data stack, and lifelong learning."
+default_language = "en"
+output_dir = "dist"
+minify_html = true
+
+# Feeds, sitemap, robots.txt
+generate_feeds = true
+feed_filenames = ["rss.xml"]
+generate_sitemap = true
+generate_robots_txt = true
+
+# This draft post contains literal Jekyll-era {% include %} text that must not
+# be processed as Tera
+skip_content_templating = ["posts/prefect-pipeline.md"]
+
+# Tags are only rendered client-side (post header, archive filter chips),
+# so no taxonomy pages are generated.
+build_search_index = false
+
+[markdown]
+# Match Astro's remark defaults: smart quotes/dashes (smartypants) and
+# GitHub-style footnotes at the bottom with back references.
+smart_punctuation = true
+bottom_footnotes = true
+
+# Matches rehype-external-links config (rel nofollow noreferrer, target _blank).
+external_links_target_blank = true
+external_links_no_follow = true
+external_links_no_referrer = true
+
+# Markdown images get loading=lazy/decoding=async (like Astro's asset pipeline).
+lazy_async_image = true
+
+[markdown.highlighting]
+# min-light / min-dark are the same VS Code themes Astro used via Shiki; both
+# ship in Zola's bundled set. Colors are emitted inline as light-dark(), which
+# resolves against the inherited `color-scheme` — global.css sets that from
+# the [data-theme] toggle, so code follows the theme switch like before.
+style = "inline"
+light_theme = "min-light"
+dark_theme = "min-dark"
+add_color_scheme = false
+error_on_missing_language = true
+
+[extra]
+author = "Tyler Rouze"
+lang = "en-US"
+og_locale = "en_US"
+site_title = "Tyler Rouze"
+
+# Date formats (chrono strftime), matching utils/date.ts
+date_rail = "%-d %b %Y"      # "5 Mar 2026"
+date_stamp = "%B %Y"         # "March 2026"
+date_byline = "%-d %B %Y"    # "5 March 2026"
+
+[extra.profile]
+name = "Tyler Rouze"
+email = "hello@tylerrouze.com"
+github = "https://github.com/trouze"
+linkedin = "https://www.linkedin.com/in/tylerrouze"
+strava = "https://www.strava.com/athletes/116840931"
+spotify = "https://open.spotify.com/user/tyrouze10?si=183b7fda195e4e09"
+youtube = "https://www.youtube.com/@tylerrouze"
+vsco = "https://vsco.co/tylerrouze"
+job_title = "Senior Forward Deployed Architect"
+employer = "dbt Labs"
+employer_url = "https://www.getdbt.com"
+alumni = "University of Minnesota"
+avatar = "/images/dbt_nyc.jpg"
+
+[extra.comments]
+repo = "trouze/trouze.github.io"
+repo_id = "MDEwOlJlcG9zaXRvcnkyMDM4NTU5ODU="
+category = "Blog Comments"
+category_id = "DIC_kwDODCaYcc4CTODa"
+
+[[extra.menu_links]]
+path = "/"
+title = "Home"
+
+[[extra.menu_links]]
+path = "/posts/"
+title = "Posts"
+
+[[extra.menu_links]]
+path = "/now/"
+title = "now"
+
+[[extra.menu_links]]
+path = "/subscribe/"
+title = "Subscribe"
+
+[[extra.showcase]]
+name = "Neural Networks in R"
+href = "https://github.com/trouze/neural-network-r"
+stack = "R · Machine Learning"
+badge = "OSS"
+desc = "Classifying handwritten digits from the MNIST dataset using a neural network implemented from scratch in R."
+slug = "neural-network-r"
+
+[[extra.showcase]]
+name = "Kidney Exchange Optimization"
+href = "https://github.com/trouze/kidney-donor-pairing"
+stack = "Julia · Optimization"
+badge = "OSS"
+desc = "An optimization model for kidney exchange programs, maximizing the number of compatible donor-recipient pairs."
+slug = "kidney-exchange"

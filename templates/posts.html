@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title="Posts"
+	description="Read my collection of posts and the things that interest me"
+	article_date=""
+	canonical={get_url(path="posts/", trailing_slash=true)}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+</head>
+<body>
+{{<m.shell_open wide={true} />}}
+	<section class="writing" aria-labelledby="writing-label">
+		<div class="section-label" id="writing-label">
+			Writing · <span id="visible-count">{{ section.pages | length }}</span> posts
+		</div>
+		<div class="posts-layout">
+			{% set_global tags_blob = "" %}
+			{% for p in section.pages %}
+				{% for t in p.extra.tags | default(value=[]) %}
+					{% set_global tags_blob = tags_blob ~ t ~ "§" %}
+				{% endfor %}
+			{% endfor %}
+			{% set tag_names = tags_blob | split(pat="§") | unique | sort %}
+			{% if tag_names %}
+			<aside class="tag-sidebar">
+				<details class="tag-filter" open>
+					<summary class="tag-filter-summary">
+						<span>Filter by tag</span>
+						<svg aria-hidden="true" viewBox="0 0 16 16" fill="none" class="tag-filter-chevron">
+							<path
+								d="M4 6l4 4 4-4"
+								stroke="currentColor"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					</summary>
+					<div class="tag-filter-body">
+						<div class="tag-filter-head">
+							<span class="tag-filter-label">Tags</span>
+							<button type="button" class="tag-clear" hidden>
+								Clear
+							</button>
+						</div>
+						<ul class="tag-list">
+							{% for name in tag_names %}
+							{% if name %}
+							{% set count = [1 for p in section.pages if name in (p.extra.tags or [])] | length %}
+							<li>
+								<button type="button" class="tag-chip" data-tag="{{ name }}" aria-pressed="false">
+									<span class="tag-name">{{ name }}</span>
+									<span class="tag-count">{{ count }}</span>
+								</button>
+							</li>
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</details>
+			</aside>
+			{% endif %}
+			<div class="timeline">
+				{% for p in section.pages %}
+				<a class="post" data-tags="{{ p.extra.tags | default(value=[]) | join(sep=",") }}" href="{{ p.permalink }}" style="--i: {{ loop.index0 }}">
+					<div class="post-rail">
+						<time class="post-date" datetime="{{ p.date }}">{{ p.date | date(format=config.extra.date_rail) }}</time>
+						<span class="post-dot" aria-hidden="true"></span>
+					</div>
+					<div class="post-body">
+						<h2 class="post-title">{{ p.title }}</h2>
+						<p class="post-preview">{{ p.description }}</p>
+					</div>
+				</a>
+				{% endfor %}
+			</div>
+		</div>
+		<p class="tag-empty" hidden>No posts match the selected tags.</p>
+	</section>
+{{<m.shell_end />}}
+<script src="{{ get_url(path="/js/archive.js") }}" defer></script>
+</body>
+</html>

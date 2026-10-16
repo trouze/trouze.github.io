@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title="Showcase"
+	description={config.description}
+	article_date=""
+	canonical={get_url(path="showcase/", trailing_slash=true)}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ config.base_url }}/"},{"@type":"ListItem","position":2,"name":"Showcase","item":"{{ get_url(path="showcase", trailing_slash=false) }}"}</script>
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="work" aria-labelledby="work-label">
+		<div class="section-label" id="work-label">Showcase</div>
+		<p class="intro">
+			A handful of projects I've built.
+		</p>
+		<ul class="work-list">
+			{% for item in config.extra.showcase %}
+			<li>
+				{% if item.slug %}
+				<div class="item-split">
+					<div class="head">
+						<a class="name" href="{{ get_url(path="showcase/" ~ item.slug ~ "/", trailing_slash=true) }}">
+							{{ item.name }}
+						</a>
+						<span class="stack">{{ item.stack }}</span>
+						{% if item.badge %}
+						<a class="badge" href="{{ item.href }}" rel="noreferrer" target="_blank">
+							{{<m.icon name="github" />}}
+						</a>
+						{% endif %}
+					</div>
+					<p>{{ item.desc }}</p>
+				</div>
+				{% else %}
+				<a href="{{ item.href }}" rel="noreferrer" target="_blank">
+					<div class="head">
+						<span class="name">{{ item.name }}</span>
+						<span class="stack">{{ item.stack }}</span>
+						{% if item.badge %}<span class="badge">{{<m.icon name="github" />}}</span>{% endif %}
+					</div>
+					<p>{{ item.desc }}</p>
+				</a>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+	</section>
+{{<m.shell_end />}}
+</body>
+</html>

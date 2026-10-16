@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title={page.title}
+	description={page.description | default(value="Subscribe to Tyler Rouze's mailing list for updates on data engineering, the modern data stack, and more.")}
+	article_date=""
+	canonical={page.permalink}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="subscribe" aria-labelledby="subscribe-label">
+		<div class="section-label" id="subscribe-label">Subscribe</div>
+		<div class="content">
+			<p>Want to stay in touch? Subscribe below for future updates on data engineering, the modern data stack, and whatever else I happen to be thinking about.</p>
+			<form class="subscribe-form" novalidate>
+				<input
+					type="email"
+					name="email"
+					placeholder="Your email address"
+					required
+					autocomplete="email"
+				/>
+				<button type="submit" id="subscribe-btn">Subscribe</button>
+				<altcha-widget
+					id="altcha"
+					challengeurl="https://mailing.tylerrouze.com/api/public/captcha/altcha"
+					auto="onload"
+					hidefooter
+				></altcha-widget>
+			</form>
+			<div id="subscribe-result" aria-live="polite" hidden></div>
+			<p class="alt-contact">
+				Prefer a more direct line? Send me an email at <a href="mailto:hello@tylerrouze.com">hello@tylerrouze.com</a>.
+			</p>
+		</div>
+	</section>
+{{<m.shell_end />}}
+<script type="module" src="https://cdn.jsdelivr.net/npm/altcha/dist/altcha.min.js"></script>
+<script>
+	const LISTMONK_URL = 'https://mailing.tylerrouze.com';
+	const LIST_UUID = 'e769d1fd-a069-436a-acf3-c523b1745b6b';
+
+	const form = document.querySelector('.subscribe-form');
+	const emailInput = form.querySelector('input[type="email"]');
+	const widget = document.getElementById('altcha');
+	const btn = document.getElementById('subscribe-btn');
+	const result = document.getElementById('subscribe-result');
+
+	// Show the widget once the user starts typing — it's already solving in the background.
+	emailInput.addEventListener('input', () => {
+		widget.classList.add('visible');
+	}, { once: true });
+
+	form.addEventListener('submit', async (e) => {
+		e.preventDefault();
+
+		const altchaPayload = form.querySelector('input[name="altcha"]')?.value;
+		if (!altchaPayload) {
+			widget.classList.add('visible');
+			return;
+		}
+
+		btn.disabled = true;
+		btn.textContent = 'Subscribing…';
+
+		try {
+			const res = await fetch(`${LISTMONK_URL}/api/public/subscription`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email: emailInput.value,
+					list_uuids: [LIST_UUID],
+					altcha: altchaPayload,
+				}),
+			});
+
+			if (res.ok) {
+				showResult('success');
+			} else {
+				showResult('error');
+				btn.disabled = false;
+				btn.textContent = 'Subscribe';
+			}
+		} catch {
+			showResult('error');
+			btn.disabled = false;
+			btn.textContent = 'Subscribe';
+		}
+	});
+
+	function showResult(type) {
+		form.hidden = true;
+		result.hidden = false;
+		if (type === 'success') {
+			result.innerHTML = '<p>You\'re subscribed — thanks! Check your inbox to confirm.</p>';
+		} else {
+			result.innerHTML = '<p>Something went wrong. Try again or email <a href="mailto:hello@tylerrouze.com">hello@tylerrouze.com</a> directly.</p>';
+		}
+	}
+</script>
+</body>
+</html>
