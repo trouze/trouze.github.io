@@ -86,6 +86,10 @@ path = "/posts/"
 title = "Posts"
 
 [[extra.menu_links]]
+path = "/speaking/"
+title = "Speaking"
+
+[[extra.menu_links]]
 path = "/now/"
 title = "now"
 

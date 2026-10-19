@@ -2348,6 +2348,114 @@ a {
 	text-decoration-color: hsl(var(--theme-accent));
 }
 
+/* ---------- Speaking page (speaking.html) ---------- */
+/* Rows aren't single links (each row can have its own links), so neutralize
+   the timeline hover states inherited from the posts archive. */
+.speaking .timeline .post:hover .post-title {
+	color: hsl(var(--theme-text));
+}
+.speaking .timeline .post:hover .post-dot {
+	border-color: var(--faint);
+	background: hsl(var(--theme-bg));
+	box-shadow: none;
+}
+.speaking .timeline .post:hover .post-date {
+	color: hsl(var(--theme-text) / 0.72);
+}
+.speaking .prose {
+	margin-bottom: 48px;
+}
+.talk-meta {
+	font-family: var(--font-mono);
+	font-size: 12.5px;
+	letter-spacing: -0.01em;
+	line-height: 1.5;
+	color: hsl(var(--theme-text) / 0.6);
+	margin: 0 0 6px;
+}
+.talk-meta .talk-sep {
+	margin: 0 7px;
+	opacity: 0.6;
+}
+.talk-meta a {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: hsl(var(--theme-text) / 0.3);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+	transition: color 0.2s ease;
+}
+.talk-meta a:hover {
+	color: hsl(var(--theme-accent));
+	text-decoration-color: hsl(var(--theme-accent));
+}
+.talk-with {
+	font-family: var(--font-serif);
+	font-size: 15px;
+	font-style: italic;
+	color: hsl(var(--theme-text) / 0.72);
+	margin: 0 0 6px;
+}
+.talk-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 18px;
+	margin: 8px 0 0;
+}
+.talk-links a {
+	font-family: var(--font-sans);
+	font-size: 13.5px;
+	font-weight: 500;
+	color: hsl(var(--theme-accent));
+	text-decoration: none;
+	transition: opacity 0.2s ease;
+}
+.talk-links a:hover {
+	opacity: 0.7;
+}
+.talk-desc {
+	font-size: 15.5px;
+	line-height: 1.55;
+	color: hsl(var(--theme-text) / 0.72);
+	margin: 2px 0 4px;
+	max-width: 58ch;
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+.talk-venues {
+	list-style: none;
+	margin: 6px 0 0;
+	padding: 0;
+}
+.talk-venues li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 2px 12px;
+	padding: 3px 0;
+	font-size: 14.5px;
+	color: hsl(var(--theme-text) / 0.8);
+}
+.talk-venue-when {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	color: hsl(var(--theme-text) / 0.6);
+	min-width: 78px;
+	font-variant-numeric: tabular-nums;
+	font-feature-settings: "tnum";
+}
+.talk-venues a {
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: 500;
+	color: hsl(var(--theme-accent));
+	text-decoration: none;
+	transition: opacity 0.2s ease;
+}
+.talk-venues a:hover {
+	opacity: 0.7;
+}
+
 /* ---------- Subscribe (subscribe.astro) ---------- */
 .subscribe {
 	margin-bottom: 64px;
