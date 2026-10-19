@@ -27,7 +27,7 @@ I currently work for [dbt Labs](https://www.getdbt.com) in a Forward Deployed ro
 
 One of my favorite parts of my job is being able to take customer & community feedback and improve the dbt product and ecosystem through open source contributions. Thus far, I've contributed to [dbt](https://github.com/dbt-labs/dbt), [the dbt Terraform provider](https://github.com/dbt-labs/terraform-provider-dbtcloud), and the [dbt MCP server](https://github.com/dbt-labs/dbt-mcp). I am also a certified professional in a number of technologies, including dbt ([Architect](https://www.getdbt.com/certifications/dbt-architect-certification-exam), by way of authoring part of the exam and [Analytics Engineer](https://www.getdbt.com/certifications/analytics-engineer-certification-exam)), [Google Cloud](https://cloud.google.com/learn/certification/data-engineer), and [Databricks](https://www.databricks.com/learn/certification/data-engineer-associate).
 
-I'm a three-time speaker at our annual conference, [dbt Summit](https://www.getdbt.com/dbt-summit/speakers/tyler-rouze), and I'm always interested in speaking at meetups and other conferences!
+I'm a three-time speaker at our annual conference, [dbt Summit](https://www.getdbt.com/dbt-summit/speakers/tyler-rouze), and I'm always interested in speaking at meetups and other conferences! The full history of my talks and webinars lives on the [speaking page](/speaking/).
 
 ### Current Interests
 

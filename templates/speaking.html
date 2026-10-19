@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="{{ config.extra.lang }}">
+<head>
+{{<m.head
+	title={section.title}
+	description={section.description | default(value="Talks, webinars, and panels from Tyler Rouze.")}
+	article_date=""
+	canonical={section.permalink}
+	og_image={get_url(path="/social-card.png")}
+/>}}
+</head>
+<body>
+{{<m.shell_open />}}
+	<section class="writing speaking" aria-labelledby="speaking-label">
+		<div class="section-label" id="speaking-label">Speaking</div>
+		<div class="prose">
+			{{ section.content | safe }}
+		</div>
+		<div class="timeline">
+			{% for talk in section.extra.talks %}
+			<article class="post">
+				<div class="post-rail">
+					<span class="post-date">{{ talk.when }}</span>
+					<span class="post-dot" aria-hidden="true"></span>
+				</div>
+				<div class="post-body">
+					<h2 class="post-title">{{ talk.title }}</h2>
+					{% if talk.desc %}
+					<p class="talk-desc">{{ talk.desc }}</p>
+					{% endif %}
+					{% if talk.venues %}
+					<ul class="talk-venues">
+						{% for v in talk.venues %}
+						<li>
+							<span class="talk-venue-when">{{ v.when }}</span>
+							<span class="talk-venue-label">{{ v.label }}{% if v.location %} · {{ v.location }}{% endif %}</span>
+							{% if v.guide %}<a href="{{ v.guide }}" target="_blank" rel="noopener">Guide</a>{% endif %}
+							{% if v.recording %}<a href="{{ v.recording }}" target="_blank" rel="noopener">Watch</a>{% endif %}
+							{% if v.slides %}<a href="{{ v.slides }}" target="_blank" rel="noopener">Slides</a>{% endif %}
+							{% if v.repo %}<a href="{{ v.repo }}" target="_blank" rel="noopener">Repo</a>{% endif %}
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<p class="talk-meta">
+						{% if talk.event_url %}<a href="{{ talk.event_url }}" target="_blank" rel="noopener">{{ talk.event }}</a>{% else %}{{ talk.event }}{% endif %}
+						<span class="talk-sep" aria-hidden="true">·</span>
+						{{ talk.format }}
+						<span class="talk-sep" aria-hidden="true">·</span>
+						{{ talk.location }}
+					</p>
+					{% if talk.with %}
+					<p class="talk-with">with {{ talk.with }}</p>
+					{% endif %}
+					{% if talk.recording or talk.slides or talk.guide or talk.repo or talk.post %}
+					<p class="talk-links">
+						{% if talk.recording %}<a href="{{ talk.recording }}" target="_blank" rel="noopener">Watch</a>{% endif %}
+						{% if talk.slides %}<a href="{{ talk.slides }}" target="_blank" rel="noopener">Slides</a>{% endif %}
+						{% if talk.guide %}<a href="{{ talk.guide }}" target="_blank" rel="noopener">Guide</a>{% endif %}
+						{% if talk.repo %}<a href="{{ talk.repo }}" target="_blank" rel="noopener">Repo</a>{% endif %}
+						{% if talk.post %}<a href="{{ talk.post }}">Blog post</a>{% endif %}
+					</p>
+					{% endif %}
+					{% endif %}
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+	</section>
+{{<m.shell_end />}}
+</body>
+</html>
