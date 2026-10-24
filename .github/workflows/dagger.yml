@@ -1,14 +1,20 @@
-# Dagger CI via the dagger-exe skill (committed at .agents/skills/dagger-exe).
+# CI via the dagger-exe skill (committed at .agents/skills/dagger-exe).
 #
-# Design (per the skill's github-actions.md):
-# - PRs run on an ephemeral local engine on the runner — no SSH credentials, so
-#   untrusted PR code never touches the shared VM engine or its cache.
-# - Pushes to `release` (trusted) use the persistent shared engine on the
-#   exe.dev VM `dagger`, through a GitHub Environment `dagger-exe` holding:
-#     secrets: EXE_DAGGER_SSH_KEY, EXE_DAGGER_KNOWN_HOSTS
-#     vars (optional; have workflow fallbacks): EXE_DAGGER_HOST, EXE_DAGGER_USER,
-#     EXE_DAGGER_SOCKET
-# - workflow_dispatch runs on `release` only, using the same environment.
+# Runs the project's real dagger checks on the persistent shared engine hosted
+# on the exe.dev VM when reachable; otherwise falls back to an ephemeral engine
+# on the runner itself (warm cache lost, no credentials involved).
+#
+# Trust structure:
+# - Job is restricted to the repo's single maintainer (github.actor == trouze).
+#   Other accounts' fork PRs skip entirely; GitHub also withholds secrets from
+#   fork PRs, so the two guard layers fail closed independently.
+# - SSH credentials are REPO-level secrets (README: EXE_DAGGER_SSH_KEY,
+#   EXE_DAGGER_KNOWN_HOSTS) so the engine hangs off repo config, not the
+#   (unused) dagger-exe environment, which only managed branch policies.
+#
+# Triggers: PRs to `release`, pushes to `release`, and manual dispatch
+# (dispatch and push events only have write access to this repo, so the
+# actor guard is naturally satisfied).
 name: Dagger
 
 on:
@@ -22,48 +28,20 @@ permissions:
   contents: read
 
 concurrency:
-  group: dagger-exe
+  group: dagger
   cancel-in-progress: false
 
 jobs:
-  # Unprivileged: no environment, no secrets. Replaces the old zola-build CI.
-  pr-check:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install pinned Dagger CLI
-        shell: bash
-        run: |
-          BIN_DIR="$RUNNER_TEMP/dagger-bin" \
-            .agents/skills/dagger-exe/scripts/install-cli.sh
-          echo "$RUNNER_TEMP/dagger-bin" >> "$GITHUB_PATH"
-
-      - name: Run checks on ephemeral engine
-        shell: bash
-        env:
-          SKILL: .agents/skills/dagger-exe
-          # Runner's default Docker context is named `default`.
-          DAGGER_DOCKER_CONTEXT: default
-          DAGGER_NO_NAG: 1
-        run: '"$SKILL/scripts/with-engine.sh" local check'
-
-  # Privileged: trusted pushes + manual dispatch on the shared VM engine.
-  vm-check:
-    if: github.event_name != 'pull_request'
+  checks:
+    if: github.actor == 'trouze'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    environment: dagger-exe
     env:
       SKILL: .agents/skills/dagger-exe
-      EXE_DAGGER_HOST: ${{ vars.EXE_DAGGER_HOST || 'vm.exe.xyz' }}
-      EXE_DAGGER_USER: ${{ vars.EXE_DAGGER_USER || 'vm+dagger' }}
-      EXE_DAGGER_SOCKET: ${{ vars.EXE_DAGGER_SOCKET || '/home/exedev/.config/colima/default/docker.sock' }}
       DAGGER_NO_NAG: 1
+      EXE_DAGGER_HOST: vm.exe.xyz
+      EXE_DAGGER_USER: vm+dagger
+      EXE_DAGGER_SOCKET: /home/exedev/.config/colima/default/docker.sock
     steps:
       - name: Check out trusted project code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -77,22 +55,47 @@ jobs:
             .agents/skills/dagger-exe/scripts/install-cli.sh
           echo "$RUNNER_TEMP/dagger-bin" >> "$GITHUB_PATH"
 
-      - name: Configure VM-scoped SSH credentials
+      - name: Probe shared VM engine
+        id: engine
         shell: bash
         env:
           EXE_DAGGER_SSH_KEY: ${{ secrets.EXE_DAGGER_SSH_KEY }}
           EXE_DAGGER_KNOWN_HOSTS: ${{ secrets.EXE_DAGGER_KNOWN_HOSTS }}
-        run: '"$SKILL/scripts/configure-ci-ssh.sh"'
-
-      - name: Configure explicit remote Colima socket
-        shell: bash
         run: |
-          "$SKILL/scripts/create-remote-context.sh" dagger-exe-vm "$EXE_DAGGER_SOCKET" dagger-exe
-          "$SKILL/scripts/doctor.sh" remote
+          # Default to local unless the VM path proves itself; report the
+          # decision either way so a degraded run is visible, not silent.
+          echo "mode=local" >> "$GITHUB_OUTPUT"
+          if [[ -z "${EXE_DAGGER_SSH_KEY:-}" || -z "${EXE_DAGGER_KNOWN_HOSTS:-}" ]]; then
+            echo "**Engine: local (ephemeral)** — VM secrets not configured." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if ! "$SKILL/scripts/configure-ci-ssh.sh"; then
+            echo "**Engine: local (ephemeral)** — SSH credential setup failed." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if ! "$SKILL/scripts/create-remote-context.sh" dagger-exe-vm "$EXE_DAGGER_SOCKET" dagger-exe; then
+            echo "**Engine: local (ephemeral)** — Docker SSH context setup failed." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if ! "$SKILL/scripts/doctor.sh" remote; then
+            echo "**Engine: local (ephemeral)** — VM engine unreachable or version mismatch." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "mode=remote" >> "$GITHUB_OUTPUT"
+          echo "**Engine: VM via exe.dev SSH (persistent cache).**" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Run project checks on shared engine
+      - name: Run checks on shared VM engine
+        if: steps.engine.outputs.mode == 'remote'
         shell: bash
         run: '"$SKILL/scripts/with-engine.sh" remote check --parallel 2'
+
+      - name: Run checks on ephemeral runner engine
+        if: steps.engine.outputs.mode == 'local'
+        shell: bash
+        env:
+          # Runner's default Docker context is named `default`.
+          DAGGER_DOCKER_CONTEXT: default
+        run: '"$SKILL/scripts/with-engine.sh" local check'
 
       - name: Remove temporary credentials
         if: always()
