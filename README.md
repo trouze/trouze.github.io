@@ -20,6 +20,17 @@ Requires these GitHub Actions secrets:
 - `CLOUDFLARE_API_TOKEN` — with `Workers Scripts: Edit` (account) and `DNS: Edit` + `Zone: Read` (zone) permissions
 - `CLOUDFLARE_ACCOUNT_ID`
 
+## CI
+
+Pull requests to `release` from the maintainer run `dagger check` using the
+shared exe.dev engine when available (otherwise an ephemeral runner engine).
+The project check is in `.dagger/modules/ci/main.dang`. The reusable scripts
+come from [`trouze/agent-skills`](https://github.com/trouze/agent-skills),
+checked out at a full commit SHA in `.github/workflows/dagger.yml`; they are
+not copied into this repository. Update that SHA in a PR to adopt a new
+`dagger-exe` release. The two repo-level `EXE_DAGGER_*` secrets authorize the
+shared engine, and must not be provided to untrusted code.
+
 To preview a production build locally:
 
 ```sh

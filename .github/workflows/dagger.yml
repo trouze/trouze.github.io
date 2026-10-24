@@ -1,16 +1,15 @@
-# CI via the dagger-exe skill (committed at .agents/skills/dagger-exe).
+# CI via dagger-exe v1.0.1 (pinned checkout of trouze/agent-skills).
 #
 # Runs the project's real dagger checks on the persistent shared engine hosted
 # on the exe.dev VM when reachable; otherwise falls back to an ephemeral engine
 # on the runner itself (warm cache lost, no credentials involved).
 #
 # Trust structure:
-# - Job is restricted to the repo's single maintainer (github.actor == trouze).
-#   Other accounts' fork PRs skip entirely; GitHub also withholds secrets from
-#   fork PRs, so the two guard layers fail closed independently.
-# - SSH credentials are REPO-level secrets (README: EXE_DAGGER_SSH_KEY,
-#   EXE_DAGGER_KNOWN_HOSTS) so the engine hangs off repo config, not the
-#   (unused) dagger-exe environment, which only managed branch policies.
+# - Only the sole maintainer's own same-repository PRs use the VM. Checking
+#   both PR author and head repository also covers maintainer-triggered events
+#   on someone else's PR; GitHub withholds secrets from fork PRs independently.
+# - SSH credentials are repo-level secrets (EXE_DAGGER_SSH_KEY,
+#   EXE_DAGGER_KNOWN_HOSTS); never stored in the skill repo.
 #
 # Triggers: PRs to `release`, pushes to `release`, and manual dispatch
 # (dispatch and push events only have write access to this repo, so the
@@ -33,11 +32,15 @@ concurrency:
 
 jobs:
   checks:
-    if: github.actor == 'trouze'
+    if: >-
+      github.actor == 'trouze' &&
+      (github.event_name != 'pull_request' ||
+        (github.event.pull_request.user.login == 'trouze' &&
+         github.event.pull_request.head.repo.full_name == github.repository))
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
-      SKILL: .agents/skills/dagger-exe
+      SKILL: .ci/agent-skills/skills/dagger-exe
       DAGGER_NO_NAG: 1
       EXE_DAGGER_HOST: vm.exe.xyz
       EXE_DAGGER_USER: vm+dagger
@@ -48,11 +51,19 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Check out pinned dagger-exe skill
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: trouze/agent-skills
+          ref: 5a14022c38a6f034c4333ac0108182a7762a1f32 # v1.0.1
+          path: .ci/agent-skills
+          persist-credentials: false
+
       - name: Install pinned Dagger CLI
         shell: bash
         run: |
           BIN_DIR="$RUNNER_TEMP/dagger-bin" \
-            .agents/skills/dagger-exe/scripts/install-cli.sh
+            "$SKILL/scripts/install-cli.sh"
           echo "$RUNNER_TEMP/dagger-bin" >> "$GITHUB_PATH"
 
       - name: Probe shared VM engine

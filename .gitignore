@@ -2,6 +2,9 @@
 dist/
 dist-zola/
 
+# CI's pinned, temporary checkout of shared agent skills
+.ci/agent-skills/
+
 # Webmentions cache (regenerated at build time when configured)
 .data/
 

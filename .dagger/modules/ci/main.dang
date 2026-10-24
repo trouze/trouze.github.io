@@ -19,7 +19,7 @@ type Ci {
     """
     zolaVersion: String! = "0.23.6",
   ) {
-    self.source = ws.directory("/", exclude: [".git", ".dagger", "dist"])
+    self.source = ws.directory("/", exclude: [".git", ".dagger", ".ci", "dist"])
     self.zolaVersion = zolaVersion
     self
   }
