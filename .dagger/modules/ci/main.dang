@@ -1,0 +1,46 @@
+"""
+CI checks for tylerrouze.com — builds the site with Zola inside Dagger.
+"""
+type Ci {
+  """
+  Site source files.
+  """
+  pub source: Directory!
+
+  """
+  Zola version the site builds against.
+  """
+  pub zolaVersion: String!
+
+  new(
+    ws: Workspace!,
+    """
+    Zola version to build with; must match zola.toml expectations.
+    """
+    zolaVersion: String! = "0.23.6",
+  ) {
+    self.source = ws.directory("/", exclude: [".git", ".dagger", "dist"])
+    self.zolaVersion = zolaVersion
+    self
+  }
+
+  """
+  Zola build image, pinned to the site's Zola version.
+  """
+  let base: Container! {
+    container.from("ghcr.io/getzola/zola:v" + zolaVersion)
+  }
+
+  """
+  Build the site with Zola. Fails on template errors, invalid front matter,
+  broken `[extra.menu_links]` targets, and everything else zola build checks.
+  """
+  pub build: Void @check {
+    base
+      .withMountedDirectory("/site", source)
+      .withWorkdir("/site")
+      .withExec(["/zola", "build"])
+      .sync
+    null
+  }
+}

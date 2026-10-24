@@ -1,0 +1,104 @@
+# Dagger CI via the dagger-exe skill (committed at .agents/skills/dagger-exe).
+#
+# Design (per the skill's github-actions.md):
+# - PRs run on an ephemeral local engine on the runner — no SSH credentials, so
+#   untrusted PR code never touches the shared VM engine or its cache.
+# - Pushes to `release` (trusted) use the persistent shared engine on the
+#   exe.dev VM `dagger`, through a GitHub Environment `dagger-exe` holding:
+#     secrets: EXE_DAGGER_SSH_KEY, EXE_DAGGER_KNOWN_HOSTS
+#     vars (optional; have workflow fallbacks): EXE_DAGGER_HOST, EXE_DAGGER_USER,
+#     EXE_DAGGER_SOCKET
+# - workflow_dispatch runs on `release` only, using the same environment.
+name: Dagger
+
+on:
+  pull_request:
+    branches: [release]
+  push:
+    branches: [release]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dagger-exe
+  cancel-in-progress: false
+
+jobs:
+  # Unprivileged: no environment, no secrets. Replaces the old zola-build CI.
+  pr-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install pinned Dagger CLI
+        shell: bash
+        run: |
+          BIN_DIR="$RUNNER_TEMP/dagger-bin" \
+            .agents/skills/dagger-exe/scripts/install-cli.sh
+          echo "$RUNNER_TEMP/dagger-bin" >> "$GITHUB_PATH"
+
+      - name: Run checks on ephemeral engine
+        shell: bash
+        env:
+          SKILL: .agents/skills/dagger-exe
+          # Runner's default Docker context is named `default`.
+          DAGGER_DOCKER_CONTEXT: default
+          DAGGER_NO_NAG: 1
+        run: '"$SKILL/scripts/with-engine.sh" local check'
+
+  # Privileged: trusted pushes + manual dispatch on the shared VM engine.
+  vm-check:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: dagger-exe
+    env:
+      SKILL: .agents/skills/dagger-exe
+      EXE_DAGGER_HOST: ${{ vars.EXE_DAGGER_HOST || 'vm.exe.xyz' }}
+      EXE_DAGGER_USER: ${{ vars.EXE_DAGGER_USER || 'vm+dagger' }}
+      EXE_DAGGER_SOCKET: ${{ vars.EXE_DAGGER_SOCKET || '/home/exedev/.config/colima/default/docker.sock' }}
+      DAGGER_NO_NAG: 1
+    steps:
+      - name: Check out trusted project code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install pinned Dagger CLI
+        shell: bash
+        run: |
+          BIN_DIR="$RUNNER_TEMP/dagger-bin" \
+            .agents/skills/dagger-exe/scripts/install-cli.sh
+          echo "$RUNNER_TEMP/dagger-bin" >> "$GITHUB_PATH"
+
+      - name: Configure VM-scoped SSH credentials
+        shell: bash
+        env:
+          EXE_DAGGER_SSH_KEY: ${{ secrets.EXE_DAGGER_SSH_KEY }}
+          EXE_DAGGER_KNOWN_HOSTS: ${{ secrets.EXE_DAGGER_KNOWN_HOSTS }}
+        run: '"$SKILL/scripts/configure-ci-ssh.sh"'
+
+      - name: Configure explicit remote Colima socket
+        shell: bash
+        run: |
+          "$SKILL/scripts/create-remote-context.sh" dagger-exe-vm "$EXE_DAGGER_SOCKET" dagger-exe
+          "$SKILL/scripts/doctor.sh" remote
+
+      - name: Run project checks on shared engine
+        shell: bash
+        run: '"$SKILL/scripts/with-engine.sh" remote check --parallel 2'
+
+      - name: Remove temporary credentials
+        if: always()
+        shell: bash
+        run: |
+          docker context rm --force dagger-exe >/dev/null 2>&1 || true
+          rm -f -- "$RUNNER_TEMP/dagger-exe-ssh/id_ed25519" \
+            "$RUNNER_TEMP/dagger-exe-ssh/known_hosts" \
+            "$RUNNER_TEMP/dagger-exe-ssh/ssh_config"
